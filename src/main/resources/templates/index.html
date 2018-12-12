@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="/js/jquery-2.1.1.js"></script>
+
+    <script type="text/javascript">
+        function submit() {
+            var params = {
+                name: $('#name').val(),
+                psw: $('#psw').val()
+            };
+            $.ajax({
+                url: "/userAction/login",
+                type: "post",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(params),
+                success: function (user) {
+                    console.log(JSON.stringify(user));
+                    $('#userFormJson').val(JSON.stringify(user));
+                    $('#userForm').submit();
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<p th:text="${name}"></p><input type="text" id="name"/>
+<p th:text="${psw}"></p><input type="password" id="psw"/>
+<button th:text="${submit}" onclick="submit()"></button>
+
+<form id="userForm" action="/userAction/loginSuccess" method="post">
+    <input id="userFormJson" name="userFormJson" type="hidden"/>
+</form>
+</body>
+</html>
