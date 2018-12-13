@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 
 @RequestMapping("userAction")
-public class UserController {
+public class UserCon {
 
     @GetMapping("/index")
     public String index(Model model){
