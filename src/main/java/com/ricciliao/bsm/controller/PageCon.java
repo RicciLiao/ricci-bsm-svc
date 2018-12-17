@@ -12,9 +12,15 @@ public class PageCon {
 
     @GetMapping("/")
     public ModelAndView defaultPage() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("main");
-        return mv;
+        ModelAndView mv = null;
+        try {
+            mv = new ModelAndView();
+            mv.setViewName("main");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return mv;
+        }
     }
 
 }
