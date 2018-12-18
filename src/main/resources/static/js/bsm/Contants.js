@@ -1,1 +1,18 @@
-var contant_mainPage;
+var _AJAX_COMMON_RESULT = 'result',
+    _SUCCESS = 'success',
+    _EXISTED = 'existed',
+    _FORMAT_ERR = 'formatERR',
+    _MIN_LENGTH_ERR = 'minLengthERR',
+    _MAX_LENGTH_ERR = 'maxLengthERR',
+    _EMPTY = 'empty',
+    _ERROR = 'error',
+    _PASSWORD_ERR = 'passwordErr',
+    _NAME_ERR = 'nameErr',
+    _ITEM_TYPE_DIR = '1',
+    _ITEM_TYPE_TXT = '2',
+    _SPACE_SIZE_UNIT = 'G',
+    _AJAX_DATA_TYPE = 'json',
+    _AJAX_CONTENT_TYPE = 'application/json',
+    _AJAX_TYPE = 'post',
+
+    _DEFAULT;

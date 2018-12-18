@@ -1,7 +1,7 @@
 <div class="signContainer-signInContainer" id="signContainer-signUpContainer">
-    <input type="text" data-i18n-input="signUp-user-name" data-i18n-attr="placeholder">
-    <input type="text" data-i18n-input="signUp-user-phone-num" data-i18n-attr="placeholder">
-    <input type="password" data-i18n-input="signUp-user-password" data-i18n-attr="placeholder">
+    <input type="text" data-i18n-input="signUp-user-name" data-i18n-attr="placeholder" id="u_name">
+    <input type="text" data-i18n-input="signUp-user-phone-num" data-i18n-attr="placeholder" id="u_phone_num">
+    <input type="password" data-i18n-input="signUp-user-password" data-i18n-attr="placeholder" id="u_psw">
     <div class="signUp-user-otp">
         <input type="text" data-i18n-input="signUp-otp" data-i18n-attr="placeholder">
         <button data-i18n="signUp-get-otp"></button>
@@ -10,7 +10,7 @@
         <input type="checkbox" class="signUpAgreementCHK">
         <button class="signUpUnAgreement" data-i18n="signUp-agreement"></button>
     </div>
-    <button data-i18n="signUp"></button>
+    <button data-i18n="signUp" id="btn_SignUp"></button>
     <div class="signContainer-links">
         <button class="" data-i18n="sign-links"></button>
         <span data-i18n="sign-links-spr"></span>
@@ -29,7 +29,7 @@
     function bind() {
         $('.signUpUnAgreement').on({
             click: function () {
-                commonFunc.popWindow('../html/signModule/userAgreement.html', 'modal-lg');
+                commonFunc.popWindow(FP_UserAgreement, 'modal-lg');
             }
         });
 
@@ -46,6 +46,50 @@
         $('.pop-window-container').on({
             click: function () {
                 event.cancelBubble = true
+            }
+        });
+
+        $('#btn_SignUp').on({
+            click: function () {
+                signUp();
+            }
+        });
+    }
+
+    function signUp() {
+        commonFunc.openPreLoader();
+        var v_USER_NAME = $('#u_name').val();
+        var v_USER_PHONE = $('#u_phone_num').val();
+        var v_USER_PASSWORD = $('#u_psw').val();
+
+        var params = {
+            userName: v_USER_NAME,
+            userPhone: v_USER_PHONE,
+            userPassword: v_USER_PASSWORD
+        };
+
+        $.ajax({
+            type: _AJAX_TYPE,
+            url: BEU_SignUp,
+            data: JSON.stringify(params),
+            dataType: _AJAX_DATA_TYPE,
+            contentType: _AJAX_CONTENT_TYPE,
+            success: function (response) {
+                var modalUrl;
+                if (response.result == _SUCCESS) {
+                    modalUrl = FP_SignUpSuccess
+                } else {
+                    modalUrl = FP_SignUpFail
+                }
+                commonFunc.closePreLoader(function () {
+                    commonFunc.popWindow(modalUrl, 'modal-sm');
+                });
+
+            },
+            error: function () {
+                commonFunc.closePreLoader(function () {
+                    commonFunc.popWindow(FP_SignUpFail, 'modal-sm');
+                });
             }
         });
     }

@@ -1,17 +1,21 @@
-<div style="width: 100%;text-align: center;color: green;">
-    <span class="icon-ok-sign"></span>
-    <span data-i18n="signUp-success"></span>
+<div style="width: 100%;text-align: center;color: red">
+    <span class="icon-remove-sign"></span>
+    <span data-i18n="signUp-fail"></span>
 </div>
-
 <script>
     $(function () {
         commonFunc.loadProperties();
+
+        /*just for try again*/
+        $('#modalWindow .btn-primary').removeAttr('data-dismiss');
+        /*just for try again*/
+
         $('#modalWindow .modal-title').text($.i18n.prop('signUp'));
-        $('#modalWindow .btn-primary').text($.i18n.prop('signUp-goto-signIn'));
+        $('#modalWindow .btn-primary').text($.i18n.prop('try-again'));
         $('#modalWindow .btn-secondary').text($.i18n.prop('go-back'));
         $('#modalWindow .btn-primary').one({
             click: function () {
-                signContainer_changer();
+                signUp();
             }
         });
         $('#modalWindow .btn-secondary').one({});

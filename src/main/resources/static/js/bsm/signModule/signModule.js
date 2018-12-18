@@ -24,7 +24,7 @@ function signContainer_changer() {
             opacity: '0'
         }, 100, function () {
             $('.signContainer').fadeIn();
-            commonFunc.loadModule($('.signContainer-fill'), '../html/signModule/signUp.html', function () {
+            commonFunc.loadModule($('.signContainer-fill'), FP_SignUp, function () {
                 $('.signContainer-fill').animate({
                     height: $('.signContainer-signInContainer').innerHeight() + 'px',
                     opacity: '1'
@@ -38,7 +38,7 @@ function signContainer_changer() {
             opacity: '0'
         }, 100, function () {
             $('.signContainer').fadeIn();
-            commonFunc.loadModule($('.signContainer-fill'), '../html/signModule/signIn.html', function () {
+            commonFunc.loadModule($('.signContainer-fill'), FP_SignIn, function () {
                 $('.signContainer-fill').animate({
                     height: $('.signContainer-signInContainer').innerHeight() + 'px',
                     opacity: '1'

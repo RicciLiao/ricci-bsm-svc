@@ -1,11 +1,11 @@
 <div class="signContainer-signInContainer">
-    <input type="text" data-i18n-input="signIn-user-num" data-i18n-attr="placeholder">
-    <input type="password" data-i18n-input="signIn-user-password" data-i18n-attr="placeholder">
+    <input type="text" data-i18n-input="signIn-user-num" data-i18n-attr="placeholder" id="u_phone_num">
+    <input type="password" data-i18n-input="signIn-user-password" data-i18n-attr="placeholder" id="u_psw">
     <div class="signContainer-links-spb">
         <button class="otp-signIn" data-i18n="signIn-user-otp"></button>
         <button class="fg-psw" data-i18n="signIn-user-fg-psw"></button>
     </div>
-    <button data-i18n="signIn"></button>
+    <button data-i18n="signIn" id="btn_SignIn"></button>
     <div class="signContainer-links">
         <button class="" data-i18n="sign-links"></button>
         <span data-i18n="sign-links-spr"></span>
@@ -18,5 +18,48 @@
 <script>
     $(function () {
         commonFunc.loadProperties();
+
+        $('#btn_SignIn').on({
+            click: function () {
+                signIn();
+            }
+        });
     }(jQuery));
+
+    function signIn() {
+        commonFunc.openPreLoader();
+        var v_USER_PHONE = $('#u_phone_num').val();
+        var v_USER_PASSWORD = $('#u_psw').val();
+
+        var params = {
+            userPhone: v_USER_PHONE,
+            userPassword: v_USER_PASSWORD
+        };
+
+        $.ajax({
+            type: _AJAX_TYPE,
+            url: BEU_SignIn,
+            data: JSON.stringify(params),
+            dataType: _AJAX_DATA_TYPE,
+            contentType: _AJAX_CONTENT_TYPE,
+            success: function (response) {
+                console.log(response);
+                /*var modalUrl;
+                if (response.result == _SUCCESS) {
+                    modalUrl = FP_SignUpSuccess
+                } else {
+                    modalUrl = FP_SignUpFail
+                }
+                commonFunc.closePreLoader(function () {
+                    commonFunc.popWindow(modalUrl, 'modal-sm');
+                });*/
+
+            },
+            error: function () {
+                /*commonFunc.closePreLoader(function () {
+                    commonFunc.popWindow(FP_SignUpFail, 'modal-sm');
+                });*/
+            }
+        });
+    }
 </script>

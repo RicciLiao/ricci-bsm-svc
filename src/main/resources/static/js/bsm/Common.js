@@ -53,17 +53,26 @@
                     break;
             }
         }*/
-    }
+    };
 
     commonFunc.openPreLoader = function () {
         $('#modalLoader').modal({
             backdrop: false,
             keyboard: false
         });
-    }
+    };
 
-    commonFunc.closePreLoader=function () {
-        $('#modalLoader').modal('dispose');
-    }
+    commonFunc.closePreLoader = function (callback) {
+        $('#modalLoader').one('hidden.bs.modal', callback);
+        $('#modalLoader').modal('hide');
+    };
 
-}(commonFunc = {}))
+    commonFunc.isNullOrSpace = function (target) {
+        if (target == null || target.toString().trim() == "") {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+}(commonFunc = {}));
