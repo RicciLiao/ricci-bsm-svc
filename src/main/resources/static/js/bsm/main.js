@@ -13,7 +13,8 @@ function init() {
             $('#modalWindow .btn-secondary').empty();
             $('#modalWindow .btn-primary').attr('data-dismiss', 'modal');
             $('#modalWindow .btn-secondary').attr('data-dismiss', 'modal');
-
+            $('#modalWindow .btn-primary').off();
+            $('#modalWindow .btn-secondary').off();
         }
     })
 }

@@ -24,7 +24,7 @@ public class Constants {
     public static final String USER_EMAIL_REGEX = "^(([0-9a-zA-Z]+)|([0-9a-zA-Z]+[_.0-9a-zA-Z-]*[0-9a-zA-Z]+))@([a-zA-Z0-9-]+[.])+([a-zA-Z]{2}|net|NET|com|COM|gov|GOV|mil|MIL|org|ORG|edu|EDU|int|INT)$";
     public static final String USER_PHONE_REGEX = "^(13|14|15|18)[0-9]{9}$";
     public static final String USER_NAME_REGEX = "[A-Za-z0-9_+\\u4e00-\\u9fa5]+$";
-    public static final String NUMBER_REGEX = "^[0-9]+$";
+    public static final String NUMBER_REGEX = "^(\\-?)\\d+(\\.\\d+)?$";
 
     public static final Integer MIN_USER_NAME_LENGTH = 2;
     public static final Integer MAX_USER_NAME_LENGTH = 11;
@@ -72,5 +72,14 @@ public class Constants {
     public static final String CLASS_NAME = "className";
     public static final String CLASS_DESC = "classDesc";
     public static final String ITEM_CLASSES = "itemClasses";
+
+    public static final Integer SP_ERROR = -1;
+    public static final Integer SP_PHONE_EXIST = -2;
+    public static final Integer SP_NAME_EXIST = -3;
+    public static final Integer SP_NAME_PHONE_BOTH_EXIST = -5;
+
+    public static final String SYS_INFO = "sysInfo";
+
+    public static final String AJAX_COMMON_ERROR = "errorInfo";
 
 }

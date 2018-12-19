@@ -8,8 +8,10 @@ import com.ricciliao.bsm.pojo.UserInfoPo;
 import com.ricciliao.bsm.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,16 +23,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 
     @Override
-    public Integer createUser(UserInfoPo poFromCon) {
+    public Map createUser(UserInfoPo poFromCon) {
+        String strMD5 = null;
         String strGuid = null;
         String strPath = null;
-        String strMD5 = null;
+        Integer intSpResult = null;
         Map<String, Object> mapToSP = null;
-        Integer result = null;
+        Map<String, Object> mapForErr = null;
+        Map<String, Object> mapToCon = null;
 
         try {
             strGuid = Common.generateGUID();
             strPath = Constants.SERVER_PATH + strGuid;
+            mapToCon = new HashMap<String, Object>();
             if (Common.createItem(strPath)) {
                 strMD5 = MD5Util.Encryption(poFromCon.getUserPassword());
                 mapToSP = new HashMap<String, Object>();
@@ -41,32 +46,64 @@ public class UserInfoServiceImpl implements UserInfoService {
                 mapToSP.put("inUserEmail", poFromCon.getUserEmail());
                 mapToSP.put("inUserPhone", poFromCon.getUserPhone());
                 userInfoMapper.createUser(mapToSP);
-                result = Common.convertToInteger(mapToSP.get("outResult"));
+                intSpResult = Common.convertToInteger(mapToSP.get("outResult"));
+
+                if (intSpResult > 0) {
+                    mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
+                } else {
+                    mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
+                    mapForErr = new HashMap<String, Object>();
+                    if (Common.compareIntergers(intSpResult, Constants.SP_NAME_EXIST)) {
+                        mapForErr.put(Constants.NAME_INFO, Constants.EXISTED);
+                    } else if (Common.compareIntergers(intSpResult, Constants.SP_PHONE_EXIST)) {
+                        mapForErr.put(Constants.PHONE_INFO, Constants.EXISTED);
+                    } else if (Common.compareIntergers(intSpResult, Constants.SP_NAME_PHONE_BOTH_EXIST)) {
+                        mapForErr.put(Constants.NAME_INFO, Constants.EXISTED);
+                        mapForErr.put(Constants.PHONE_INFO, Constants.EXISTED);
+                    } else if (Common.compareIntergers(intSpResult, Constants.SP_ERROR)) {
+                        mapForErr.put(Constants.SYS_INFO, Constants.ERROR);
+                    }
+
+                    mapToCon.put(Constants.AJAX_COMMON_ERROR, mapForErr);
+                }
+            } else {
+                mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            return result;
+            return mapToCon;
         }
 
     }
 
     @Override
-    public UserInfoPo loginUser(UserInfoPo poFromCon) {
+    public Map loginUser(UserInfoPo poFromCon) {
         String strMD5 = null;
         UserInfoPo poFromDB = null;
         Map<String, Object> mapToSQL = null;
+        Map<String, Object> mapToCon = null;
 
         try {
+            mapToCon = new HashMap<String, Object>();
             strMD5 = MD5Util.Encryption(poFromCon.getUserPassword());
             mapToSQL = new HashMap<String, Object>();
             mapToSQL.put("userPhone", poFromCon.getUserPhone());
             mapToSQL.put("userPassword", strMD5);
             poFromDB = userInfoMapper.loginUser(mapToSQL);
-            System.out.println(poFromDB.getId());
+            if (poFromDB != null && poFromDB.getId() != 0) {
+                mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
+                RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+                HttpServletRequest request = (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
+                mapToCon.put(request.getSession().getId(), poFromDB);
+                request.getSession().setAttribute("userInfo", poFromDB);
+                System.out.println(request.getSession().getId());
+            } else {
+                mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return poFromDB;
+        return mapToCon;
     }
 }

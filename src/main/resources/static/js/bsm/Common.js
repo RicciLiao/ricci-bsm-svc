@@ -1,11 +1,12 @@
 (function (commonFunc) {
 
     commonFunc.popWindow = function (url, size) {
-        commonFunc.loadModule($('.modal-body'), url);
         if (size != null) {
             $('.modal-dialog').addClass(size);
         }
-        $('#modalWindow').modal();
+        commonFunc.loadModule($('.modal-body'), url, function () {
+            $('#modalWindow').modal();
+        });
     };
 
 

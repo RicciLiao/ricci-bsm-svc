@@ -27,6 +27,10 @@
     overflow: hidden;
 }
 
+.signContainer > .signContainer-fill > .signContainer-signInContainer > signUp-infoContainer {
+    width: 100%;
+}
+
 .signContainer > .signContainer-fill > .signContainer-signInContainer > button {
     display: block;
     width: 100%;
@@ -42,17 +46,52 @@
 }
 
 .signContainer > .signContainer-fill > .signContainer-signInContainer > input {
-    margin: 20px auto;
+    margin: 5px 0 0 0;
     display: block;
     width: 100%;
     height: 40px;
     border-bottom: 1px gainsboro solid;
 }
 
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .alertContainer {
+    height: 23px;
+    width: 100%;
+}
+
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .alertContainer > .alert {
+    width: 100%;
+    font-size: 14px;
+    padding: 0 0 0 0.7rem;
+    margin-bottom: 1px;
+    display: none;
+}
+
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .alertContainer > .alert > .close {
+    padding: 3px;
+    font-size: 14px;
+}
+
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .signContainer-links-spb > .alertContainer {
+    width: 70%;
+}
+
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .signContainer-links-spb > .alertContainer > .alert {
+    width: 100%;
+    font-size: 14px;
+    padding: 0 0 0 0.5rem;
+    margin-bottom: 1px;
+    display: none;
+}
+
+.signContainer > .signContainer-fill > .signContainer-signInContainer > .signContainer-links-spb > .alertContainer > .alert > .close {
+    padding: 3px;
+    font-size: 14px;
+}
+
 .signContainer > .signContainer-fill > .signContainer-signInContainer > .signUp-user-otp {
     display: flex;
     justify-content: space-between;
-    margin: 20px auto;
+    margin: 5px 0 0 0;
     width: 100%;
     height: 40px;
     border-bottom: 1px gainsboro solid;
@@ -81,6 +120,7 @@
     justify-content: space-between;
     width: 100%;
     margin-top: 10px;
+    height: 23px;
 }
 
 .signContainer > .signContainer-fill > .signContainer-signInContainer > .signContainer-links {

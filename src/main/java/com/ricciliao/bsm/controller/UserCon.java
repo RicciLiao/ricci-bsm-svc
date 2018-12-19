@@ -26,15 +26,10 @@ public class UserCon {
     @PostMapping("/signUp")
     @ResponseBody
     public String signUp(@RequestBody UserInfoPo userInfoPo) {
-        String serResult = null;
         String ajaxResult = null;
-        Map<String, String> mapResult = new HashMap<String, String>();
-        mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
+        Map<String, Object> mapResult = null;
         try {
-            serResult = Common.convertToString(userInfoService.createUser(userInfoPo));
-            if (serResult.matches(Constants.NUMBER_REGEX)) {
-                mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
-            }
+            mapResult = userInfoService.createUser(userInfoPo);
             ajaxResult = Common.mapToJson(mapResult);
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,18 +42,12 @@ public class UserCon {
     @ResponseBody
     public String signIn(@RequestBody UserInfoPo userInfoPo) {
         String ajaxResult = null;
-        UserInfoPo poFromSer = null;
-        Map<String, String> mapResult = new HashMap<String, String>();
-        mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
+        Map<String, Object> mapResult = null;
         try {
-            poFromSer = userInfoService.loginUser(userInfoPo);
-            if (poFromSer != null
-                    && poFromSer.getId() != null
-                    && poFromSer.getId().toString().matches(Constants.NUMBER_REGEX)) {
-                mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
-            }
+            mapResult = userInfoService.loginUser(userInfoPo);
             ajaxResult = Common.mapToJson(mapResult);
         } catch (Exception e) {
+            mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
             e.printStackTrace();
         } finally {
             return ajaxResult;

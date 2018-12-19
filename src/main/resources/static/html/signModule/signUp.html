@@ -1,16 +1,69 @@
 <div class="signContainer-signInContainer" id="signContainer-signUpContainer">
+
     <input type="text" data-i18n-input="signUp-user-name" data-i18n-attr="placeholder" id="u_name">
+    <div class="alertContainer">
+        <div class="alert alert-danger alert-dismissible" role="alert" id="nameInfo">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="glyphicon glyphicon-hand-up"></span>
+            <strong id="nameInfoMsg"></strong>
+        </div>
+    </div>
+
     <input type="text" data-i18n-input="signUp-user-phone-num" data-i18n-attr="placeholder" id="u_phone_num">
+    <div class="alertContainer">
+        <div class="alert alert-danger alert-dismissible" role="alert" id="phoneInfo">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="glyphicon glyphicon-hand-up"></span>
+            <strong id="phoneInfoMsg"></strong>
+        </div>
+    </div>
+
     <input type="password" data-i18n-input="signUp-user-password" data-i18n-attr="placeholder" id="u_psw">
+    <div class="alertContainer">
+        <div class="alert alert-danger alert-dismissible" role="alert" id="u_psw_err">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="glyphicon glyphicon-hand-up"></span>
+            <strong data-i18n=""></strong>
+        </div>
+    </div>
+
     <div class="signUp-user-otp">
-        <input type="text" data-i18n-input="signUp-otp" data-i18n-attr="placeholder">
+        <input type="text" data-i18n-input="signUp-otp" data-i18n-attr="placeholder" id="u_otp">
         <button data-i18n="signUp-get-otp"></button>
     </div>
+    <div class="alertContainer">
+        <div class="alert alert-danger alert-dismissible" role="alert" id="u_otp_err">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class="glyphicon glyphicon-hand-up"></span>
+            <strong data-i18n="signUp-otp-check-err"></strong>
+        </div>
+    </div>
+
     <div class="signContainer-links-spb">
         <input type="checkbox" class="signUpAgreementCHK">
         <button class="signUpUnAgreement" data-i18n="signUp-agreement"></button>
+        <div class="alertContainer">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span class="glyphicon glyphicon-minus"></span>
+                <strong data-i18n="signUp-user-unagreement"></strong>
+                <span class="glyphicon glyphicon-hand-left"></span>
+            </div>
+        </div>
     </div>
+
     <button data-i18n="signUp" id="btn_SignUp"></button>
+
     <div class="signContainer-links">
         <button class="" data-i18n="sign-links"></button>
         <span data-i18n="sign-links-spr"></span>
@@ -18,6 +71,7 @@
         <span data-i18n="sign-links-spr"></span>
         <button class="" data-i18n="sign-links"></button>
     </div>
+
 </div>
 
 <script>
@@ -77,12 +131,28 @@
             success: function (response) {
                 var modalUrl;
                 if (response.result == _SUCCESS) {
-                    modalUrl = FP_SignUpSuccess
+                    commonFunc.popWindow(FP_SignUpSuccess, 'modal-sm');
                 } else {
-                    modalUrl = FP_SignUpFail
+                    if(response.errorInfo.nameInfo != null){
+                        var nameInfoMsg = $('#nameInfoMsg');
+                        if(response.errorInfo.nameInfo == _EXISTED){
+                            nameInfoMsg.text($.i18n.prop('signUp-name-existed'));
+                        }
+
+                        $('#nameInfo').fadeIn();
+                    }
+
+                    if(response.errorInfo.phoneInfo){
+                        var phoneInfo = $('#phoneInfoMsg');
+                        if(response.errorInfo.nameInfo == _EXISTED){
+                            phoneInfo.text($.i18n.prop('signUp-phone-existed'));
+                        }
+
+                        $('#phoneInfo').fadeIn();
+                    }
                 }
                 commonFunc.closePreLoader(function () {
-                    commonFunc.popWindow(modalUrl, 'modal-sm');
+
                 });
 
             },

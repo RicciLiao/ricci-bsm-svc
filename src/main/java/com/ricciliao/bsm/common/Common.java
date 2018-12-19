@@ -223,7 +223,7 @@ public class Common {
         Date result = null;
         try {
             if (obj != null) {
-                result = (Date)obj;
+                result = (Date) obj;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,11 +232,13 @@ public class Common {
         }
     }
 
-    public static boolean createItem(String path) throws Exception{
+    public static boolean createItem(String path) throws Exception {
         File dir = new File(path);
         return dir.mkdir();
     }
 
-
+    public static boolean compareIntergers(Integer integerA, Integer integerB) {
+        return integerA.intValue() == integerB.intValue();
+    }
 
 }

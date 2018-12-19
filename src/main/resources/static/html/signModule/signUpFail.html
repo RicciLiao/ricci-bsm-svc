@@ -6,16 +6,16 @@
     $(function () {
         commonFunc.loadProperties();
 
-        /*just for try again*/
-        $('#modalWindow .btn-primary').removeAttr('data-dismiss');
-        /*just for try again*/
-
-        $('#modalWindow .modal-title').text($.i18n.prop('signUp'));
+        $('#modalWindow .modal-title').text();
         $('#modalWindow .btn-primary').text($.i18n.prop('try-again'));
         $('#modalWindow .btn-secondary').text($.i18n.prop('go-back'));
         $('#modalWindow .btn-primary').one({
             click: function () {
-                signUp();
+                $('#modalWindow').one({
+                    'hidden.bs.modal': function () {
+                        signUp();
+                    }
+                });
             }
         });
         $('#modalWindow .btn-secondary').one({});
