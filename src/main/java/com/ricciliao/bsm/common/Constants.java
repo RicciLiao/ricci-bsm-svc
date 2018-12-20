@@ -39,6 +39,7 @@ public class Constants {
     public static final String MAX_LENGTH_ERR = "maxLengthERR";
     public static final String EMPTY = "empty";
     public static final String ERROR = "error";
+    public static final String PENDING = "pending";
 
     public static final String SERVER_PATH = "E:\\BSM\\Server\\";
     public static final String SERVER_TEMP_BAK_PATH = "E:\\BSM\\temp\\bak\\";

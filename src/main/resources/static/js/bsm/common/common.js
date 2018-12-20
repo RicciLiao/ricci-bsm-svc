@@ -35,6 +35,22 @@
         });
     };
 
+    commonFunc.replaceI18n = function (target, params) {
+
+        if (arguments.length > 2 && params.constructor !== Array) {
+            params = $.makeArray(arguments).slice(1)
+        }
+        if (params.constructor !== Array) {
+            params = [params]
+        }
+        $.each(params, function (index, param) {
+            target = target.replace(new RegExp("\\{" + index + "\\}", "g"), function () {
+                return param;
+            })
+        });
+        return target;
+    };
+
     commonFunc.loadModule = function (container, module, callBack) {
         container.load(module, callBack);
         /*var xmlHttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -75,5 +91,67 @@
             return false;
         }
     };
+
+    commonFunc.newFormJump = function (url) {
+        var body = document.body,
+            jumpForm = document.createElement("form");
+        jumpForm.setAttribute("action", url);
+        jumpForm.setAttribute("method", "post");
+        jumpForm.setAttribute("style", "display : none");
+        body.appendChild(jumpForm);
+        jumpForm.submit();
+        body.removeChild(jumpForm);
+    };
+
+    commonFunc.getJSON = function () {
+        $.getJSON('constants.json')
+    }
+
+    commonFunc.ws=function () {
+        var websocket = null;
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+            //websocket = new WebSocket("wss://"+document.location.host+"/note_Alpha/websocket");
+            websocket = new WebSocket("ws://"+document.location.host+"/ws");
+        }
+        else {
+            alert('当前浏览器 Not support websocket')
+        }
+
+        //连接发生错误的回调方法
+        websocket.onerror = function () {
+            alert("WebSocket连接发生错误");
+        };
+
+        //连接成功建立的回调方法
+        websocket.onopen = function () {
+            console.log("WebSocket连接成功");
+        }
+
+        //接收到消息的回调方法
+        websocket.onmessage = function (event) {
+            webSocketMsg(event.data);
+        }
+
+        //连接关闭的回调方法
+        websocket.onclose = function () {
+            //console("WebSocket连接关闭");
+        }
+
+        //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = function () {
+            closeWebSocket();
+        }
+
+        /*//将消息显示在网页上
+        function setMessageInnerHTML(innerHTML) {
+            document.getElementById('message').innerHTML += innerHTML + '<br/>';
+        }*/
+
+        //关闭WebSocket连接
+        function closeWebSocket() {
+            websocket.close();
+        }
+    }
 
 }(commonFunc = {}));

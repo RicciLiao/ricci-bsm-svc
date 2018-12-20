@@ -8,10 +8,6 @@ import com.ricciliao.bsm.pojo.UserInfoPo;
 import com.ricciliao.bsm.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +16,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper = null;
-
 
     @Override
     public Map createUser(UserInfoPo poFromCon) {
@@ -83,7 +78,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoPo poFromDB = null;
         Map<String, Object> mapToSQL = null;
         Map<String, Object> mapToCon = null;
-
         try {
             mapToCon = new HashMap<String, Object>();
             strMD5 = MD5Util.Encryption(poFromCon.getUserPassword());
@@ -93,11 +87,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             poFromDB = userInfoMapper.loginUser(mapToSQL);
             if (poFromDB != null && poFromDB.getId() != 0) {
                 mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
-                RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-                HttpServletRequest request = (HttpServletRequest) requestAttributes.resolveReference(RequestAttributes.REFERENCE_REQUEST);
-                mapToCon.put(request.getSession().getId(), poFromDB);
-                request.getSession().setAttribute("userInfo", poFromDB);
-                System.out.println(request.getSession().getId());
+                mapToCon.put(Constants.SUCCESS, poFromDB);
             } else {
                 mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
             }
@@ -106,4 +96,5 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         return mapToCon;
     }
+
 }

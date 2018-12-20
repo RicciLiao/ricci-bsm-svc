@@ -1,11 +1,20 @@
 <div class="signContainer-signInContainer">
+    <div class="alertContainer">
+        <div class="alert alert-dismissible " role="alert" id="signInInfo">
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span class=""></span>
+            <strong data-i18n=""></strong>
+        </div>
+    </div>
     <input type="text" data-i18n-input="signIn-user-num" data-i18n-attr="placeholder" id="u_phone_num">
     <div class="alertContainer">
         <div class="alert alert-danger alert-dismissible" role="alert" id="phoneInfo">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <span class="glyphicon glyphicon-hand-up"></span>
+            <span class=""></span>
             <strong data-i18n=""></strong>
         </div>
     </div>
@@ -15,7 +24,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <span class="glyphicon glyphicon-hand-up"></span>
+            <span class=""></span>
             <strong data-i18n=""></strong>
         </div>
     </div>
@@ -42,6 +51,12 @@
                 signIn();
             }
         });
+
+        $('.signContainer-signInContainer .alertContainer .alert button').on({
+            click: function () {
+                $(this).parent().fadeOut();
+            }
+        });
     }(jQuery));
 
     function signIn() {
@@ -62,16 +77,26 @@
             contentType: _AJAX_CONTENT_TYPE,
             success: function (response) {
                 console.log(response);
-                /*var modalUrl;
+                var signInInfo = $('#signInInfo');
+                var signInInfoIco = signInInfo.children('span');
+                var signInInfoMsg = signInInfo.children('strong');
+                signInInfo.removeClass();
+                signInInfo.addClass('alert');
+                signInInfoIco.removeClass();
+                signInInfoMsg.text('');
                 if (response.result == _SUCCESS) {
-                    modalUrl = FP_SignUpSuccess
+                    signInInfo.addClass('alert-success');
+                    signInInfoIco.addClass('glyphicon glyphicon-ok-circle');
+                    signInInfoMsg.text($.i18n.prop('signIn-success'));
+                    commonFunc.newFormJump(BEU_SignInSuccess);
                 } else {
-                    modalUrl = FP_SignUpFail
+                    signInInfo.addClass('alert-danger');
+                    signInInfoIco.addClass('glyphicon glyphicon-ban-circle');
+                    signInInfoMsg.text($.i18n.prop('signIn-fail'));
                 }
-                commonFunc.closePreLoader(function () {
-                    commonFunc.popWindow(modalUrl, 'modal-sm');
-                });*/
-
+                signInInfo.fadeIn(function () {
+                    commonFunc.closePreLoader();
+                });
             },
             error: function () {
                 /*commonFunc.closePreLoader(function () {

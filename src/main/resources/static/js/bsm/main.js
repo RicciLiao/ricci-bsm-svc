@@ -16,8 +16,14 @@ function init() {
             $('#modalWindow .btn-primary').off();
             $('#modalWindow .btn-secondary').off();
         }
-    })
+    });
 }
+
+function baseInit() {
+    commonFunc.ws();
+    commonFunc.loadProperties();
+}
+
 
 
 
