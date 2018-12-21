@@ -83,4 +83,7 @@ public class Constants {
 
     public static final String AJAX_COMMON_ERROR = "errorInfo";
 
+    public static final String MESSAGE = "message";
+    public static final String URL = "url";
+
 }
