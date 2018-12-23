@@ -85,5 +85,7 @@ public class Constants {
 
     public static final String MESSAGE = "message";
     public static final String URL = "url";
+    public static final String URL_PLUS = "\\+";
+    public static final String URL_PLUS_ESCAPE = "%2B";
 
 }
