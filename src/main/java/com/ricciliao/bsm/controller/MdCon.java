@@ -30,7 +30,7 @@ public class MdCon {
     @ResponseBody
     public String upLoadImg(HttpServletRequest request, HttpServletResponse response) {
         String strImgToB64 = null;
-        String[] mreqType = null;
+        String[] mReqType = null;
         BASE64Encoder base64Encoder = null;
         HttpSession curSession = null;
         UserInfoPo poFromSession = null;
@@ -47,9 +47,9 @@ public class MdCon {
                     MultipartFile fileFromReq = mReq.getFile("editormd-image-file");
                     System.out.println(fileFromReq.getContentType());
 
-                    mreqType = fileFromReq.getContentType().split("/");
+                    mReqType = fileFromReq.getContentType().split("/");
 
-                    if (mreqType[0].equals("image")) {
+                    if (mReqType[0].equals("image")) {
 
                         base64Encoder = new BASE64Encoder();
                         strImgToB64 = base64Encoder.encode(fileFromReq.getBytes());
@@ -61,7 +61,7 @@ public class MdCon {
                         httpurlconnection.setRequestMethod("POST");
                         httpurlconnection.setConnectTimeout(30000);
                         OutputStreamWriter writer = new OutputStreamWriter(httpurlconnection.getOutputStream(), "utf-8");
-                        writer.write("userGuid=" + poFromSession.getUserGuid() + "&imgB64=" + strImgToB64.replaceAll(Constants.URL_PLUS, Constants.URL_PLUS_ESCAPE) + "&imgType=" + mreqType[1]);
+                        writer.write("userGuid=" + poFromSession.getUserGuid() + "&imgB64=" + strImgToB64.replaceAll(Constants.URL_PLUS, Constants.URL_PLUS_ESCAPE) + "&imgType=" + mReqType[1]);
                         writer.flush();
                         writer.close();
 
