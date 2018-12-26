@@ -16,16 +16,71 @@
                 });
             }
         )(jQuery);*/
-        
+
         function indexInit() {
             console.log($('#top-navbar').outerHeight());
             $('#carouselExampleIndicators').animate({
-                marginTop: $('#top-navbar').outerHeight()+'px'
-            }, 600)
+                marginTop: $('#top-navbar').outerHeight() + 'px'
+            }, 600);
+
+            $('.user-logo-container').on({
+                mouseover: function () {
+                    $('.user-logo-container .user-logo img').click();
+                },
+                mouseout: function () {
+                    $('.user-logo-container .user-logo img').click();
+                }
+            });
+
+            $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .dropdown-menu .dropdown-item').on({
+                click: function () {
+                    $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .searchLabel').text(this.innerText);
+                }
+            });
+
+            $('#top-navbar #navbarSupportedContent .navbar-nav .dropdown').on({
+                /*mouseover: function () {
+                    $('#top-navbar #navbarSupportedContent .navbar-nav .dropdown').click();
+                },
+                mouseout: function () {
+                    $('#top-navbar #navbarSupportedContent .navbar-nav .dropdown').click();
+                }*/
+            });
+
         }
-        
+
     </script>
 
+    <style>
+
+        .user-logo-container .user-logo {
+            border: 3px solid gold;
+            width: 60px;
+            height: 60px;
+            position: fixed;
+            bottom: 2.5rem;
+            right: 1rem;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .user-logo-container .dropdown-menu {
+            margin-bottom: 0.5rem;
+        }
+
+        .user-logo img {
+            width: 100%;
+        }
+
+        #top-navbar #navbarSupportedContent .searchCondition .input-group input[type=text] {
+            width: 260px;
+        }
+
+        #top-navbar #navbarSupportedContent .navbar-nav .dropdown a {
+            cursor: pointer;
+        }
+
+
+    </style>
 
 </head>
 <body onload="indexInit()">
@@ -34,12 +89,14 @@
     <a class="navbar-brand" href="#">
         <img width="40px" src="../bsm/pic/svg/logo.svg">
     </a>
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#">Home</a>
@@ -48,11 +105,11 @@
                 <a class="nav-link active" href="#">Link</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Dropdown
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Action</a>
                     <a class="dropdown-item" href="#">Another action</a>
                     <div class="dropdown-divider"></div>
@@ -64,30 +121,43 @@
             </li>
         </ul>
 
-        <div class="btn-group mr-5" onmouseover="">
-            <img height="40px" src="../bsm/pic/svg/logo.svg">
-            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" style="display: none"></button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" type="button">Action</button>
-                <button class="dropdown-item" type="button">Another action</button>
-                <button class="dropdown-item" type="button">Something else here</button>
-            </div>
-        </div>
+        <ul class="navbar-nav mr-5">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
 
-        <div class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0 searchCondition">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary">Action</button>
+                    <button type="button" class="btn btn-primary searchLabel">Action</button>
                     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item">Action</a>
+                        <a class="dropdown-item">Another action</a>
+                        <a class="dropdown-item">Something else here</a>
                         <div role="separator" class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
+                        <a class="dropdown-item">Separated link</a>
                     </div>
                 </div>
                 <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
@@ -95,7 +165,6 @@
         </div>
 
     </div>
-
 </nav>
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -106,7 +175,8 @@
     </ol>
     <div class="carousel-inner" style="height: 450px">
         <div class="carousel-item active" style="height: inherit;background: gray">
-            <img class="d-block" src="../bsm/pic/svg/loading_A.svg" alt="First slide" style="margin: 0 auto;height: inherit">
+            <img class="d-block" src="../bsm/pic/svg/loading_A.svg" alt="First slide"
+                 style="margin: 0 auto;height: inherit">
         </div>
         <!--        <div class="carousel-item" style="height: inherit;background: gray">
                     <img class="d-block w-25" src="../bsm/pic/svg/loading_A.svg" alt="Second slide">
@@ -127,7 +197,9 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2 pt-3 pb-3" style="background: #0c5460"></div>
+        <div class="col-2 pt-3 pb-3" style="background: #0c5460">
+
+        </div>
 
         <div class="col-8">
             <div class="card-deck pt-3 pb-3">
@@ -135,38 +207,63 @@
                     <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text">This card has supporting text below as a natural lead-in to additional
+                            content.</p>
+                        <p class="card-text">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This card has even longer content than the first to show that equal
+                            height action.</p>
+                        <p class="card-text">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </p>
                     </div>
                 </div>
                 <div class="card">
                     <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This card has even longer content than the first to show that equal
+                            height action.</p>
+                        <p class="card-text">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-2 pt-3 pb-3" style="background: #0c5460"></div>
+    </div>
+</div>
+
+<div class="dropup user-logo-container">
+    <div class="img-circle user-logo" class="dropdown-toggle" data-toggle="dropdown">
+        <img src="../bsm/pic/user.jpg" >
+    </div>
+    <div class="dropdown-menu">
+        <button class="dropdown-item" type="button">Action</button>
+        <button class="dropdown-item" type="button">Another action</button>
+        <button class="dropdown-item" type="button">Something else here</button>
     </div>
 </div>
 
