@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ricciliao.bsm.mapper.dao.ItemInfoMapper">
+    <!---->
+    <parameterMap id="createUserInfo" type="java.util.Map">
+        <parameter property="inUserGuid" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="inUserName" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="inUserPassword" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="inUserEmail" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="inUserPhone" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="inUserPath" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="outResult" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+    <select id="createUser" parameterMap="createUserInfo" statementType="CALLABLE">
+        CALL createUser(?, ?, ?, ?, ?, ?, ?);
+    </select>
+</mapper>

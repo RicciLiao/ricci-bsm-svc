@@ -61,6 +61,7 @@ public class UserCon {
                 curSession.setAttribute(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
                 curSession.setAttribute(jSessionId, poFromSer);
                 mapResult.remove(Constants.SUCCESS);
+                curSession.removeAttribute(Constants.AJAX_COMMON_RESULT);
             } else {
                 curSession.setAttribute(Constants.AJAX_COMMON_RESULT, Constants.PENDING);
             }

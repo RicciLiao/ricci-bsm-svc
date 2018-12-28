@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link href="import.html" rel="import" type="text/html"/>
+    <link href="../bsmTemplates/import.html" rel="import" type="text/html"/>
     <script type="text/javascript">
         /*(function ($) {
                 $(window).on("load", function () {
@@ -45,7 +45,9 @@
                 },
                 mouseout: function () {
                     $(this).css('color', '');
-
+                },
+                click: function () {
+                    commonFunc.newFormJump(BEU_CreateBlog);
                 }
             });
             commonFunc.loadProperties();
@@ -259,7 +261,7 @@
 </div>
 
 <div class="dropup user-logo-container">
-    <div class="img-circle user-logo" class="dropdown-toggle" data-toggle="dropdown">
+    <div class="img-circle user-logo dropdown-toggle" data-toggle="dropdown">
         <img src="../bsm/pic/user.jpg">
     </div>
     <div class="dropdown-menu">

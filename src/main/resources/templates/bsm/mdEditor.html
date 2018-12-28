@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!--import CSS-->
+    <link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="../fontAwesome/css/font-awesome.css">
+    <link type="text/css" rel="stylesheet" href="../markdown/css/editormd.css">
+
+    <!--import JavaScript-->
+    <script type="text/javascript" src="../bsm/js/common/contants.js"></script>
+    <script type="text/javascript" src="../bsm/js/common/url.js"></script>
+    <script type="text/javascript" src="../JQuery/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="../JQuery/jquery.i18n.properties-1.0.9.js"></script>
+    <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../bsm/js/common/common.js"></script>
+    <script type="text/javascript" src="../bsm/js/main.js"></script>
+    <script type="text/javascript" src="../markdown/editormd.js"></script>
+
+    <style>
+        #mdEditor {
+            margin: 0;
+            z-index: 400;
+        }
+
+        .editorTitle {
+            overflow: hidden;
+        }
+
+        .input-group .input-group-prepend button, .input-group input {
+            border-radius: 0;
+            border-bottom: 0;
+        }
+
+        .input-group .input-group-prepend button .icon-save {
+            padding-right: 0.4rem;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-10">
+            <div class="input-group editorTitle">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" data-i18n="bsm-blog-title"></button>
+                </div>
+                <input id="mdTitle" type="text" class="form-control" data-i18n-attr="placeholder" data-i18n-input="bsm-blog-title-placeholder"/>
+                <div class="input-group-prepend">
+                    <button type="button" class="btn btn-danger" id="mdEditorSave">
+                        <span class=" icon-save"></span>
+                        <span data-i18n="bsm-save"></span>
+                    </button>
+                </div>
+            </div>
+            <div id="layout" class="editorContainer">
+                <div id="mdEditor">
+                    <textarea></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var editor,
+            editorBorder = 2,
+            editorTitle = $('.editorTitle').height(),
+            editorHeight = $(window).height() - editorBorder - editorTitle;
+        console.log(editorHeight);
+        editor = editormd("mdEditor", {
+            placeholder: '本编辑器支持Markdown编辑，左边编写，右边预览',
+            width: "100%",
+            height: editorHeight,
+            syncScrolling: "single",
+            path: "../markdown/lib/",
+            emoji: true,
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: BEU_Md_UpLoadImg
+        });
+
+        $('#mdEditorSave').on({
+            click: function () {
+                mdEditorSave(editor);
+            }
+        });
+
+        commonFunc.loadProperties();
+    });
+
+    function mdEditorSave(editor) {
+        var mdContent = editor.getMarkdown(),
+            mdTitle = $('.editorTitle #mdTitle').val(),
+            params = {
+                mdTitle: mdTitle,
+                mdContent: mdContent
+            };
+
+        $.ajax({
+            type: _AJAX_TYPE,
+            url: BEU_Md_Save,
+            data: JSON.stringify(params),
+            dataType: _AJAX_DATA_TYPE,
+            contentType: _AJAX_CONTENT_TYPE,
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
