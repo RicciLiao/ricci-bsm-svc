@@ -4,56 +4,6 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="../bsmTemplates/import.html" rel="import" type="text/html"/>
-    <script type="text/javascript">
-        /*(function ($) {
-                $(window).on("load", function () {
-                    console.log(document.body.clientHeight);
-                    $('#main').mCustomScrollbar({
-                        axis: "y",
-                        theme: "dark",
-                        mouseWheelPixels: "200",
-                    });
-                });
-            }
-        )(jQuery);*/
-
-        function indexInit() {
-
-
-            $('#carouselExampleIndicators').animate({
-                marginTop: $('#top-navbar').outerHeight() + 'px'
-            }, 600);
-
-            $('.user-logo-container').on({
-                mouseover: function () {
-                    $(this || '.user-logo img').click();
-                },
-                mouseout: function () {
-                    $(this || '.user-logo img').click();
-                }
-            });
-
-            $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .dropdown-menu .dropdown-item').on({
-                click: function () {
-                    $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .searchLabel').text(this.innerText);
-                }
-            });
-
-            $('#top-navbar #navbarSupportedContent .nav-left-links .bsm-create-blog').on({
-                mouseover: function () {
-                    $(this).css('color', 'red');
-                },
-                mouseout: function () {
-                    $(this).css('color', '');
-                },
-                click: function () {
-                    commonFunc.newFormJump(BEU_CreateBlog);
-                }
-            });
-            commonFunc.loadProperties();
-        }
-
-    </script>
 
     <style>
 
@@ -270,6 +220,57 @@
         <button class="dropdown-item" type="button">Something else here</button>
     </div>
 </div>
+
+<script type="text/javascript">
+    /*(function ($) {
+            $(window).on("load", function () {
+                console.log(document.body.clientHeight);
+                $('#main').mCustomScrollbar({
+                    axis: "y",
+                    theme: "dark",
+                    mouseWheelPixels: "200",
+                });
+            });
+        }
+    )(jQuery);*/
+
+    function indexInit() {
+
+
+        $('#carouselExampleIndicators').animate({
+            marginTop: $('#top-navbar').outerHeight() + 'px'
+        }, 600);
+
+        $('.user-logo-container').on({
+            mouseover: function () {
+                $(this || '.user-logo img').click();
+            },
+            mouseout: function () {
+                $(this || '.user-logo img').click();
+            }
+        });
+
+        $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .dropdown-menu .dropdown-item').on({
+            click: function () {
+                $('#top-navbar #navbarSupportedContent .searchCondition .input-group .input-group-prepend .searchLabel').text(this.innerText);
+            }
+        });
+
+        $('#top-navbar #navbarSupportedContent .nav-left-links .bsm-create-blog').on({
+            mouseover: function () {
+                $(this).css('color', 'red');
+            },
+            mouseout: function () {
+                $(this).css('color', '');
+            },
+            click: function () {
+                commonFunc.newFormJump(BEU_CreateBlog);
+            }
+        });
+        commonFunc.loadProperties();
+    }
+
+</script>
 
 </body>
 </html>
