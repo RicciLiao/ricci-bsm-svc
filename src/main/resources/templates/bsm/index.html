@@ -70,7 +70,8 @@
 
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#" th:text="#{userAgreement}" onclick="demo()"></a>
+                <!--<a class="nav-link" href="#">Home</a>-->
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#">Link</a>
@@ -221,21 +222,16 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    /*(function ($) {
-            $(window).on("load", function () {
-                console.log(document.body.clientHeight);
-                $('#main').mCustomScrollbar({
-                    axis: "y",
-                    theme: "dark",
-                    mouseWheelPixels: "200",
-                });
-            });
-        }
-    )(jQuery);*/
+<script th:inline="javascript">
+    function demo() {
+        var username = [[#{userAgreement}]];
+        console.log(username);
+    }
+</script>
+
+<script>
 
     function indexInit() {
-
 
         $('#carouselExampleIndicators').animate({
             marginTop: $('#top-navbar').outerHeight() + 'px'

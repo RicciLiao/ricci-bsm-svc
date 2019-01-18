@@ -53,23 +53,6 @@
 
     commonFunc.loadModule = function (container, module, callBack) {
         container.load(module, callBack);
-        /*var xmlHttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-        xmlHttp.open("GET", module, false);
-        xmlHttp.send();
-        if (xmlHttp.readyState == 4) {
-            switch (xmlHttp.status) {
-                case 200:
-                    if (callBack == null) {
-                        container.load(module);
-                    } else {
-                        container.load(module, callBack);
-                    }
-                    break;
-                default:
-                    container.load('../html/errorModule/loseModule.html');
-                    break;
-            }
-        }*/
     };
 
     commonFunc.openPreLoader = function () {
