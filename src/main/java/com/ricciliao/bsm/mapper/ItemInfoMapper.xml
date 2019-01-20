@@ -3,17 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ricciliao.bsm.mapper.dao.ItemInfoMapper">
-    <!---->
-    <parameterMap id="createUserInfo" type="java.util.Map">
-        <parameter property="inUserGuid" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="inUserName" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="inUserPassword" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="inUserEmail" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="inUserPhone" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="inUserPath" mode="IN" jdbcType="VARCHAR"/>
-        <parameter property="outResult" mode="OUT" jdbcType="INTEGER"/>
-    </parameterMap>
-    <select id="createUser" parameterMap="createUserInfo" statementType="CALLABLE">
-        CALL createUser(?, ?, ?, ?, ?, ?, ?);
-    </select>
+    <!--create item -->
+    <insert id="createItem" parameterType="map">
+        insert into item_info(ITEM_GUID, USER_ID, ITEM_NAME, ITEM_PATH, ITEM_TYPE, ITEM_PASSWORD, ITEM_CREATE_DATE,
+        ITEM_LAST_MODIFIED_DATE, ITEM_ANNOTATION, STATUS)
+        VALUE(#{itemGuid}, #{userId}, #{itemName}, #{itemPath}, #{itemType}, #{itemPassword},
+        str_to_date(#{itemCreateDate}, '%Y-%m-%d %T'),
+        str_to_date(#{itemLastModifiedDate}, '%Y-%m-%d %T'), #{itemAnnotation}, #{status})
+        <selectKey resultType="java.lang.Integer" keyProperty="id">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+
+    <!--update item -->
+    <!--    <select id="createUser" parameterMap="createUserInfo" statementType="CALLABLE">
+            CALL createUser(?, ?, ?, ?, ?, ?, ?);
+        </select>-->
 </mapper>
