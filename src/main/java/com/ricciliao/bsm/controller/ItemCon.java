@@ -1,6 +1,9 @@
 package com.ricciliao.bsm.controller;
 
 
+import com.ricciliao.bsm.pojo.ItemInfoPo;
+import com.ricciliao.bsm.pojo.UserInfoPo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +18,26 @@ import java.util.Map;
 @RequestMapping("/itemAction")
 public class ItemCon {
 
+    @Autowired
+    private HttpServletRequest g_request;
+
     @PostMapping("/save")
     @ResponseBody
     public String save(@RequestBody Map<String, String> params, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        session.getId();
-        System.out.println(params);
+        UserInfoPo userInfoPo = null;
+        HttpSession curSession = null;
+        ItemInfoPo itemInfoPoToSer = null;
+
+        try {
+            curSession = request.getSession();
+            userInfoPo = (UserInfoPo)curSession.getAttribute(curSession.getId());
+
+            itemInfoPoToSer = new ItemInfoPo();
+            itemInfoPoToSer.setItemName(params.get("mdTitle"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
         return "";
     }
 }

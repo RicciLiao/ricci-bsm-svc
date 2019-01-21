@@ -15,12 +15,12 @@ public class ItemInfoServiceImpl implements ItemInfoService {
     private ItemInfoMapper itemInfoMapper = null;
 
     @Override
-    public Map save(ItemInfoPo itemInfoPo) {
+    public Map save(ItemInfoPo itemInfoPo, String itemContent, String userPath) {
         Map<String, Object> mapToSQL = new HashMap<String, Object>();
         if(Common.isNullOrSpace(itemInfoPo.getItemGuid())){
             String strGUID = Common.generateGUID();
 
-            //mapToSQL.put();
+            mapToSQL.put("itemGuid", strGUID);
             itemInfoMapper.createItem(mapToSQL);
         } else {
 
