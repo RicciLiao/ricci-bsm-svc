@@ -19,7 +19,7 @@
     </select>
 
     <!--signIn-->
-    <select id="loginUser" parameterType="map" resultType="userInfo">
+    <select id="loginUser" parameterType="java.util.Map" resultType="userInfo">
         select * from user_info where USER_PHONE=#{userPhone} and USER_PASSWORD=#{userPassword}
     </select>
 </mapper>

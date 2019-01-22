@@ -26,6 +26,8 @@ public class ItemInfoPo {
     private String itemAnnotation;
     private Integer status;
 
+    private String itemContent;
+
     public Integer getId() {
         return id;
     }
@@ -112,6 +114,15 @@ public class ItemInfoPo {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public String getItemContent() {
+        return itemContent;
+    }
+
+    public void setItemContent(String itemContent) {
+        this.itemContent = itemContent;
     }
 
 }

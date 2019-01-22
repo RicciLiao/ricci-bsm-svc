@@ -2,7 +2,7 @@ package com.ricciliao.bsm.common;
 
 import net.sf.json.JSONObject;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -159,58 +159,13 @@ public class Common {
         }
     }
 
-    public static String dateToString(Date date) {
+    public static String dateToString(Date date, String dateFormat) {
         String result = "";
         SimpleDateFormat simpleDateFormat = null;
         try {
             if (date != null) {
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd E HH:mm");
+                simpleDateFormat = new SimpleDateFormat(dateFormat);
                 result = simpleDateFormat.format(date);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return result;
-        }
-    }
-
-    public static String dateToString2(Date date) {
-        String result = "";
-        SimpleDateFormat simpleDateFormat = null;
-        try {
-            if (date != null) {
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                result = simpleDateFormat.format(date);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return result;
-        }
-    }
-
-    public static String dateToString3(Date date) {
-        String result = "";
-        SimpleDateFormat simpleDateFormat = null;
-        try {
-            if (date != null) {
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                result = simpleDateFormat.format(date);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return result;
-        }
-    }
-
-    public static Date stringToDate(String strDate) {
-        Date result = null;
-        SimpleDateFormat simpleDateFormat = null;
-        try {
-            if (!isNullOrSpace(strDate)) {
-                simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                result = simpleDateFormat.parse(strDate);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,13 +187,50 @@ public class Common {
         }
     }
 
-    public static boolean createItem(String path) throws Exception {
-        File dir = new File(path);
-        return dir.mkdir();
+    public static boolean writeItem(File file, String fileContent) {
+        boolean result = true;
+        String strEnContent = "";
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            strEnContent = AESUtil.AESEncode(Constants.SERVER_AES_KEY_DEF, fileContent);
+            fos.write(strEnContent.getBytes());
+        } catch (Exception e) {
+            result = false;
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public static boolean updateItem(String filePath, String txtContent) throws Exception {
+        File file = new File(filePath);
+
+        return file.mkdir();
+    }
+
+    public static String readItem(File file) {
+        String c;
+        String strDnContent = null;
+        StringBuilder itemContent = new StringBuilder();
+        try (InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "utf-8")) {
+            BufferedReader rf = new BufferedReader(isr);
+            while ((c = rf.readLine()) != null) {
+                itemContent.append(c);
+            }
+            strDnContent = AESUtil.AESDncode(Constants.SERVER_AES_KEY_DEF, itemContent.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return strDnContent;
+        }
     }
 
     public static boolean compareIntergers(Integer integerA, Integer integerB) {
         return integerA.intValue() == integerB.intValue();
+    }
+
+    public static boolean createUserSpace(String userPath) {
+        File dir = new File(userPath);
+        return dir.mkdir();
     }
 
 }

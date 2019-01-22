@@ -3,6 +3,7 @@ package com.ricciliao.bsm.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,6 +28,13 @@ public class PageCon {
     public ModelAndView mdEditorPage() {
         ModelAndView mv = new ModelAndView();
         mv.setViewName("bsm/mdEditor");
+        return mv;
+    }
+
+    @RequestMapping("/bsm/mdEditor/{itemGuid}")
+    public ModelAndView mdEditorPageByItemGuid(@PathVariable String itemGuid) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/itemAction/mdEditor/" + itemGuid);
         return mv;
     }
 

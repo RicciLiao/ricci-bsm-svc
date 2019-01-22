@@ -1,5 +1,6 @@
 package com.ricciliao.bsm.interceptor;
 
+import com.ricciliao.bsm.common.Constants;
 import com.ricciliao.bsm.pojo.UserInfoPo;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -7,19 +8,19 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ConcurrentModificationException;
 
 public class PageConInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         boolean result = false;
-        HttpSession session = null;
         Object objSession = null;
-        UserInfoPo poFromSession = null;
+        HttpSession session = null;
         try {
             session = request.getSession();
 
-            objSession = session.getAttribute(session.getId());
+            objSession = session.getAttribute(Constants.USER_INFO_PO);
             if(objSession != null && objSession instanceof UserInfoPo){
                 result = true;
             } else {

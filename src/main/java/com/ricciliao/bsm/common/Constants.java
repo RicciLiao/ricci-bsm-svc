@@ -88,4 +88,10 @@ public class Constants {
     public static final String URL_PLUS = "\\+";
     public static final String URL_PLUS_ESCAPE = "%2B";
 
+    public static final String USER_INFO_PO = "userInfoPo";
+    public static final String  YYYY_MM_DD_E_HH_MM = "yyyy-MM-dd E HH:mm";
+    public static final String  YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+    public static final String  YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String  YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
+
 }

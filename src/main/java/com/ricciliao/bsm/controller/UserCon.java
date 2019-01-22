@@ -44,13 +44,13 @@ public class UserCon {
     @ResponseBody
     public String signIn(@RequestBody UserInfoPo userInfoPo) {
         String ajaxResult = null;
-        String jSessionId = null;
+        //String jSessionId = null;
         UserInfoPo poFromSer = null;
         HttpSession curSession = null;
         Map<String, Object> mapResult = null;
         try {
             curSession = g_request.getSession();
-            jSessionId = curSession.getId();
+            //jSessionId = curSession.getId();
 
             curSession.setAttribute(Constants.AJAX_COMMON_RESULT, Constants.PENDING);
 
@@ -59,7 +59,8 @@ public class UserCon {
             if (mapResult.get(Constants.AJAX_COMMON_RESULT).equals(Constants.SUCCESS)) {
                 poFromSer = (UserInfoPo) mapResult.get(Constants.SUCCESS);
                 curSession.setAttribute(Constants.AJAX_COMMON_RESULT, Constants.SUCCESS);
-                curSession.setAttribute(jSessionId, poFromSer);
+                //curSession.setAttribute(jSessionId, poFromSer);
+                curSession.setAttribute(Constants.USER_INFO_PO, poFromSer);
                 mapResult.remove(Constants.SUCCESS);
                 curSession.removeAttribute(Constants.AJAX_COMMON_RESULT);
             } else {

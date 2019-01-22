@@ -31,7 +31,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             strGuid = Common.generateGUID();
             strPath = Constants.SERVER_PATH + strGuid;
             mapToCon = new HashMap<String, Object>();
-            if (Common.createItem(strPath)) {
+            if (Common.createUserSpace(strPath)) {
                 strMD5 = MD5Util.Encryption(poFromCon.getUserPassword());
                 mapToSP = new HashMap<String, Object>();
                 mapToSP.put("inUserGuid", strGuid);

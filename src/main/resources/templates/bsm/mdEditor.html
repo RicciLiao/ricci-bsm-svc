@@ -52,7 +52,8 @@
                 <div class="input-group-prepend">
                     <button type="button" class="btn btn-primary" data-i18n="bsm-blog-title"></button>
                 </div>
-                <input id="mdTitle" type="text" class="form-control" data-i18n-attr="placeholder" data-i18n-input="bsm-blog-title-placeholder"/>
+                <input id="mdTitle" type="text" class="form-control" data-i18n-attr="placeholder"
+                       data-i18n-input="bsm-blog-title-placeholder"/>
                 <div class="input-group-prepend">
                     <button type="button" class="btn btn-danger" id="mdEditorSave">
                         <span class=" icon-save"></span>
@@ -95,15 +96,26 @@
             }
         });
 
+        var mdTitle = [[${mdTitle}]] || '',
+            mdContent = [[${mdContent}]] || '',
+            mdGuid = [[${mdGuid}]] || '';
+
+        if(mdGuid.length !== 0){
+            editor.setMarkdown(mdContent);
+            $('.editorTitle #mdTitle').val(mdTitle);
+        }
+
         commonFunc.loadProperties();
     });
 
     function mdEditorSave(editor) {
         var mdContent = editor.getMarkdown(),
             mdTitle = $('.editorTitle #mdTitle').val(),
+            mdGuid = [[${mdGuid}]] || '',
             params = {
                 mdTitle: mdTitle,
-                mdContent: mdContent
+                mdContent: mdContent,
+                mdGuid: mdGuid
             };
 
         $.ajax({

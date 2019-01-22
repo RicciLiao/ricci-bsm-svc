@@ -1,17 +1,20 @@
 package com.ricciliao.bsm.controller;
 
 
+import com.ricciliao.bsm.common.Common;
+import com.ricciliao.bsm.common.Constants;
 import com.ricciliao.bsm.pojo.ItemInfoPo;
 import com.ricciliao.bsm.pojo.UserInfoPo;
+import com.ricciliao.bsm.service.ItemInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -21,23 +24,54 @@ public class ItemCon {
     @Autowired
     private HttpServletRequest g_request;
 
+    @Autowired
+    private ItemInfoService itemInfoService = null;
+
     @PostMapping("/save")
     @ResponseBody
-    public String save(@RequestBody Map<String, String> params, HttpServletRequest request){
+    public String save(@RequestBody Map<String, String> params) {
+        String ajaxResult = null;
         UserInfoPo userInfoPo = null;
         HttpSession curSession = null;
         ItemInfoPo itemInfoPoToSer = null;
+        Map<String, Object> mapResult = null;
 
         try {
-            curSession = request.getSession();
-            userInfoPo = (UserInfoPo)curSession.getAttribute(curSession.getId());
-
+            curSession = g_request.getSession();
+            userInfoPo = (UserInfoPo) curSession.getAttribute(Constants.USER_INFO_PO);
             itemInfoPoToSer = new ItemInfoPo();
             itemInfoPoToSer.setItemName(params.get("mdTitle"));
+            itemInfoPoToSer.setUserId(userInfoPo.getId());
+            if (!Common.isNullOrSpace(params.get("mdGuid"))) {
+                itemInfoPoToSer.setItemGuid(params.get("mdGuid"));
+            }
+
+            mapResult = itemInfoService.save(itemInfoPoToSer, params.get("mdContent"), userInfoPo.getUserPath());
+            ajaxResult = Common.mapToJson(mapResult);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            return ajaxResult;
         }
-        return "";
+    }
+
+    @RequestMapping("/mdEditor/{itemGuid}")
+    public ModelAndView getItemByGuid(@PathVariable String itemGuid, RedirectAttributes ras) {
+        ItemInfoPo itemInfoPo = null;
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/bsm/mdEditor");
+
+        try {
+            if (!Common.isNullOrSpace(itemGuid)) {
+                itemInfoPo = itemInfoService.getItemByGuid(itemGuid);
+                ras.addFlashAttribute("mdTitle", itemInfoPo.getItemName());
+                ras.addFlashAttribute("mdContent", itemInfoPo.getItemContent());
+                ras.addFlashAttribute("mdGuid", itemInfoPo.getItemGuid());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return modelAndView;
+        }
     }
 }
