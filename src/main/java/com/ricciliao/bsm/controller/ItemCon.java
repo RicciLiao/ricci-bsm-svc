@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class ItemCon {
             itemInfoPoToSer.setUserId(userInfoPo.getId());
             if (!Common.isNullOrSpace(params.get("mdGuid"))) {
                 itemInfoPoToSer.setItemGuid(params.get("mdGuid"));
+                itemInfoPoToSer.setItemPath(userInfoPo.getUserPath() + File.separator + params.get("mdGuid"));
             }
 
             mapResult = itemInfoService.save(itemInfoPoToSer, params.get("mdContent"), userInfoPo.getUserPath());
@@ -64,9 +66,11 @@ public class ItemCon {
         try {
             if (!Common.isNullOrSpace(itemGuid)) {
                 itemInfoPo = itemInfoService.getItemByGuid(itemGuid);
-                ras.addFlashAttribute("mdTitle", itemInfoPo.getItemName());
-                ras.addFlashAttribute("mdContent", itemInfoPo.getItemContent());
-                ras.addFlashAttribute("mdGuid", itemInfoPo.getItemGuid());
+                if(itemInfoPo != null){
+                    ras.addFlashAttribute("mdTitle", itemInfoPo.getItemName());
+                    ras.addFlashAttribute("mdContent", itemInfoPo.getItemContent());
+                    ras.addFlashAttribute("mdGuid", itemInfoPo.getItemGuid());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

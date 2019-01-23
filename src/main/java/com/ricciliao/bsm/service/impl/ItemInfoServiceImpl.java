@@ -40,7 +40,7 @@ public class ItemInfoServiceImpl implements ItemInfoService {
                 mapToCon.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
             }
         } else {
-            File tarFile = new File(itemInfoPo.getItemPath() + File.separator + itemInfoPo.getItemGuid());
+            File tarFile = new File(itemInfoPo.getItemPath());
             File bakFile = new File(Constants.SERVER_TEMP_BAK_PATH + itemInfoPo.getItemGuid());
             if (Common.copyItem(tarFile, bakFile)) {
                 if (Common.writeItem(tarFile, itemContent)) {
@@ -61,9 +61,11 @@ public class ItemInfoServiceImpl implements ItemInfoService {
     @Override
     public ItemInfoPo getItemByGuid(String itemGuid) {
         ItemInfoPo itemInfoPo = itemInfoMapper.getItemByGuid(itemGuid);
-        File file = new File(itemInfoPo.getItemPath());
-        String itemContent = Common.readItem(file);
-        itemInfoPo.setItemContent(itemContent);
+        if(itemInfoPo != null){
+            File file = new File(itemInfoPo.getItemPath());
+            String itemContent = Common.readItem(file);
+            itemInfoPo.setItemContent(itemContent);
+        }
         return itemInfoPo;
 
     }

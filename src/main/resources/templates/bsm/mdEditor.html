@@ -21,14 +21,19 @@
     <script type="text/javascript" src="../markdown/editormd.js"></script>
 
     <style>
-        #mdEditor {
-            margin: 0;
-            z-index: 400;
-            width: 100% !important;
+
+        .editorContainer {
+            margin: 0 auto;
+            min-height: 800px;
         }
 
         .editorTitle {
             overflow: hidden;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .editorTitle #mdTitle {
+            font-weight: bold;
         }
 
         .input-group .input-group-prepend button, .input-group input {
@@ -40,72 +45,145 @@
             padding-right: 0.4rem;
         }
 
+        .editorTitleParent {
+            width: 100%;
+            padding: 0 !important;
+        }
+
+        .editormd-toolbar-container {
+            padding: 0 !important;
+        }
+
+        .editormd {
+            border-top: none !important;
+            margin-bottom: 0 !important;
+        }
+
+        .action-info {
+            width: 100%;
+            z-index: 999;
+            display: none;
+            position: fixed;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
     </style>
 
 </head>
 <body>
+
+<div class="alert alert-info alert-dismissible action-info" role="alert">
+    <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>XXX</strong>
+    <span>XX</span>
+</div>
+
 <div class="container-fluid">
-    <div class="row">
-        <div class="col"></div>
-        <div class="col-10">
-            <div class="input-group editorTitle">
-                <div class="input-group-prepend">
-                    <button type="button" class="btn btn-primary" data-i18n="bsm-blog-title"></button>
-                </div>
-                <input id="mdTitle" type="text" class="form-control" data-i18n-attr="placeholder"
-                       data-i18n-input="bsm-blog-title-placeholder"/>
-                <div class="input-group-prepend">
-                    <button type="button" class="btn btn-danger" id="mdEditorSave">
-                        <span class=" icon-save"></span>
-                        <span data-i18n="bsm-save"></span>
-                    </button>
-                </div>
-            </div>
-            <div id="layout" class="editorContainer">
-                <div id="mdEditor">
-                    <textarea></textarea>
-                </div>
-            </div>
+    <div class="col-1"></div>
+    <div id="layout" class="editorContainer col-10">
+        <div id="mdEditor">
+            <textarea></textarea>
         </div>
-        <div class="col"></div>
     </div>
+    <div class="col-1"></div>
 </div>
 
 <script type="text/javascript" th:inline="javascript">
     $(function () {
-        var editor,
-            editorBorder = 2,
-            editorTitle = $('.editorTitle').height(),
-            editorHeight = $(window).height() - editorBorder - editorTitle;
-        console.log(editorHeight);
+        var editor;
+
         editor = editormd("mdEditor", {
             placeholder: '本编辑器支持Markdown编辑，左边编写，右边预览',
             width: "100%",
-            height: editorHeight,
+            height: $(window).height() - 5,
             syncScrolling: "single",
             path: "../markdown/lib/",
             emoji: true,
             imageUpload: true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-            imageUploadURL: BEU_Md_UpLoadImg
-        });
+            imageUploadURL: BEU_Md_UpLoadImg,
+            toolbarIcons: ["title", "undo", "redo", "|",
+                "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                "h1", "h2", "h3", "h4", "h5", "h6", "|",
+                "list-ul", "list-ol", "hr", "|",
+                "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+                "goto-line", "watch", "preview", "fullscreen", "clear", "search"], //, "|","help", "info"
+            toolbarCustomIcons: {
+                title: "<div class='input-group editorTitle'>" +
+                "<div class='input-group-prepend'>" +
+                "<button type='button' class='btn btn-primary'></button></div>" +
+                "<input id='mdTitle' type='text' class='form-control'/>  " +
+                "<div class='input-group-prepend'>  " +
+                "<button type='button' class='btn btn-danger' id='mdEditorSave'>" +
+                "<span class=' icon-save'></span>" +
+                "<span></span>" +
+                "</button></div></div>"
+            },
+            onload: function () {
+                var mdTitle = [[${mdTitle}]] || '',
+                    mdContent = [[${mdContent}]] || '',
+                    mdGuid = [[${mdGuid}]] || '';
 
-        $('#mdEditorSave').on({
-            click: function () {
-                mdEditorSave(editor);
+                if (mdGuid.length !== 0) {
+                    editor.setMarkdown(mdContent);
+                    $('.editorTitle #mdTitle').val(mdTitle);
+                    $(".editorTitle button[id='mdEditorSave']").removeClass('btn-danger').addClass('btn-success');
+                }
+
+                $(".editorTitle").parent().addClass("editorTitleParent");
+                $(".editorTitle button[class='btn btn-primary']").text([[#{bsm-blog-title}]]);
+                $(".editorTitle button[id='mdEditorSave'] span:eq(1)").text([[#{bsm-save}]]);
+                $(".editorTitle input[id='mdTitle']").attr("placeholder", [[#{bsm-blog-title-placeholder}]]);
+
+                var editorToolbar = $('.editormd-toolbar').outerHeight();
+
+                $(".CodeMirror").css("margin-top", editorToolbar);
+                $(".editormd-preview").css("top", editorToolbar);
+
+                $('.action-info').css('top','-' + $('.action-info').outerHeight() + 'px');
+
+                $('#mdEditorSave').on({
+                    click: function () {
+                        mdEditorSave(editor);
+                    }
+                });
+
+                $('#mdTitle').on({
+                    input: function () {
+                        $(".editorTitle button[id='mdEditorSave']").removeClass('btn-success').addClass('btn-danger');
+                    }
+                });
+
+                $('#mdEditor textarea').on({
+                    input: function () {
+                        $(".editorTitle button[id='mdEditorSave']").removeClass('btn-success').addClass('btn-danger');
+                    }
+                });
+
+                $(".alert button[class='close']").on({
+                    click: function () {
+                        $('.action-info').animate({
+                            top: '-' + $('.action-info').outerHeight() + 'px'
+                        }, 300, function () {
+                            $('.action-info').hide(0);
+                        });
+                    }
+                });
             }
         });
 
-        var mdTitle = [[${mdTitle}]] || '',
-            mdContent = [[${mdContent}]] || '',
-            mdGuid = [[${mdGuid}]] || '';
+        $(window).on({
+            resize: function () {
+                if ($(this).height() > 800) {
+                    $('#mdEditor').height($(window).height() - 5);
+                }
+            }
+        });
 
-        if(mdGuid.length !== 0){
-            editor.setMarkdown(mdContent);
-            $('.editorTitle #mdTitle').val(mdTitle);
-        }
-
-        commonFunc.loadProperties();
+        //commonFunc.loadProperties();
     });
 
     function mdEditorSave(editor) {
@@ -125,7 +203,13 @@
             dataType: _AJAX_DATA_TYPE,
             contentType: _AJAX_CONTENT_TYPE,
             success: function (response) {
-                console.log(response);
+
+                $(".alert-info strong")
+                $(".alert-info span")
+                $('.action-info').show(0);
+                $('.action-info').animate({
+                    top: 0
+                }, 300);
             },
             error: function (response) {
                 console.log(response);
