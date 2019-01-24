@@ -86,6 +86,22 @@
         body.removeChild(jumpForm);
     };
 
+    commonFunc.showTopInfo = function (timeout){
+        if($('.action-info').show() !== true){
+            $('.action-info').show(0);
+            $('.action-info').animate({
+                top: 0
+            }, 300, function () {
+                if(timeout !== 0){
+                    var a = window.setTimeout(function () {
+                        $(".alert button[class='close']").click();
+                        window.clearTimeout(a);
+                    }, timeout);
+                }
+            });
+        }
+    };
+
     commonFunc.ws=function () {
         var websocket = null;
         //判断当前浏览器是否支持WebSocket

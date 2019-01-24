@@ -1,0 +1,57 @@
+<div id="alertPage">
+    <style>
+        .action-info {
+            width: 100%;
+            z-index: 999;
+            display: none;
+            position: fixed;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .action-info img {
+            margin-top: -5px;
+        }
+
+        .action-ico {
+
+        }
+
+        .action-content {
+            padding-left: 5px;
+        }
+
+    </style>
+
+    <div class="alert alert-info alert-dismissible action-info" role="alert">
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <img src="../bsm/pic/svg/alertInfo.svg" width="30">
+        <span class="action-ico"></span>
+        <strong class="action-content"></strong>
+        <span></span>
+    </div>
+
+    <script>
+        $(function () {
+
+            $('.action-info').css('top', '-' + $('.action-info').outerHeight() + 'px');
+
+            $(".alert button[class='close']").on({
+                click: function () {
+                    $('.action-info').animate({
+                        top: '-' + $('.action-info').outerHeight() + 'px'
+                    }, 300, function () {
+                        $('.action-info').hide(0);
+                        $('.action-info').removeAttr("class").addClass("alert alert-info alert-dismissible action-info");
+                        $(".alert-info span:eq(1)").removeAttr('class').addClass('action-ico');
+                        $(".alert-info strong").empty();
+                        $(".alert-info span:eq(2)").empty();
+                        $('.action-info img').show(0);
+                    });
+                }
+            });
+        }(jQuery));
+    </script>
+</div>

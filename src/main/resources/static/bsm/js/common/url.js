@@ -7,6 +7,7 @@ var BEU_SignUp = '../userAction/signUp',
 
     BEU_Md_UpLoadImg = '../Md/upLoadImg',
     BEU_Md_Save = '../itemAction/save',
+    BEU_GetItemList = '../itemAction/getItemList',
 
 
     BEU_Default;

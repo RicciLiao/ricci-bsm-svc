@@ -3,23 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link href="../bsmTemplates/import.html" rel="import" type="text/html"/>
+    <link href="../bsm/html/import.html" rel="import" type="text/html"/>
 
     <style>
 
-        .user-logo-container .user-logo {
-            border: 3px solid gold;
-            width: 60px;
-            height: 60px;
-            position: fixed;
-            bottom: 2.5rem;
-            right: 1rem;
-            cursor: pointer;
-            overflow: hidden;
+        .navbar {
+            padding-top: 0;
+            padding-bottom: 0;
         }
 
-        .user-logo-container .dropdown-menu {
-            margin-bottom: 0.5rem;
+        .user-logo-container {
+            padding: 10px;
+        }
+
+        .user-logo-container:hover {
+            background: #dddddd;
+        }
+
+        .user-logo-container .user-logo {
+            border: 3px solid gold;
+            width: 40px;
+            height: 40px;
+            bottom: 2.5rem;
+            cursor: pointer;
+            overflow: hidden;
         }
 
         .user-logo img {
@@ -50,7 +57,6 @@
             padding-right: 0.25rem;
         }
 
-
     </style>
 
 </head>
@@ -70,7 +76,7 @@
 
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#" th:text="#{userAgreement}" onclick="demo()"></a>
+                <a class="nav-link" href="#" th:text="#{userAgreement}"></a>
                 <!--<a class="nav-link" href="#">Home</a>-->
             </li>
             <li class="nav-item">
@@ -94,10 +100,25 @@
         </ul>
 
         <ul class="navbar-nav mr-5 nav-left-links">
-            <li class="nav-item bsm-icon-link bsm-create-blog" data-i18n-attr="title" data-i18n-input="bsm-create-blog-title">
+            <li class="nav-item bsm-icon-link bsm-create-blog" th:title="#{bsm-create-blog-title}">
                 <span class="input-group-addon glyphicon glyphicon-leaf"></span>
-                <a data-i18n="bsm-create-blog"></a>
+                <a th:text="#{bsm-create-blog}"></a>
             </li>
+        </ul>
+
+        <ul class="navbar-nav mr-5 nav-left-links user-logo-container">
+            <div class="btn-group">
+                <div class="img-circle user-logo" data-toggle="dropdown">
+                    <img src="../bsm/pic/user.jpg">
+                </div>
+                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"></button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <button class="dropdown-item" type="button">Action</button>
+                    <button class="dropdown-item" type="button">Another action</button>
+                    <button class="dropdown-item" type="button">Something else here</button>
+                </div>
+            </div>
         </ul>
 
         <div class="form-inline my-2 my-lg-0 searchCondition">
@@ -152,84 +173,17 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2 pt-3 pb-3" style="background: #0c5460">
-
-        </div>
+        <div class="col-2 pt-3 pb-3" style="background: #0c5460"></div>
 
         <div class="col-8">
-            <div class="card-deck pt-3 pb-3">
-                <div class="card">
-                    <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                        <p class="card-text">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional
-                            content.</p>
-                        <p class="card-text">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This card has even longer content than the first to show that equal
-                            height action.</p>
-                        <p class="card-text">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="../bsm/pic/svg/loading_A.svg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This card has even longer content than the first to show that equal
-                            height action.</p>
-                        <p class="card-text">
-                            <small class="text-muted">Last updated 3 mins ago</small>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div class="card-columns" id="itemListContainer"></div>
         </div>
 
         <div class="col-2 pt-3 pb-3" style="background: #0c5460"></div>
     </div>
 </div>
 
-<div class="dropup user-logo-container">
-    <div class="img-circle user-logo dropdown-toggle" data-toggle="dropdown">
-        <img src="../bsm/pic/user.jpg">
-    </div>
-    <div class="dropdown-menu">
-        <button class="dropdown-item" type="button">Action</button>
-        <button class="dropdown-item" type="button">Another action</button>
-        <button class="dropdown-item" type="button">Something else here</button>
-    </div>
-</div>
-
 <script th:inline="javascript">
-    function demo() {
-        var username = [[#{userAgreement}]];
-        console.log(username);
-    }
-</script>
-
-<script>
 
     function indexInit() {
 
@@ -239,10 +193,10 @@
 
         $('.user-logo-container').on({
             mouseover: function () {
-                $(this || '.user-logo img').click();
+                $('.user-logo-container .dropdown-menu').show();
             },
             mouseout: function () {
-                $(this || '.user-logo img').click();
+                $('.user-logo-container .dropdown-menu').hide();
             }
         });
 
@@ -263,7 +217,73 @@
                 commonFunc.newFormJump(BEU_CreateBlog);
             }
         });
-        commonFunc.loadProperties();
+
+        var params = {
+            type: "index"
+        };
+        $.ajax({
+            type: _AJAX_TYPE,
+            url: BEU_GetItemList,
+            data: JSON.stringify(params),
+            dataType: _AJAX_DATA_TYPE,
+            contentType: _AJAX_CONTENT_TYPE,
+            success: function (response) {
+                buildItemList(response)
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    }
+
+    function buildItemList(itemList) {
+        var itemListContainer = document.getElementById('itemListContainer'),
+            itemContainer,
+            itemContainerImg,
+            itemContainerDivFrist,
+            itemContainerTitle,
+            itemContainerAnnotation,
+            itemContainerLastModify,
+            lineBreak = document.createElement('blockquote');
+        lineBreak.setAttribute('class', 'blockquote mb-0');
+        for (var i = 0; i < itemList.length; i++) {
+
+            itemContainer = document.createElement('div');
+            itemContainer.setAttribute('class', 'card');
+
+            if (i % 4 === 0) {
+                itemContainer.appendChild(lineBreak);
+            }
+
+            itemContainerImg = document.createElement('img');
+            itemContainerImg.setAttribute('class', 'card-img-top');
+            itemContainerImg.setAttribute('src', '../bsm/pic/svg/loading_A.svg');
+            itemContainerImg.setAttribute('alt', 'Card image cap');
+
+            itemContainerDivFrist = document.createElement('div');
+            itemContainerDivFrist.setAttribute('class', 'card-body');
+
+            itemContainerTitle = document.createElement('h5');
+            itemContainerTitle.setAttribute('class', 'card-title');
+            itemContainerTitle.innerText = itemList[i].itemName || '';
+
+            itemContainerAnnotation = document.createElement('p');
+            itemContainerAnnotation.setAttribute('class', 'card-text');
+            itemContainerAnnotation.innerText = itemList[i].itemAnnotation || '';
+
+            itemContainerLastModify = document.createElement('p');
+            itemContainerLastModify.setAttribute('class', 'card-text');
+            itemContainerLastModify.innerText = itemList[i].itemLastModifiedDate || '';
+
+            itemContainerDivFrist.appendChild(itemContainerTitle);
+            itemContainerDivFrist.appendChild(itemContainerAnnotation);
+            itemContainerDivFrist.appendChild(itemContainerLastModify);
+
+            itemContainer.appendChild(itemContainerImg);
+            itemContainer.appendChild(itemContainerDivFrist);
+
+            itemListContainer.appendChild(itemContainer);
+        }
     }
 
 </script>

@@ -30,4 +30,9 @@
     <select id="getItemByGuid" parameterType="java.lang.String" resultType="itemInfo">
         select * from item_info where ITEM_GUID = #{itemGuid}
     </select>
+
+    <!--get item -->
+    <select id="getItemListForIndex" resultType="itemInfo">
+        select * from item_info
+    </select>
 </mapper>

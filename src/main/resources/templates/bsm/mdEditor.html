@@ -5,19 +5,12 @@
     <meta charset="UTF-8">
     <title></title>
 
+    <link href="../bsm/html/import.html" rel="import" type="text/html"/>
+
     <!--import CSS-->
-    <link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.css">
-    <link type="text/css" rel="stylesheet" href="../fontAwesome/css/font-awesome.css">
     <link type="text/css" rel="stylesheet" href="../markdown/css/editormd.css">
 
     <!--import JavaScript-->
-    <script type="text/javascript" src="../bsm/js/common/contants.js"></script>
-    <script type="text/javascript" src="../bsm/js/common/url.js"></script>
-    <script type="text/javascript" src="../JQuery/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="../JQuery/jquery.i18n.properties-1.0.9.js"></script>
-    <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
-    <script type="text/javascript" src="../bsm/js/common/common.js"></script>
-    <script type="text/javascript" src="../bsm/js/main.js"></script>
     <script type="text/javascript" src="../markdown/editormd.js"></script>
 
     <style>
@@ -28,7 +21,6 @@
         }
 
         .editorTitle {
-            overflow: hidden;
             border-bottom: 1px solid #dddddd;
         }
 
@@ -59,27 +51,16 @@
             margin-bottom: 0 !important;
         }
 
-        .action-info {
-            width: 100%;
-            z-index: 999;
-            display: none;
-            position: fixed;
-            margin-bottom: 0;
-            text-align: center;
+        .editormd-toolbar-container .editormd-menu .glyphicon {
+            top: 3px;
+            color: #666;
         }
 
     </style>
 
 </head>
 <body>
-
-<div class="alert alert-info alert-dismissible action-info" role="alert">
-    <button type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <strong>XXX</strong>
-    <span>XX</span>
-</div>
+<div id="alertInfo" th:replace="bsm/alertPage :: #alertPage"></div>
 
 <div class="container-fluid">
     <div class="col-1"></div>
@@ -105,14 +86,14 @@
             imageUpload: true,
             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
             imageUploadURL: BEU_Md_UpLoadImg,
-            toolbarIcons: ["title", "undo", "redo", "|",
+            toolbarIcons: ["mdTitle", "undo", "redo", "|",
                 "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
                 "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
                 "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-                "goto-line", "watch", "preview", "fullscreen", "clear", "search"], //, "|","help", "info"
+                "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "mdImport", "mdExport", "testIcon"], //, "|","help", "info"
             toolbarCustomIcons: {
-                title: "<div class='input-group editorTitle'>" +
+                mdTitle: "<div class='input-group editorTitle'>" +
                 "<div class='input-group-prepend'>" +
                 "<button type='button' class='btn btn-primary'></button></div>" +
                 "<input id='mdTitle' type='text' class='form-control'/>  " +
@@ -120,7 +101,9 @@
                 "<button type='button' class='btn btn-danger' id='mdEditorSave'>" +
                 "<span class=' icon-save'></span>" +
                 "<span></span>" +
-                "</button></div></div>"
+                "</button></div></div>",
+                mdImport: "<a href='javascript:;'><i class='glyphicon glyphicon-import'></i></a>",
+                mdExport: "<a href='javascript:;'><i class='glyphicon glyphicon-export'></i></a>"
             },
             onload: function () {
                 var mdTitle = [[${mdTitle}]] || '',
@@ -138,12 +121,13 @@
                 $(".editorTitle button[id='mdEditorSave'] span:eq(1)").text([[#{bsm-save}]]);
                 $(".editorTitle input[id='mdTitle']").attr("placeholder", [[#{bsm-blog-title-placeholder}]]);
 
+                $(".editorContainer i[class='glyphicon glyphicon-import']").attr("title", [[#{bsm-import}]]);
+                $(".editorContainer i[class='glyphicon glyphicon-export']").attr("title", [[#{bsm-export}]]);
+
                 var editorToolbar = $('.editormd-toolbar').outerHeight();
 
                 $(".CodeMirror").css("margin-top", editorToolbar);
                 $(".editormd-preview").css("top", editorToolbar);
-
-                $('.action-info').css('top','-' + $('.action-info').outerHeight() + 'px');
 
                 $('#mdEditorSave').on({
                     click: function () {
@@ -163,13 +147,15 @@
                     }
                 });
 
-                $(".alert button[class='close']").on({
+                $(".editorContainer i[class='glyphicon glyphicon-import']").on({
                     click: function () {
-                        $('.action-info').animate({
-                            top: '-' + $('.action-info').outerHeight() + 'px'
-                        }, 300, function () {
-                            $('.action-info').hide(0);
-                        });
+                        console.log('import');
+                    }
+                });
+
+                $(".editorContainer i[class='glyphicon glyphicon-export']").on({
+                    click: function () {
+                        console.log('export');
                     }
                 });
             }
@@ -187,6 +173,9 @@
     });
 
     function mdEditorSave(editor) {
+        $(".action-info strong").text([[#{bsm-save-ing}]]);
+        commonFunc.showTopInfo(0);
+
         var mdContent = editor.getMarkdown(),
             mdTitle = $('.editorTitle #mdTitle').val(),
             mdGuid = [[${mdGuid}]] || '',
@@ -203,13 +192,17 @@
             dataType: _AJAX_DATA_TYPE,
             contentType: _AJAX_CONTENT_TYPE,
             success: function (response) {
+                $('.action-info img').hide(0);
+                var timeout = 0;
+                if (response.result !== _ERROR) {
+                    $(".action-info").removeClass("alert-info").addClass("alert-success");
+                    $(".action-info span[class='action-ico']").addClass("icon-ok-sign");
+                    $(".action-info strong").text([[#{bsm-save-success}]]);
+                    timeout = 2000;
+                } else {
 
-                $(".alert-info strong")
-                $(".alert-info span")
-                $('.action-info').show(0);
-                $('.action-info').animate({
-                    top: 0
-                }, 300);
+                }
+                commonFunc.showTopInfo(timeout);
             },
             error: function (response) {
                 console.log(response);

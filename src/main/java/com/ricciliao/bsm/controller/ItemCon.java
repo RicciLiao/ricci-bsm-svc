@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -54,6 +55,23 @@ public class ItemCon {
             e.printStackTrace();
         } finally {
             return ajaxResult;
+        }
+    }
+
+    @PostMapping("/getItemList")
+    @ResponseBody
+    public List<ItemInfoPo> getItemList(@RequestBody Map<String, String> params) {
+        List<ItemInfoPo> itemInfoPoListToSer = null;
+        Map<String, Object> mapResult = null;
+
+        try {
+            if(params.get("type").equals("index")){
+                itemInfoPoListToSer = itemInfoService.getItemListForIndex();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return itemInfoPoListToSer;
         }
     }
 
