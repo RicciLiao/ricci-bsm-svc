@@ -57,6 +57,27 @@
             padding-right: 0.25rem;
         }
 
+        .card-columns {
+            column-count: 4;
+            -moz-column-count: 4;
+            -webkit-column-count: 4;
+            margin-top: 10px;
+        }
+
+        .card-columns div {
+            cursor: pointer;
+            border: none !important;
+        }
+
+        .card-columns .card:hover {
+            box-shadow: 0px 0px 20px #888888;
+        }
+
+        .card-columns .item-container-img-cover {
+            position: absolute;
+            width: 100%;
+        }
+
     </style>
 
 </head>
@@ -221,6 +242,7 @@
         var params = {
             type: "index"
         };
+
         $.ajax({
             type: _AJAX_TYPE,
             url: BEU_GetItemList,
@@ -239,29 +261,33 @@
     function buildItemList(itemList) {
         var itemListContainer = document.getElementById('itemListContainer'),
             itemContainer,
+            itemContainerImgContainer,
+            itemContainerImgCover,
             itemContainerImg,
-            itemContainerDivFrist,
+            itemContainerDivFirst,
             itemContainerTitle,
             itemContainerAnnotation,
+            itemContainerFooter,
             itemContainerLastModify,
-            lineBreak = document.createElement('blockquote');
-        lineBreak.setAttribute('class', 'blockquote mb-0');
+            itemContainerUserName;
         for (var i = 0; i < itemList.length; i++) {
 
             itemContainer = document.createElement('div');
             itemContainer.setAttribute('class', 'card');
 
-            if (i % 4 === 0) {
-                itemContainer.appendChild(lineBreak);
-            }
-
             itemContainerImg = document.createElement('img');
             itemContainerImg.setAttribute('class', 'card-img-top');
-            itemContainerImg.setAttribute('src', '../bsm/pic/svg/loading_A.svg');
+            itemContainerImg.setAttribute('src', '../bsm/pic/background.jpg');
             itemContainerImg.setAttribute('alt', 'Card image cap');
 
-            itemContainerDivFrist = document.createElement('div');
-            itemContainerDivFrist.setAttribute('class', 'card-body');
+            itemContainerImgContainer = document.createElement('div');
+
+            itemContainerImgCover = document.createElement('div');
+            itemContainerImgCover.setAttribute('class', 'item-container-img-cover text-center');
+            itemContainerImgCover.innerHTML = "123";
+
+            itemContainerDivFirst = document.createElement('div');
+            itemContainerDivFirst.setAttribute('class', 'card-body');
 
             itemContainerTitle = document.createElement('h5');
             itemContainerTitle.setAttribute('class', 'card-title');
@@ -271,19 +297,50 @@
             itemContainerAnnotation.setAttribute('class', 'card-text');
             itemContainerAnnotation.innerText = itemList[i].itemAnnotation || '';
 
-            itemContainerLastModify = document.createElement('p');
-            itemContainerLastModify.setAttribute('class', 'card-text');
-            itemContainerLastModify.innerText = itemList[i].itemLastModifiedDate || '';
+            itemContainerDivFirst.appendChild(itemContainerTitle);
+            itemContainerDivFirst.appendChild(itemContainerAnnotation);
 
-            itemContainerDivFrist.appendChild(itemContainerTitle);
-            itemContainerDivFrist.appendChild(itemContainerAnnotation);
-            itemContainerDivFrist.appendChild(itemContainerLastModify);
+            itemContainerFooter = document.createElement('div');
+            itemContainerFooter.setAttribute('class', 'card-footer text-right');
 
-            itemContainer.appendChild(itemContainerImg);
-            itemContainer.appendChild(itemContainerDivFrist);
+            itemContainerLastModify = document.createElement('small');
+            itemContainerLastModify.setAttribute('class', 'text-muted');
+            if ((itemList[i].itemLastModifiedDate || '').length !== 0) {
+                itemContainerLastModify.innerHTML = [[#{updateTime}]] + itemList[i].itemLastModifiedDate + '<br>';
+            } else {
+                itemContainerLastModify.innerHTML = [[#{createTime}]] + itemList[i].itemCreateDate + '<br>';
+            }
+
+            itemContainerUserName = document.createElement('small');
+            itemContainerUserName.setAttribute('class', 'text-muted font-weight-bold');
+            itemContainerUserName.innerText = [[#{author}]] + itemList[i].userName;
+
+            itemContainerFooter.appendChild(itemContainerLastModify);
+            itemContainerFooter.appendChild(itemContainerUserName);
+
+            itemContainerImgContainer.appendChild(itemContainerImgCover);
+            itemContainerImgContainer.appendChild(itemContainerImg);
+
+            itemContainer.appendChild(itemContainerImgContainer);
+            itemContainer.appendChild(itemContainerDivFirst);
+            itemContainer.appendChild(itemContainerFooter);
 
             itemListContainer.appendChild(itemContainer);
+
+            $(itemContainerImgCover).height($(itemContainerImg).height());
         }
+
+        $('.card-columns .card').on({
+            mouseover: function () {
+                $(this).find('.item-container-img-cover').css('background', 'rgba(0,0,0,0.5)');
+            },
+            mouseout: function () {
+                $(this).find('.item-container-img-cover').css('background', 'rgba(0,0,0,0)');
+            },
+            click: function () {
+
+            }
+        });
     }
 
 </script>

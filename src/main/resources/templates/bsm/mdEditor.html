@@ -39,11 +39,14 @@
 
         .editorTitleParent {
             width: 100%;
-            padding: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            /*padding: 0 !important;*/
         }
 
         .editormd-toolbar-container {
-            padding: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         .editormd {
@@ -124,10 +127,10 @@
                 $(".editorContainer i[class='glyphicon glyphicon-import']").attr("title", [[#{bsm-import}]]);
                 $(".editorContainer i[class='glyphicon glyphicon-export']").attr("title", [[#{bsm-export}]]);
 
-                var editorToolbar = $('.editormd-toolbar').outerHeight();
+                //var editorToolbar = $('.editormd-toolbar').outerHeight();
 
-                $(".CodeMirror").css("margin-top", editorToolbar);
-                $(".editormd-preview").css("top", editorToolbar);
+                //$(".CodeMirror").css("margin-top", editorToolbar);
+                //$(".editormd-preview").css("top", editorToolbar);
 
                 $('#mdEditorSave').on({
                     click: function () {
@@ -158,6 +161,8 @@
                         console.log('export');
                     }
                 });
+
+                //this.config({});
             }
         });
 

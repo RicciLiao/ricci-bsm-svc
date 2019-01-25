@@ -38,7 +38,7 @@ public class MdCon {
             if (request instanceof MultipartHttpServletRequest) {
 
                 curSession = request.getSession();
-                poFromSession = (UserInfoPo) curSession.getAttribute(curSession.getId());
+                poFromSession = (UserInfoPo) curSession.getAttribute(Constants.USER_INFO_PO);
                 if (poFromSession != null) {
 
                     mReq = (MultipartHttpServletRequest) request;

@@ -22,7 +22,7 @@
         <if test="itemPassword != null">ITEM_PASSWORD = #{itemPassword},</if>
         <if test="itemAnnotation != null">itemAnnotation = #{itemAnnotation},</if>
         <if test="status != null">STATUS = #{status},</if>
-        <if test="itemLastModifiedDate != null">ITEM_LAST_MODIFIED_DATE = #{itemLastModifiedDate} </if>
+        <if test="itemLastModifiedDate != null">ITEM_LAST_MODIFIED_DATE = #{itemLastModifiedDate}</if>
         where ITEM_GUID = #{itemGuid}
     </update>
 
@@ -32,7 +32,18 @@
     </select>
 
     <!--get item -->
-    <select id="getItemListForIndex" resultType="itemInfo">
-        select * from item_info
+    <resultMap id="itemListForIndex" type="java.util.Map">
+        <result property="itemGuid" column="ITEM_GUID"/>
+        <result property="itemCreateDate" column="ITEM_CREATE_DATE"/>
+        <result property="itemLastModifiedDate" column="ITEM_LAST_MODIFIED_DATE"/>
+        <result property="itemAnnotation" column="ITEM_ANNOTATION"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="userName" column="USER_NAME"/>
+    </resultMap>
+
+    <select id="getItemListForIndex" resultMap="itemListForIndex">
+        select ii.ITEM_GUID, DATE_FORMAT(ii.ITEM_CREATE_DATE, '%Y-%m-%d %T') as ITEM_CREATE_DATE,
+        DATE_FORMAT(ii.ITEM_LAST_MODIFIED_DATE, '%Y-%m-%d %T') as ITEM_LAST_MODIFIED_DATE, ii.ITEM_ANNOTATION, ii.ITEM_NAME, ui.USER_NAME
+        from item_info ii left join user_info ui on ii.user_id = ui.id
     </select>
 </mapper>
