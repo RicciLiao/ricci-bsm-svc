@@ -16,7 +16,6 @@
     <style>
 
         .editorContainer {
-            margin: 0 auto;
             min-height: 800px;
         }
 
@@ -59,6 +58,15 @@
             color: #666;
         }
 
+        .row .col-1 {
+            padding: 0 !important;
+        }
+
+        .row .col-1 #sideBarRight .card {
+            width: fit-content;
+            right: 0;
+        }
+
     </style>
 
 </head>
@@ -66,13 +74,15 @@
 <div id="alertInfo" th:replace="bsm/alertPage :: #alertPage"></div>
 
 <div class="container-fluid">
-    <div class="col-1"></div>
-    <div id="layout" class="editorContainer col-10">
-        <div id="mdEditor">
-            <textarea></textarea>
+    <div class="row">
+        <div class="col-1"></div>
+        <div id="layout" class="editorContainer col-10">
+            <div id="mdEditor">
+                <textarea></textarea>
+            </div>
         </div>
+        <div class="col-1"></div>
     </div>
-    <div class="col-1"></div>
 </div>
 
 <script type="text/javascript" th:inline="javascript">
@@ -94,7 +104,7 @@
                 "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
                 "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-                "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "mdImport", "mdExport", "testIcon"], //, "|","help", "info"
+                "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "mdImport", "mdExport", "mdInfo"], //, "|","help", "info"
             toolbarCustomIcons: {
                 mdTitle: "<div class='input-group editorTitle'>" +
                 "<div class='input-group-prepend'>" +
@@ -106,7 +116,8 @@
                 "<span></span>" +
                 "</button></div></div>",
                 mdImport: "<a href='javascript:;'><i class='glyphicon glyphicon-import'></i></a>",
-                mdExport: "<a href='javascript:;'><i class='glyphicon glyphicon-export'></i></a>"
+                mdExport: "<a href='javascript:;'><i class='glyphicon glyphicon-export'></i></a>",
+                mdInfo: "<a href='javascript:;'><i class='glyphicon glyphicon-info-sign'></i></a>"
             },
             onload: function () {
                 var mdTitle = [[${mdTitle}]] || '',
@@ -127,10 +138,10 @@
                 $(".editorContainer i[class='glyphicon glyphicon-import']").attr("title", [[#{bsm-import}]]);
                 $(".editorContainer i[class='glyphicon glyphicon-export']").attr("title", [[#{bsm-export}]]);
 
-                //var editorToolbar = $('.editormd-toolbar').outerHeight();
+                var editorToolbar = $('.editormd-toolbar').outerHeight();
 
-                //$(".CodeMirror").css("margin-top", editorToolbar);
-                //$(".editormd-preview").css("top", editorToolbar);
+                $(".CodeMirror").css("margin-top", editorToolbar);
+                $(".editormd-preview").css("top", editorToolbar);
 
                 $('#mdEditorSave').on({
                     click: function () {
@@ -161,8 +172,6 @@
                         console.log('export');
                     }
                 });
-
-                //this.config({});
             }
         });
 
@@ -174,7 +183,6 @@
             }
         });
 
-        //commonFunc.loadProperties();
     });
 
     function mdEditorSave(editor) {
