@@ -44,6 +44,7 @@ public class ItemCon {
             itemInfoPoToSer = new ItemInfoPo();
             itemInfoPoToSer.setItemName(params.get("mdTitle"));
             itemInfoPoToSer.setUserId(userInfoPo.getId());
+            itemInfoPoToSer.setItemAnnotation(params.get("mdAnnotation"));
             if (!Common.isNullOrSpace(params.get("mdGuid"))) {
                 itemInfoPoToSer.setItemGuid(params.get("mdGuid"));
                 itemInfoPoToSer.setItemPath(userInfoPo.getUserPath() + File.separator + params.get("mdGuid"));

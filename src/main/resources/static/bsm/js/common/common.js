@@ -86,13 +86,13 @@
         body.removeChild(jumpForm);
     };
 
-    commonFunc.showTopInfo = function (timeout){
-        if($('.action-info').show() !== true){
+    commonFunc.showTopInfo = function (timeout) {
+        if ($('.action-info').show() !== true) {
             $('.action-info').show(0);
             $('.action-info').animate({
                 top: 0
             }, 300, function () {
-                if(timeout !== 0){
+                if (timeout !== 0) {
                     var a = window.setTimeout(function () {
                         $(".alert button[class='close']").click();
                         window.clearTimeout(a);
@@ -102,12 +102,21 @@
         }
     };
 
-    commonFunc.ws=function () {
+    commonFunc.popModelInfo = function (title, body, secondary, primary, bindFunc) {
+        $('#alertWindow').on('shown.bs.modal', bindFunc);
+        $('#alertWindow .modal-title').html(title);
+        $('#alertWindow .modal-body').html(body);
+        $("#alertWindow button[class='btn btn-secondary']").html(secondary);
+        $("#alertWindow button[class='btn btn-primary']").html(primary);
+        $('#alertWindow').modal();
+    };
+
+    commonFunc.ws = function () {
         var websocket = null;
         //判断当前浏览器是否支持WebSocket
         if ('WebSocket' in window) {
             //websocket = new WebSocket("wss://"+document.location.host+"/note_Alpha/websocket");
-            websocket = new WebSocket("ws://"+document.location.host+"/ws");
+            websocket = new WebSocket("ws://" + document.location.host + "/ws");
         }
         else {
             alert('当前浏览器 Not support websocket')

@@ -17,6 +17,7 @@
 
         .editorContainer {
             min-height: 800px;
+            padding: 0;
         }
 
         .editorTitle {
@@ -40,7 +41,6 @@
             width: 100%;
             padding-left: 0 !important;
             padding-right: 0 !important;
-            /*padding: 0 !important;*/
         }
 
         .editormd-toolbar-container {
@@ -58,13 +58,16 @@
             color: #666;
         }
 
-        .row .col-1 {
-            padding: 0 !important;
+        .mdOtherInfo #mdAnnotation {
+            width: 100%;
+            height: 100px;
+            border: none;
+            background: #fffffb;
+            padding: 10px;
         }
 
-        .row .col-1 #sideBarRight .card {
-            width: fit-content;
-            right: 0;
+        .row .col-2 .card .card-body {
+            padding: 10px;
         }
 
     </style>
@@ -75,13 +78,11 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-1"></div>
-        <div id="layout" class="editorContainer col-10">
+        <div id="layout" class="editorContainer col-12">
             <div id="mdEditor">
                 <textarea></textarea>
             </div>
         </div>
-        <div class="col-1"></div>
     </div>
 </div>
 
@@ -104,7 +105,7 @@
                 "h1", "h2", "h3", "h4", "h5", "h6", "|",
                 "list-ul", "list-ol", "hr", "|",
                 "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-                "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|", "mdImport", "mdExport", "mdInfo"], //, "|","help", "info"
+                "goto-line", "watch", "preview", "clear", "search", "|", "mdImport", "mdExport", "mdInfo"], //, "|","help", "info"
             toolbarCustomIcons: {
                 mdTitle: "<div class='input-group editorTitle'>" +
                 "<div class='input-group-prepend'>" +
@@ -145,7 +146,24 @@
 
                 $('#mdEditorSave').on({
                     click: function () {
-                        mdEditorSave(editor);
+                        var body = "<div class='mdOtherInfo'>" +
+                            "<div class='card mb-3'>" +
+                            "<div class='card-header'>" + [[#{bsm-blog-annotation}]] + "</div>" +
+                            "<textarea id='mdAnnotation' class='text-primary' placeholder='" + [[#{bsm-blog-annotation-p}]] + "'></textarea>" +
+                            "</div>" +
+                            "<div class='card mb-3'>" +
+                            "<div class='card-header'>" + [[#{bsm-blog-classification}]] + "</div>" +
+                            "<div class='card-body text-primary'>" +
+                            "</div>" +
+                            "</div>" +
+                            "</div>";
+                        commonFunc.popModelInfo([[#{bsm-save}]], body, [[#{bsm-cancel}]], [[#{bsm-confirm}]], function () {
+                            $("#alertWindow button[class='btn btn-primary']").on({
+                                click: function () {
+                                    mdEditorSave(editor);
+                                }
+                            });
+                        });
                     }
                 });
 
@@ -190,11 +208,13 @@
         commonFunc.showTopInfo(0);
 
         var mdContent = editor.getMarkdown(),
-            mdTitle = $('.editorTitle #mdTitle').val(),
+            mdTitle = $('.editorTitle #mdTitle').val() || '',
             mdGuid = [[${mdGuid}]] || '',
+            mdAnnotation = $('#alertPage #mdAnnotation').val() || '',
             params = {
                 mdTitle: mdTitle,
                 mdContent: mdContent,
+                mdAnnotation: mdAnnotation,
                 mdGuid: mdGuid
             };
 
