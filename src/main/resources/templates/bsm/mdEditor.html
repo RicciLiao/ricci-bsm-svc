@@ -37,6 +37,10 @@
             padding-right: 0.4rem;
         }
 
+        .input-group .input-group-prepend button .icon-chevron-left {
+            padding-right: 0.4rem;
+        }
+
         .editorTitleParent {
             width: 100%;
             padding-left: 0 !important;
@@ -107,18 +111,40 @@
                 "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
                 "goto-line", "watch", "preview", "clear", "search", "|", "mdImport", "mdExport", "mdInfo"], //, "|","help", "info"
             toolbarCustomIcons: {
-                mdTitle: "<div class='input-group editorTitle'>" +
-                "<div class='input-group-prepend'>" +
-                "<button type='button' class='btn btn-primary'></button></div>" +
-                "<input id='mdTitle' type='text' class='form-control'/>  " +
-                "<div class='input-group-prepend'>  " +
-                "<button type='button' class='btn btn-danger' id='mdEditorSave'>" +
-                "<span class=' icon-save'></span>" +
-                "<span></span>" +
-                "</button></div></div>",
-                mdImport: "<a href='javascript:;'><i class='glyphicon glyphicon-import'></i></a>",
-                mdExport: "<a href='javascript:;'><i class='glyphicon glyphicon-export'></i></a>",
+                mdTitle:
+                "<div class='input-group editorTitle'>" +
+                "   <div class='input-group-prepend'>" +
+                "       <div class='btn-group'>" +
+                "           <button type='button' class='btn btn-secondary' id='mdEditorBack'>" +
+                "               <span class='icon-chevron-left'></span>" +
+                "               <span>" + [[#{bsm-exit}]]  + "</span>" +
+                "           </button>" +
+                "           <button type='button' class='btn btn-primary'>" + [[#{bsm-blog-title}]] + "</button>" +
+                "       </div>" +
+                "   </div>" +
+                "   <input id='mdTitle' type='text' class='form-control' placeholder = '" + [[#{bsm-blog-title-placeholder}]] + "' />  " +
+                "   <div class='input-group-prepend'>" +
+                "       <button type='button' class='btn btn-danger' id='mdEditorSave'>" +
+                "           <span class='icon-save'></span>" +
+                "           <span>" + [[#{bsm-save}]] + "</span>" +
+                "       </button>" +
+                "   </div>"+
+                "</div>",
+                mdImport: "<a href='javascript:;'><i class='glyphicon glyphicon-import' title='" + [[#{bsm-import}]] + "'></i></a>",
+                mdExport: "<a href='javascript:;'><i class='glyphicon glyphicon-export' title='" + [[#{bsm-export}]] + "'></i></a>",
                 mdInfo: "<a href='javascript:;'><i class='glyphicon glyphicon-info-sign'></i></a>"
+            },
+            toolbarHandlers: {
+                mdImport: function () {
+
+                },
+                mdExport: function () {
+
+                },
+                mdInfo: function () {
+                    var body = "<div>" +
+                        ""
+                },
             },
             onload: function () {
                 var mdTitle = [[${mdTitle}]] || '',
@@ -132,13 +158,6 @@
                 }
 
                 $(".editorTitle").parent().addClass("editorTitleParent");
-                $(".editorTitle button[class='btn btn-primary']").text([[#{bsm-blog-title}]]);
-                $(".editorTitle button[id='mdEditorSave'] span:eq(1)").text([[#{bsm-save}]]);
-                $(".editorTitle input[id='mdTitle']").attr("placeholder", [[#{bsm-blog-title-placeholder}]]);
-
-                $(".editorContainer i[class='glyphicon glyphicon-import']").attr("title", [[#{bsm-import}]]);
-                $(".editorContainer i[class='glyphicon glyphicon-export']").attr("title", [[#{bsm-export}]]);
-
                 var editorToolbar = $('.editormd-toolbar').outerHeight();
 
                 $(".CodeMirror").css("margin-top", editorToolbar);
@@ -176,6 +195,18 @@
                 $('#mdEditor textarea').on({
                     input: function () {
                         $(".editorTitle button[id='mdEditorSave']").removeClass('btn-success').addClass('btn-danger');
+                    }
+                });
+                
+                $('#mdEditorBack').on({
+                    click: function () {
+                        commonFunc.popModelInfo([[#{bsm-exit}]], [[#{SYSMessage001}]], [[#{bsm-cancel}]], [[#{bsm-confirm}]], function () {
+                            $("#alertWindow button[class='btn btn-primary']").on({
+                                click: function () {
+                                    commonFunc.newFormJump(BEU_SignInSuccess);
+                                }
+                            });
+                        });
                     }
                 });
 

@@ -10709,3 +10709,25 @@ a.text-dark:hover, a.text-dark:focus {
 .img-circle {
     border-radius: 50%;
 }
+
+.dropdown-submenu {
+    width: 100%;
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 90%;
+}
+
+.dropdown-submenu > .dropdown-item {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-radius: 0 !important;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}

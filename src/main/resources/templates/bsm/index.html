@@ -21,12 +21,12 @@
         }
 
         .user-logo-container .user-logo {
-            border: 3px solid gold;
             width: 40px;
             height: 40px;
             bottom: 2.5rem;
             cursor: pointer;
             overflow: hidden;
+            border: 3px solid gold;
         }
 
         .user-logo img {
@@ -59,9 +59,9 @@
 
         .card-columns {
             column-count: 4;
+            margin-top: 10px;
             -moz-column-count: 4;
             -webkit-column-count: 4;
-            margin-top: 10px;
         }
 
         .card-columns div {
@@ -74,8 +74,11 @@
         }
 
         .card-columns .item-container-img-cover {
-            position: absolute;
             width: 100%;
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
         }
 
     </style>
@@ -129,16 +132,30 @@
 
         <ul class="navbar-nav mr-5 nav-left-links user-logo-container">
             <div class="btn-group">
-                <div class="img-circle user-logo" data-toggle="dropdown">
+                <div class="img-circle user-logo">
                     <img src="../bsm/pic/user.jpg">
                 </div>
-                <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"></button>
+                <button type="button" class="btn btn-link dropdown-toggle"></button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <button class="dropdown-item" type="button">Action</button>
-                    <button class="dropdown-item" type="button">Another action</button>
-                    <button class="dropdown-item" type="button">Something else here</button>
+                    <a class="dropdown-item" th:text="#{bsm-my-follow}" href="#"></a>
+                    <a class="dropdown-item" th:text="#{bsm-my-collection}" href="#"></a>
+                    <a class="dropdown-item" th:text="#{bsm-my-share}" href="#"></a>
+                    <a class="dropdown-item" th:text="#{bsm-personal-center}" href="#"></a>
+                    <a class="dropdown-item" th:text="#{bsm-account-setting}" href="#"></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:text="#{bsm-my-blog}" href="#"></a>
+                    <div class="btn-group dropright dropdown-submenu">
+                        <button type="button" class="btn dropdown-toggle dropdown-item"
+                                th:text="#{bsm-blog-manage}"></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" th:text="#{bsm-blog-classification}" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" th:text="#{bsm-help}" href="#"></a>
+                    <a class="dropdown-item" th:text="#{bsm-exit}" href="#"></a>
                 </div>
+
             </div>
         </ul>
 
@@ -212,12 +229,20 @@
             marginTop: $('#top-navbar').outerHeight() + 'px'
         }, 600);
 
-        $('.user-logo-container').on({
+        $(".user-logo-container").on({
             mouseover: function () {
-                $('.user-logo-container .dropdown-menu').show();
+                $(this).find('.dropdown-menu').first().stop();
+                $(this).find('.dropdown-menu').first().fadeIn(100);
             },
             mouseout: function () {
-                $('.user-logo-container .dropdown-menu').hide();
+                $(this).find('.dropdown-menu').first().stop();
+                $(this).find('.dropdown-menu').first().fadeOut(100);
+            }
+        });
+
+        $(".user-logo-container .dropdown-menu a[class='dropdown-item']").on({
+            click: function () {
+                $('.user-logo-container .dropdown-menu').first().hide();
             }
         });
 
@@ -274,6 +299,12 @@
 
             itemContainer = document.createElement('div');
             itemContainer.setAttribute('class', 'card');
+            itemContainer.setAttribute('id', itemList[i].itemGuid);
+            $(itemContainer).on({
+                click: function () {
+                    gotoMdEditor(this.id);
+                }
+            });
 
             itemContainerImg = document.createElement('img');
             itemContainerImg.setAttribute('class', 'card-img-top');
@@ -341,6 +372,10 @@
 
             }
         });
+    }
+
+    function gotoMdEditor(itemGuid) {
+        commonFunc.newFormJump(BEU_CreateBlog + '/' + itemGuid);
     }
 
 </script>
