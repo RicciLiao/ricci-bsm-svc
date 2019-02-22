@@ -44,7 +44,7 @@ public class BsmApplication implements WebMvcConfigurer {
     @Bean(name = "localeResolver")
     public LocaleResolver initLocaleResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
+        sessionLocaleResolver.setDefaultLocale(Locale.US);
         return sessionLocaleResolver;
     }
 
@@ -54,7 +54,7 @@ public class BsmApplication implements WebMvcConfigurer {
             localeChangeInterceptor = new LocaleChangeInterceptor();
             return localeChangeInterceptor;
         }
-        localeChangeInterceptor.setParamName("lang");
+        localeChangeInterceptor.setParamName("language");
         return localeChangeInterceptor;
     }
 

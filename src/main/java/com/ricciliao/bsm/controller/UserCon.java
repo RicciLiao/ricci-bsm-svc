@@ -5,6 +5,8 @@ import com.ricciliao.bsm.common.Constants;
 import com.ricciliao.bsm.pojo.UserInfoPo;
 import com.ricciliao.bsm.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,9 @@ public class UserCon {
 
     @Autowired
     private HttpServletRequest g_request;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @PostMapping("/signUp")
     @ResponseBody
@@ -68,6 +73,7 @@ public class UserCon {
             }
 
             ajaxResult = Common.mapToJson(mapResult);
+            System.out.println(messageSource.getMessage("signIn-success", null, LocaleContextHolder.getLocale()));
         } catch (Exception e) {
             curSession.setAttribute(Constants.AJAX_COMMON_RESULT, Constants.PENDING);
             mapResult.put(Constants.AJAX_COMMON_RESULT, Constants.ERROR);
