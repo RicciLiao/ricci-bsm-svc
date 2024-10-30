@@ -1,0 +1,37 @@
+spring:
+  application:
+    version: @project.version@
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.165.34:3306/bsm
+    username: bsm
+    password: asl123456
+    hikari:
+      max-lifetime: 30000
+      maximum-pool-size: 20
+      minimum-idle: 2
+      idle-timeout: 10000
+      connection-timeout: 15000
+      register-mbeans: true
+      connection-test-query: select 1 from dual
+      leak-detection-threshold: 30000
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+time-zone: GMT+8
+dynamic-aop:
+  point-cut:
+    controller: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
+redis:
+  host: 192.168.165.34
+  port: 6379
+  password: asl123456
+  db:
+    captcha:
+      database: 1
+      timeout: 60000
+      ttl: 300000
+      pool:
+        max-idle: 6
+        max-active: 10
+        min-idle: 2
