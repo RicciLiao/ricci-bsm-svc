@@ -1,10 +1,9 @@
 package ricciliao.bsm.component;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import ricciliao.bsm.common.CommonHelper;
+import ricciliao.bsm.common.BsmCommonHelper;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -13,9 +12,9 @@ public class Timestamp2LocalDateTimeDeserializer extends JsonDeserializer<LocalD
 
 
     @Override
-    public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 
-        return CommonHelper.long2LocalDateTime(jsonParser.readValueAs(Long.class));
+        return BsmCommonHelper.long2LocalDateTime(jsonParser.readValueAs(Long.class));
     }
 
     @Override

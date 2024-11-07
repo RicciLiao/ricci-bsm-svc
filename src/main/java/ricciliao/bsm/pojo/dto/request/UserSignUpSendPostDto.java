@@ -4,15 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
-public class UserSignUpSendPostDto implements Serializable {
+public class UserSignUpSendPostDto extends VerifyCaptchaDto implements Serializable {
     @Serial
     private static final long serialVersionUID = -7398802352610627681L;
 
     @NotBlank
     private String emailAddress;
-    @NotBlank
-    private String captchaCode;
 
     public String getEmailAddress() {
         return emailAddress;
@@ -22,11 +21,15 @@ public class UserSignUpSendPostDto implements Serializable {
         this.emailAddress = emailAddress;
     }
 
-    public String getCaptchaCode() {
-        return captchaCode;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserSignUpSendPostDto that)) return false;
+        return Objects.equals(getEmailAddress(), that.getEmailAddress());
     }
 
-    public void setCaptchaCode(String captchaCode) {
-        this.captchaCode = captchaCode;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmailAddress());
     }
 }

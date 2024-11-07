@@ -6,37 +6,37 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.FluentQuery;
-import ricciliao.bsm.pojo.po.BsmUserInfoPo;
+import ricciliao.bsm.pojo.po.BsmUserPo;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public interface BsmUserRepository extends JpaRepository<BsmUserInfoPo, Long> {
+public interface BsmUserRepository extends JpaRepository<BsmUserPo, Long> {
 
     @Override
-    List<BsmUserInfoPo> findAll();
+    List<BsmUserPo> findAll();
 
     @Override
-    List<BsmUserInfoPo> findAll(Sort sort);
+    List<BsmUserPo> findAll(Sort sort);
 
     @Override
-    List<BsmUserInfoPo> findAllById(Iterable<Long> longs);
+    List<BsmUserPo> findAllById(Iterable<Long> longs);
 
     @Override
-    <S extends BsmUserInfoPo> List<S> saveAll(Iterable<S> entities);
+    <S extends BsmUserPo> List<S> saveAll(Iterable<S> entities);
 
     @Override
     void flush();
 
     @Override
-    <S extends BsmUserInfoPo> S saveAndFlush(S entity);
+    <S extends BsmUserPo> S saveAndFlush(S entity);
 
     @Override
-    <S extends BsmUserInfoPo> List<S> saveAllAndFlush(Iterable<S> entities);
+    <S extends BsmUserPo> List<S> saveAllAndFlush(Iterable<S> entities);
 
     @Override
-    void deleteAllInBatch(Iterable<BsmUserInfoPo> entities);
+    void deleteAllInBatch(Iterable<BsmUserPo> entities);
 
     @Override
     void deleteAllByIdInBatch(Iterable<Long> longs);
@@ -45,22 +45,22 @@ public interface BsmUserRepository extends JpaRepository<BsmUserInfoPo, Long> {
     void deleteAllInBatch();
 
     @Override
-    BsmUserInfoPo getReferenceById(Long aLong);
+    BsmUserPo getReferenceById(Long aLong);
 
     @Override
-    <S extends BsmUserInfoPo> List<S> findAll(Example<S> example);
+    <S extends BsmUserPo> List<S> findAll(Example<S> example);
 
     @Override
-    <S extends BsmUserInfoPo> List<S> findAll(Example<S> example, Sort sort);
+    <S extends BsmUserPo> List<S> findAll(Example<S> example, Sort sort);
 
     @Override
-    Page<BsmUserInfoPo> findAll(Pageable pageable);
+    Page<BsmUserPo> findAll(Pageable pageable);
 
     @Override
-    <S extends BsmUserInfoPo> S save(S entity);
+    <S extends BsmUserPo> S save(S entity);
 
     @Override
-    Optional<BsmUserInfoPo> findById(Long aLong);
+    Optional<BsmUserPo> findById(Long aLong);
 
     @Override
     boolean existsById(Long aLong);
@@ -72,31 +72,31 @@ public interface BsmUserRepository extends JpaRepository<BsmUserInfoPo, Long> {
     void deleteById(Long aLong);
 
     @Override
-    void delete(BsmUserInfoPo entity);
+    void delete(BsmUserPo entity);
 
     @Override
     void deleteAllById(Iterable<? extends Long> longs);
 
     @Override
-    void deleteAll(Iterable<? extends BsmUserInfoPo> entities);
+    void deleteAll(Iterable<? extends BsmUserPo> entities);
 
     @Override
     void deleteAll();
 
     @Override
-    <S extends BsmUserInfoPo> Optional<S> findOne(Example<S> example);
+    <S extends BsmUserPo> Optional<S> findOne(Example<S> example);
 
     @Override
-    <S extends BsmUserInfoPo> Page<S> findAll(Example<S> example, Pageable pageable);
+    <S extends BsmUserPo> Page<S> findAll(Example<S> example, Pageable pageable);
 
     @Override
-    <S extends BsmUserInfoPo> long count(Example<S> example);
+    <S extends BsmUserPo> long count(Example<S> example);
 
     @Override
-    <S extends BsmUserInfoPo> boolean exists(Example<S> example);
+    <S extends BsmUserPo> boolean exists(Example<S> example);
 
     @Override
-    <S extends BsmUserInfoPo, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
+    <S extends BsmUserPo, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
 
     boolean existsByLoginNameOrUserEmail(String loginName, String userEmail);
 

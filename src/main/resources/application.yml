@@ -18,6 +18,16 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    protocol: smtp
+    host: smtp.163.com
+    username: riccix@163.com
+    password: CKZKthMEC3ENKJxz
+    port: 25
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
 time-zone: GMT+8
 dynamic-aop:
   point-cut:
@@ -32,6 +42,14 @@ redis:
       timeout: 60000
       ttl: 300000
       pool:
-        max-idle: 6
-        max-active: 10
         min-idle: 2
+        max-idle: 5
+        max-total: 20
+    email:
+      database: 2
+      timeout: 60000
+      ttl: 300000
+      pool:
+        min-idle: 2
+        max-idle: 5
+        max-total: 20

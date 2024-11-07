@@ -14,9 +14,9 @@ public class GetCaptchaDto implements ResponseVoData {
         this.t = t;
     }
 
-    private final String k;   //key
-    private final String i;   //base64 image
-    private final Long t; //reset time
+    private final String k; //key
+    private final String i; //base64 image
+    private final Long t;   //reset time
 
     public String getK() {
         return k;

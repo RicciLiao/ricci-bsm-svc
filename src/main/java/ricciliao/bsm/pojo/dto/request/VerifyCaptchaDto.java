@@ -1,10 +1,17 @@
 package ricciliao.bsm.pojo.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 public class VerifyCaptchaDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5655980823864994419L;
 
+    @NotBlank
     private String c;
+    @NotBlank
     private String k;
 
     public String getC() {

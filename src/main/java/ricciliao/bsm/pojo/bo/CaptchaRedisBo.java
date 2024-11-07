@@ -1,13 +1,23 @@
 package ricciliao.bsm.pojo.bo;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class CaptchaRedisBo implements Serializable {
+public class CaptchaRedisBo extends RedisCatchBo implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5729432642565598935L;
 
     private String captcha;
-    private String email;
-    private LocalDateTime cacheDtm;
+    private boolean verified = false;
+
+    public boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
 
     public String getCaptcha() {
         return captcha;
@@ -17,19 +27,16 @@ public class CaptchaRedisBo implements Serializable {
         this.captcha = captcha;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CaptchaRedisBo that)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getCaptcha(), that.getCaptcha()) && Objects.equals(getVerified(), that.getVerified());
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDateTime getCacheDtm() {
-        return cacheDtm;
-    }
-
-    public void setCacheDtm(LocalDateTime cacheDtm) {
-        this.cacheDtm = cacheDtm;
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getCaptcha(), getVerified());
     }
 }

@@ -1,45 +1,60 @@
-package ricciliao.bsm.pojo.dto;
+package ricciliao.bsm.pojo.po;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.Length;
-import ricciliao.bsm.component.LocalDateTime2TimestampSerializer;
-import ricciliao.bsm.component.Timestamp2LocalDateTimeDeserializer;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class BsmUserInfoDto {
+@Entity
+@Table(name = "bsm_user")
+public class BsmUserPo implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -5025336393087857045L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
-    @NotBlank
-    @Length(min = 5, max = 15)
+
+    @Column(name = "login_name", nullable = false, length = 15)
     private String loginName;
-    @NotBlank
-    @Length(min = 1, max = 15)
+
+    @Column(name = "user_name", nullable = false)
     private String userName;
-    @JsonIgnore
+
+    @Column(name = "user_password", nullable = false, length = 16)
     private String userPassword;
-    @NotBlank
+
+    @Column(name = "user_email")
     private String userEmail;
-    @JsonIgnore
+
+    @Column(name = "last_login_dtm")
     private LocalDateTime lastLoginDtm;
-    @JsonIgnore
+
+    @Column(name = "status_id", nullable = false)
     private Long statusId;
-    @JsonIgnore
+
+    @Column(name = "created_by", nullable = false)
     private Long createdBy;
-    @JsonIgnore
+
+    @Column(name = "created_dtm", nullable = false)
     private LocalDateTime createdDtm;
-    @JsonIgnore
+
+    @Column(name = "updated_by", nullable = false)
     private Long updatedBy;
-    @JsonIgnore
+
+    @Column(name = "updated_dtm", nullable = false)
     private LocalDateTime updatedDtm;
-    @JsonSerialize(using = LocalDateTime2TimestampSerializer.class)
-    @JsonDeserialize(using = Timestamp2LocalDateTimeDeserializer.class)
+
+    @Version
+    @Column(name = "version", nullable = false)
     private LocalDateTime version;
 
     public Long getId() {
@@ -94,8 +109,8 @@ public class BsmUserInfoDto {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setStatusId(Long status) {
+        this.statusId = status;
     }
 
     public Long getCreatedBy() {
@@ -138,16 +153,4 @@ public class BsmUserInfoDto {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BsmUserInfoDto)) return false;
-        BsmUserInfoDto that = (BsmUserInfoDto) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getLoginName(), that.getLoginName()) && Objects.equals(getUserName(), that.getUserName()) && Objects.equals(getUserPassword(), that.getUserPassword()) && Objects.equals(getUserEmail(), that.getUserEmail()) && Objects.equals(getLastLoginDtm(), that.getLastLoginDtm()) && Objects.equals(getStatusId(), that.getStatusId()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getCreatedDtm(), that.getCreatedDtm()) && Objects.equals(getUpdatedBy(), that.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), that.getUpdatedDtm()) && Objects.equals(getVersion(), that.getVersion());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getLoginName(), getUserName(), getUserPassword(), getUserEmail(), getLastLoginDtm(), getStatusId(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
-    }
 }
