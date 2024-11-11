@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "bsm_code")
+@Table(name = "bak_bsm_code")
 public class BsmCodePo implements Serializable {
     @Serial
     private static final long serialVersionUID = -7720481903675357203L;
