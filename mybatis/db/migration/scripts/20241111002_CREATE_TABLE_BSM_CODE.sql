@@ -9,7 +9,7 @@ create table `bsm_code`
     `updated_by`  bigint       not null,
     `updated_dtm` datetime(6)  not null,
     `version`     datetime(6)  not null,
-    constraint `bsm_code_pk` unique (`code`)
+    constraint `bsm_code_uk` unique (`code`)
 ) auto_increment = 1000;
 
 -- //@UNDO

@@ -10,7 +10,7 @@ create table `bsm_code_detail`
     `updated_by`  bigint       not null,
     `updated_dtm` datetime(6)  not null,
     `version`     datetime(6)  not null,
-    constraint `bsm_code_detail_pk` unique (`bsm_code_id`, code),
+    constraint `bsm_code_detail_uk` unique (`bsm_code_id`, code),
     constraint `bsm_code_id_fk` foreign key (`bsm_code_id`) references bsm_code (`id`)
 ) auto_increment = 10000;
 
