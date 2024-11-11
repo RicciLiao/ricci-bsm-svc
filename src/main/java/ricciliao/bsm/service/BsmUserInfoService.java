@@ -8,6 +8,6 @@ public interface BsmUserInfoService {
 
     Long signUp(BsmUserInfoDto requestDto) throws CmnException;
 
-    Long signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException;
+    Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException;
 
 }

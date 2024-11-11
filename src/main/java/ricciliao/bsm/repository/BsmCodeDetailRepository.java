@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery;
-import ricciliao.bsm.common.BsmCode;
+import org.springframework.data.repository.query.Param;
 import ricciliao.bsm.pojo.dto.BsmCodeDetailDto;
 import ricciliao.bsm.pojo.po.BsmCodeDetailPo;
 
@@ -104,5 +104,6 @@ public interface BsmCodeDetailRepository extends JpaRepository<BsmCodeDetailPo, 
     @Query("select new ricciliao.bsm.pojo.dto.BsmCodeDetailDto(cd.id, cd.bsmCodeId, cd.code) from BsmCodeDetailPo cd " +
             "inner join BsmCodePo c on c.id = cd.bsmCodeId " +
             "where c.code = :bsmCode and cd.code = :bsmDetailCode")
-    Optional<BsmCodeDetailDto> getByUniqueKey(String bsmCode, Enum<BsmCode.BsmCodeEnum> bsmDetailCode);
+    Optional<BsmCodeDetailDto> getByUniqueKey(@Param("bsmCode") String bsmCode,
+                                              @Param("bsmDetailCode") String bsmDetailCode);
 }

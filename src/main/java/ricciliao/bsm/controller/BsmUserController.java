@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
+import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
+import ricciliao.bsm.pojo.dto.response.SimpleResponse;
+import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.response.ResponseCode;
-import ricciliao.common.component.response.ResponseEmptyData;
+import ricciliao.common.component.response.CmnResponseCode;
 import ricciliao.common.component.response.ResponseUtils;
 import ricciliao.common.component.response.ResponseVo;
 import ricciliao.common.component.response.ResponseVoData;
-import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
-import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
-import ricciliao.bsm.service.BsmUserInfoService;
 
 
 @Tag(name = "")
@@ -40,11 +40,10 @@ public class BsmUserController {
                                                          BindingResult bindingResult) throws CmnException {
         if (bindingResult.hasErrors()) {
 
-            return ResponseUtils.builder(bindingResult).code(ResponseCode.CommonCode.PARAMETER_ERROR).build();
+            return ResponseUtils.builder(bindingResult).code(CmnResponseCode.PARAMETER_ERROR).build();
         }
-        bsmUserInfoService.signUpSendPost(requestDto);
 
-        return ResponseUtils.successResponse(new ResponseEmptyData());
+        return ResponseUtils.successResponse(new SimpleResponse.BooleanResult(bsmUserInfoService.signUpSendPost(requestDto)));
     }
 
     @Operation

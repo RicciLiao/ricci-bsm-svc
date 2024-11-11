@@ -1,6 +1,6 @@
 package ricciliao.bsm.common;
 
-public class BsmCode {
+public class BsmCodeList {
 
     public static final String EMAIL_VERIFICATION = "EVT";
 

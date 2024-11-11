@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import ricciliao.bsm.aspect.ControllerAspect;
-import ricciliao.bsm.component.CodeListComponent;
+import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.filter.HttpServletWrapperFilter;
 import ricciliao.bsm.repository.BsmCodeDetailRepository;
 import ricciliao.bsm.repository.BsmCodeRepository;
@@ -63,10 +63,10 @@ public class WebMvcConfig {
     }
 
     @Bean
-    public CodeListComponent codeListComponent(@Autowired BsmCodeRepository bsmCodeRepository,
-                                               @Autowired BsmCodeDetailRepository bsmCodeDetailRepository) {
+    public BsmCodeListComponent codeListComponent(@Autowired BsmCodeRepository bsmCodeRepository,
+                                                  @Autowired BsmCodeDetailRepository bsmCodeDetailRepository) {
 
-        return new CodeListComponent(bsmCodeDetailRepository, bsmCodeRepository);
+        return new BsmCodeListComponent(bsmCodeDetailRepository, bsmCodeRepository);
     }
 
 }

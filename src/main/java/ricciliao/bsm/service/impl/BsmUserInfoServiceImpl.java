@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.common.BsmPojoUtils;
+import ricciliao.bsm.common.BsmResponseCode;
 import ricciliao.bsm.component.CaptchaRedisTemplateWrapper;
-import ricciliao.bsm.component.CodeListComponent;
+import ricciliao.bsm.component.BsmCodeListComponent;
+import ricciliao.bsm.component.EmailRedisTemplateWrapper;
 import ricciliao.bsm.configuration.ApplicationProperties;
 import ricciliao.bsm.pojo.bo.EmailRedisBo;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
@@ -25,10 +27,16 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     private BsmServiceImpl bsmService;
     private CaptchaRedisTemplateWrapper captchaRedisTemplateWrapper;
     private ApplicationProperties applicationProperties;
-    private CodeListComponent codeListComponent;
+    private BsmCodeListComponent codeListComponent;
+    private EmailRedisTemplateWrapper emailRedisTemplateWrapper;
 
     @Autowired
-    public void setCodeListComponent(CodeListComponent codeListComponent) {
+    public void setEmailRedisTemplateWrapper(EmailRedisTemplateWrapper emailRedisTemplateWrapper) {
+        this.emailRedisTemplateWrapper = emailRedisTemplateWrapper;
+    }
+
+    @Autowired
+    public void setCodeListComponent(BsmCodeListComponent codeListComponent) {
         this.codeListComponent = codeListComponent;
     }
 
@@ -74,11 +82,11 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     }
 
     @Override
-    public Long signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException {
+    public Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException {
         if (bsmUserRepository.existsByUserEmail(requestDto.getEmailAddress())) {
             captchaRedisTemplateWrapper.delete(requestDto.getK());
 
-            throw new ParameterException();
+            throw new ParameterException(BsmResponseCode.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
         }
         if (bsmService.verifyCaptcha(requestDto)) {
             EmailRedisBo emailRedis = new EmailRedisBo();
@@ -86,13 +94,14 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
             emailRedis.setTo(requestDto.getEmailAddress());
             emailRedis.setTypeCd(codeListComponent.getVerificationForSignUp());
             emailRedis.setSent(false);
+            emailRedisTemplateWrapper.set(requestDto.getK(), emailRedis);
         } else {
             captchaRedisTemplateWrapper.delete(requestDto.getK());
 
             throw new ParameterException();
         }
 
-        return 0L;
+        return Boolean.TRUE;
     }
 
 }
