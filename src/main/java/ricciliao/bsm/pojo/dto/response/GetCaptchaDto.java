@@ -1,10 +1,10 @@
 package ricciliao.bsm.pojo.dto.response;
 
-import ricciliao.common.component.response.ResponseVoData;
+import ricciliao.common.component.response.ResponseData;
 
 import java.io.Serial;
 
-public class GetCaptchaDto implements ResponseVoData {
+public class GetCaptchaDto implements ResponseData {
     @Serial
     private static final long serialVersionUID = 8830237055676586883L;
 

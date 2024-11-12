@@ -13,7 +13,6 @@ import ricciliao.bsm.aspect.ControllerAspect;
 import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.filter.HttpServletWrapperFilter;
 import ricciliao.bsm.repository.BsmCodeDetailRepository;
-import ricciliao.bsm.repository.BsmCodeRepository;
 import ricciliao.dynamic.aop.DynamicPointcutAdvisor;
 
 import java.util.TimeZone;
@@ -63,10 +62,9 @@ public class WebMvcConfig {
     }
 
     @Bean
-    public BsmCodeListComponent codeListComponent(@Autowired BsmCodeRepository bsmCodeRepository,
-                                                  @Autowired BsmCodeDetailRepository bsmCodeDetailRepository) {
+    public BsmCodeListComponent codeListComponent(@Autowired BsmCodeDetailRepository bsmCodeDetailRepository) {
 
-        return new BsmCodeListComponent(bsmCodeDetailRepository, bsmCodeRepository);
+        return new BsmCodeListComponent(bsmCodeDetailRepository);
     }
 
 }

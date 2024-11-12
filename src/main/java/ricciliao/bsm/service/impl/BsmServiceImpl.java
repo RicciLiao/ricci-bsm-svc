@@ -12,8 +12,8 @@ import ricciliao.bsm.pojo.dto.request.VerifyCaptchaDto;
 import ricciliao.bsm.pojo.dto.response.GetCaptchaDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.utils.CaptchaGenerator;
-import ricciliao.common.component.utils.RandomGenerator;
+import ricciliao.common.component.random.CaptchaGenerator;
+import ricciliao.common.component.random.RandomGenerator;
 
 import java.time.LocalDateTime;
 
@@ -22,7 +22,7 @@ public class BsmServiceImpl implements BsmService {
 
     private EmailRedisTemplateWrapper emailRedisTemplateWrapper;
     private CaptchaRedisTemplateWrapper captchaRedisTemplate;
-    public JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     @Autowired
     public void setEmailRedisTemplateWrapper(EmailRedisTemplateWrapper emailRedisTemplateWrapper) {
@@ -41,13 +41,8 @@ public class BsmServiceImpl implements BsmService {
 
     @Override
     public GetCaptchaDto getCaptcha() throws CmnException {
-        LocalDateTime now = LocalDateTime.now();
-        String captchaCode =
-                RandomGenerator.nextString(5).clear(true)
-                        .atLeastDigit(1).atLeastLowerLetter(1)
-                        .atLeastUpperLetter(1).generate();
-        String key = RandomGenerator.nextString(12).atLeastDigit(3).atLeastUpperLetter(3).atLeastUpperLetter(3).generate();
-        CaptchaGenerator.CaptchaResult result = CaptchaGenerator.generateCaptchaImage(captchaCode);
+        String key = RandomGenerator.nextString(12).allAtLeast(3).generate();
+        CaptchaGenerator.CaptchaResult result = RandomGenerator.nextCaptcha();
         CaptchaRedisBo bo = new CaptchaRedisBo();
         bo.setCaptcha(result.code());
         captchaRedisTemplate.set(key, bo);

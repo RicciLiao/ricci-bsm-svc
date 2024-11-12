@@ -1,6 +1,6 @@
 package ricciliao.bsm.pojo.bo;
 
-import ricciliao.common.component.utils.RandomGenerator;
+import ricciliao.common.component.random.RandomGenerator;
 
 import java.io.Serial;
 import java.io.Serializable;

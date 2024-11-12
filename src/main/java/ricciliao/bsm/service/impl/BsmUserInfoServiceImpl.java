@@ -15,8 +15,8 @@ import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.exception.ParameterException;
-import ricciliao.common.component.exception.RecordException;
+import ricciliao.common.component.exception.CmnParameterException;
+import ricciliao.common.component.exception.CmnRecordException;
 
 import java.time.LocalDateTime;
 
@@ -71,7 +71,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         requestDto.setUpdatedDtm(LocalDateTime.now());
         if (bsmUserRepository.existsByLoginNameOrUserEmail(requestDto.getLoginName(), requestDto.getLoginName())) {
 
-            throw new RecordException();
+            throw new CmnRecordException();
         }
 
         requestDto.setStatusId(0L);
@@ -86,7 +86,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         if (bsmUserRepository.existsByUserEmail(requestDto.getEmailAddress())) {
             captchaRedisTemplateWrapper.delete(requestDto.getK());
 
-            throw new ParameterException(BsmResponseCode.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
+            throw new CmnParameterException(BsmResponseCode.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
         }
         if (bsmService.verifyCaptcha(requestDto)) {
             EmailRedisBo emailRedis = new EmailRedisBo();
@@ -98,7 +98,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         } else {
             captchaRedisTemplateWrapper.delete(requestDto.getK());
 
-            throw new ParameterException();
+            throw new CmnParameterException();
         }
 
         return Boolean.TRUE;

@@ -57,8 +57,7 @@ public class HttpServletWrapperFilter implements Filter {
 
             chain.doFilter(httpServletRequestWrapper, httpServletResponseWrapper);
         } catch (InterruptedException e) {
-
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         } finally {
             /**
              *@Description: Copy the complete cached body content to the response.

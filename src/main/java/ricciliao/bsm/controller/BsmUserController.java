@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
-import ricciliao.bsm.pojo.dto.response.SimpleResponse;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.response.CmnResponseCode;
+import ricciliao.common.component.response.ResponseCodeEnum;
+import ricciliao.common.component.response.ResponseData;
+import ricciliao.common.component.response.ResponseSimpleData;
 import ricciliao.common.component.response.ResponseUtils;
 import ricciliao.common.component.response.ResponseVo;
-import ricciliao.common.component.response.ResponseVoData;
 
 
 @Tag(name = "")
@@ -36,20 +36,20 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp/sendPost")
-    public ResponseVo<? extends ResponseVoData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
-                                                         BindingResult bindingResult) throws CmnException {
+    public ResponseVo<ResponseData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
+                                             BindingResult bindingResult) throws CmnException {
         if (bindingResult.hasErrors()) {
 
-            return ResponseUtils.builder(bindingResult).code(CmnResponseCode.PARAMETER_ERROR).build();
+            return ResponseUtils.builder(bindingResult).code(ResponseCodeEnum.PARAMETER_ERROR).build();
         }
 
-        return ResponseUtils.successResponse(new SimpleResponse.BooleanResult(bsmUserInfoService.signUpSendPost(requestDto)));
+        return ResponseUtils.successResponse(new ResponseSimpleData.BooleanResult(bsmUserInfoService.signUpSendPost(requestDto)));
     }
 
     @Operation
     @PostMapping("/signUp")
-    public ResponseVo<? extends ResponseVoData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
-                                                       BindingResult bindingResult) throws CmnException {
+    public ResponseVo<ResponseData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
+                                           BindingResult bindingResult) throws CmnException {
         if (bindingResult.hasErrors()) {
 
             return ResponseUtils.builder(bindingResult).build();

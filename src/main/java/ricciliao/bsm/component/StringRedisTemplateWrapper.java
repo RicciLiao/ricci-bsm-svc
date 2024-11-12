@@ -5,7 +5,7 @@ import ricciliao.bsm.pojo.bo.RedisCatchBo;
 
 import java.time.Duration;
 
-public abstract class StringRedisTemplateWrapper<T extends RedisCatchBo> {
+public class StringRedisTemplateWrapper<T extends RedisCatchBo> {
 
     private final RedisTemplate<String, T> redisTemplate;
     private final Duration ttl;
