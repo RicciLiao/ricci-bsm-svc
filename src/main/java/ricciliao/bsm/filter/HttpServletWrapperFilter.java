@@ -52,7 +52,7 @@ public class HttpServletWrapperFilter implements Filter {
 
         try {
             if (!excludePathPatterns.matches(httpServletRequest.getRequestURI())) {
-                Thread.sleep(Duration.ofSeconds(6L));
+                Thread.sleep(Duration.ofSeconds(2L));
             }
 
             chain.doFilter(httpServletRequestWrapper, httpServletResponseWrapper);

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.common.BsmPojoUtils;
-import ricciliao.bsm.common.BsmResponseCode;
+import ricciliao.bsm.common.BsmResponseCodeEnum;
 import ricciliao.bsm.component.CaptchaRedisTemplateWrapper;
 import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.component.EmailRedisTemplateWrapper;
@@ -86,7 +86,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         if (bsmUserRepository.existsByUserEmail(requestDto.getEmailAddress())) {
             captchaRedisTemplateWrapper.delete(requestDto.getK());
 
-            throw new CmnParameterException(BsmResponseCode.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
+            throw new CmnParameterException(BsmResponseCodeEnum.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
         }
         if (bsmService.verifyCaptcha(requestDto)) {
             EmailRedisBo emailRedis = new EmailRedisBo();

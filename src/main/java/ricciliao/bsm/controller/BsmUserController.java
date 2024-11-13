@@ -21,8 +21,7 @@ import ricciliao.common.component.response.ResponseUtils;
 import ricciliao.common.component.response.ResponseVo;
 
 
-@Tag(name = "")
-//@Api("Api")
+@Tag(name = "BsmUserController")
 @RestController
 @RequestMapping("/user")
 public class BsmUserController {

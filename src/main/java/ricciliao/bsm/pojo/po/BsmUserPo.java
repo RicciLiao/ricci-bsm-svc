@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "bak_bsm_user")
+@Table(name = "bsm_user")
 public class BsmUserPo implements Serializable {
     @Serial
     private static final long serialVersionUID = -5025336393087857045L;

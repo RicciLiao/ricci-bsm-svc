@@ -16,7 +16,7 @@ import ricciliao.common.component.response.ResponseSimpleData;
 import ricciliao.common.component.response.ResponseUtils;
 import ricciliao.common.component.response.ResponseVo;
 
-@Tag(name = "")
+@Tag(name = "BsmController")
 @RestController
 public class BsmController {
 
