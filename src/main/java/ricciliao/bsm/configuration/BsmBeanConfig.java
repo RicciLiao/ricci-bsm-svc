@@ -18,13 +18,13 @@ import ricciliao.dynamic.aop.DynamicPointcutAdvisor;
 import java.util.TimeZone;
 
 @Configuration
-public class WebMvcConfig {
+public class BsmBeanConfig {
 
-    private ApplicationProperties applicationProperties;
+    private BsmProps bsmProps;
 
     @Autowired
-    public void setApplicationProperties(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public void setBsmProps(BsmProps bsmProps) {
+        this.bsmProps = bsmProps;
     }
 
     @Bean
@@ -32,7 +32,7 @@ public class WebMvcConfig {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        objectMapper.setTimeZone(TimeZone.getTimeZone(applicationProperties.getTimeZone()));
+        objectMapper.setTimeZone(TimeZone.getTimeZone(bsmProps.getTimeZone()));
         // objectMapper java.time.LocalDate/LocalDateTime
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.registerModule(new JavaTimeModule());
@@ -44,7 +44,7 @@ public class WebMvcConfig {
     public DynamicPointcutAdvisor controllerAspect() {
 
         return new DynamicPointcutAdvisor(
-                applicationProperties.getDynamicAopPointCutController(),
+                bsmProps.getDynamicAopPointCutController(),
                 new ControllerAspect()
         );
     }

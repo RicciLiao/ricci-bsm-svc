@@ -26,19 +26,19 @@ import java.time.Duration;
 @Configuration
 public class StringRedisWrapperConfig {
 
-    private ApplicationProperties applicationProperties;
+    private BsmProps bsmProps;
 
     @Autowired
-    public void setApplicationProperties(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public void setBsmProps(BsmProps bsmProps) {
+        this.bsmProps = bsmProps;
     }
 
     @Bean
     public CaptchaRedisTemplateWrapper captchaRedisTemplateWrapper(@Autowired ObjectMapper objectMapper) {
 
         return new CaptchaRedisTemplateWrapper(
-                createRedisTemplate(objectMapper, CaptchaRedisBo.class, applicationProperties.getCaptchaRedisProps()),
-                applicationProperties.getCaptchaRedisProps().ttl
+                createRedisTemplate(objectMapper, CaptchaRedisBo.class, bsmProps.getCaptchaRedisProps()),
+                bsmProps.getCaptchaRedisProps().ttl
         );
     }
 
@@ -46,8 +46,8 @@ public class StringRedisWrapperConfig {
     public EmailRedisTemplateWrapper emailRedisTemplateWrapper(@Autowired ObjectMapper objectMapper) {
 
         return new EmailRedisTemplateWrapper(
-                createRedisTemplate(objectMapper, EmailRedisBo.class, applicationProperties.getEmailRedisProps()),
-                applicationProperties.getEmailRedisProps().ttl
+                createRedisTemplate(objectMapper, EmailRedisBo.class, bsmProps.getEmailRedisProps()),
+                bsmProps.getEmailRedisProps().ttl
         );
     }
 

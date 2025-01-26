@@ -8,7 +8,7 @@ import ricciliao.bsm.common.BsmResponseCodeEnum;
 import ricciliao.bsm.component.CaptchaRedisTemplateWrapper;
 import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.component.EmailRedisTemplateWrapper;
-import ricciliao.bsm.configuration.ApplicationProperties;
+import ricciliao.bsm.configuration.BsmProps;
 import ricciliao.bsm.pojo.bo.EmailRedisBo;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
@@ -26,7 +26,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     private BsmUserRepository bsmUserRepository;
     private BsmServiceImpl bsmService;
     private CaptchaRedisTemplateWrapper captchaRedisTemplateWrapper;
-    private ApplicationProperties applicationProperties;
+    private BsmProps bsmProps;
     private BsmCodeListComponent codeListComponent;
     private EmailRedisTemplateWrapper emailRedisTemplateWrapper;
 
@@ -41,8 +41,8 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     }
 
     @Autowired
-    public void setApplicationProperties(ApplicationProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
+    public void setBsmProps(BsmProps bsmProps) {
+        this.bsmProps = bsmProps;
     }
 
     @Autowired
@@ -90,7 +90,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         }
         if (bsmService.verifyCaptcha(requestDto)) {
             EmailRedisBo emailRedis = new EmailRedisBo();
-            emailRedis.setFrom(applicationProperties.getEmailSender());
+            emailRedis.setFrom(bsmProps.getEmailSender());
             emailRedis.setTo(requestDto.getEmailAddress());
             emailRedis.setTypeCd(codeListComponent.getVerificationForSignUp());
             emailRedis.setSent(false);

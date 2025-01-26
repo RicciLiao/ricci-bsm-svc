@@ -1,16 +1,15 @@
 package ricciliao.bsm.configuration;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import ricciliao.common.component.context.YamlPropertiesReader;
+import ricciliao.common.component.context.ApplicationProperties;
 
 import java.time.Duration;
 
 @Configuration
-public class ApplicationProperties {
+public class BsmProps extends ApplicationProperties {
 
-    public ApplicationProperties() {
-        YamlPropertiesReader yamlProperties = new YamlPropertiesReader(new ClassPathResource("application.yml"));
+    public BsmProps() {
+        super();
         this.timeZone = yamlProperties.getProperty("time-zone", String.class);
         this.redisHost = yamlProperties.getProperty("redis.host", String.class);
         this.redisPort = yamlProperties.getProperty("redis.port", Integer.class);
