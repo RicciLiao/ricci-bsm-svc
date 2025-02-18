@@ -10,6 +10,4 @@ public interface BsmService {
 
     boolean verifyCaptcha(VerifyCaptchaDto requestDto);
 
-    boolean sendEmail(Long emailKey);
-
 }

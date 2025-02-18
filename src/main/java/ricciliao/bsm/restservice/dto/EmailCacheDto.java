@@ -1,19 +1,39 @@
-package ricciliao.bsm.pojo.bo;
+package ricciliao.bsm.restservice.dto;
+
+import ricciliao.common.component.cache.pojo.CacheDto;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class EmailRedisBo extends RedisCatchBo implements Serializable {
+public class EmailCacheDto extends CacheDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 8769005261320201830L;
 
     private String from;
     private String to;
     private String typeCd;
+    private String subject;
+    private String title;
     private boolean sent = false;
     private LocalDateTime sentDtm;
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getFrom() {
         return from;
@@ -58,13 +78,13 @@ public class EmailRedisBo extends RedisCatchBo implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EmailRedisBo that)) return false;
+        if (!(o instanceof EmailCacheDto that)) return false;
         if (!super.equals(o)) return false;
-        return isSent() == that.isSent() && Objects.equals(getFrom(), that.getFrom()) && Objects.equals(getTo(), that.getTo()) && Objects.equals(getTypeCd(), that.getTypeCd()) && Objects.equals(getCreatedDtm(), that.getCreatedDtm()) && Objects.equals(getSentDtm(), that.getSentDtm());
+        return isSent() == that.isSent() && Objects.equals(getFrom(), that.getFrom()) && Objects.equals(getTo(), that.getTo()) && Objects.equals(getTypeCd(), that.getTypeCd()) && Objects.equals(getSubject(), that.getSubject()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getSentDtm(), that.getSentDtm());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getFrom(), getTo(), getTypeCd(), isSent(), getCreatedDtm(), getSentDtm());
+        return Objects.hash(super.hashCode(), getFrom(), getTo(), getTypeCd(), getSubject(), getTitle(), isSent(), getSentDtm());
     }
 }

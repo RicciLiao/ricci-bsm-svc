@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.data.repository.query.Param;
+import ricciliao.bsm.pojo.bo.BsmCodeDetailBo;
 import ricciliao.bsm.pojo.dto.BsmCodeDetailDto;
 import ricciliao.bsm.pojo.po.BsmCodeDetailPo;
 
@@ -106,4 +107,11 @@ public interface BsmCodeDetailRepository extends JpaRepository<BsmCodeDetailPo, 
             "where c.code = :bsmCode and cd.code = :bsmDetailCode")
     Optional<BsmCodeDetailDto> getByUniqueKey(@Param("bsmCode") String bsmCode,
                                               @Param("bsmDetailCode") String bsmDetailCode);
+
+    @Query("select new ricciliao.bsm.pojo.bo.BsmCodeDetailBo(cp.code, cdp.code, cdp.description) " +
+            "from BsmCodeDetailPo cdp " +
+            "inner join BsmCodePo cp on cdp.bsmCodeId = cp.id " +
+            "where cp.isActive = 1 " +
+            "and cdp.isActive = 1")
+    List<BsmCodeDetailBo> findAllForCache();
 }

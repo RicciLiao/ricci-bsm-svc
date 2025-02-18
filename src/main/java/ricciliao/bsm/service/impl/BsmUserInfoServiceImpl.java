@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.common.BsmPojoUtils;
 import ricciliao.bsm.common.BsmResponseCodeEnum;
-import ricciliao.bsm.component.CaptchaRedisTemplateWrapper;
 import ricciliao.bsm.component.BsmCodeListComponent;
-import ricciliao.bsm.component.EmailRedisTemplateWrapper;
-import ricciliao.bsm.configuration.BsmProps;
-import ricciliao.bsm.pojo.bo.EmailRedisBo;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.repository.BsmUserRepository;
+import ricciliao.bsm.restservice.dto.EmailCacheDto;
+import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
+import ricciliao.bsm.service.CacheProviderService;
+import ricciliao.common.component.cache.pojo.ConsumerOperationDto;
 import ricciliao.common.component.exception.CmnException;
 import ricciliao.common.component.exception.CmnParameterException;
 import ricciliao.common.component.exception.CmnRecordException;
@@ -24,30 +24,18 @@ import java.time.LocalDateTime;
 public class BsmUserInfoServiceImpl implements BsmUserInfoService {
 
     private BsmUserRepository bsmUserRepository;
-    private BsmServiceImpl bsmService;
-    private CaptchaRedisTemplateWrapper captchaRedisTemplateWrapper;
-    private BsmProps bsmProps;
+    private BsmService bsmService;
     private BsmCodeListComponent codeListComponent;
-    private EmailRedisTemplateWrapper emailRedisTemplateWrapper;
+    private CacheProviderService cacheProviderService;
 
     @Autowired
-    public void setEmailRedisTemplateWrapper(EmailRedisTemplateWrapper emailRedisTemplateWrapper) {
-        this.emailRedisTemplateWrapper = emailRedisTemplateWrapper;
+    public void setCacheProviderService(CacheProviderService cacheProviderService) {
+        this.cacheProviderService = cacheProviderService;
     }
 
     @Autowired
     public void setCodeListComponent(BsmCodeListComponent codeListComponent) {
         this.codeListComponent = codeListComponent;
-    }
-
-    @Autowired
-    public void setBsmProps(BsmProps bsmProps) {
-        this.bsmProps = bsmProps;
-    }
-
-    @Autowired
-    public void setCaptchaRedisTemplateWrapper(CaptchaRedisTemplateWrapper captchaRedisTemplateWrapper) {
-        this.captchaRedisTemplateWrapper = captchaRedisTemplateWrapper;
     }
 
     @Autowired
@@ -84,19 +72,21 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     @Override
     public Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException {
         if (bsmUserRepository.existsByUserEmail(requestDto.getEmailAddress())) {
-            captchaRedisTemplateWrapper.delete(requestDto.getK());
+            cacheProviderService.captcha().delete(requestDto.getK());
 
             throw new CmnParameterException(BsmResponseCodeEnum.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
         }
         if (bsmService.verifyCaptcha(requestDto)) {
-            EmailRedisBo emailRedis = new EmailRedisBo();
-            emailRedis.setFrom(bsmProps.getEmailSender());
+            EmailCacheDto emailRedis = new EmailCacheDto();
+            emailRedis.setSubject("My Subject");
+            emailRedis.setTitle("My Title");
             emailRedis.setTo(requestDto.getEmailAddress());
             emailRedis.setTypeCd(codeListComponent.getVerificationForSignUp());
             emailRedis.setSent(false);
-            emailRedisTemplateWrapper.set(requestDto.getK(), emailRedis);
+            emailRedis.setCreatedDtm(LocalDateTime.now());
+            emailRedis.setUpdatedDtm(emailRedis.getCreatedDtm());
+            cacheProviderService.email().create(new ConsumerOperationDto<>(requestDto.getK(), emailRedis));
         } else {
-            captchaRedisTemplateWrapper.delete(requestDto.getK());
 
             throw new CmnParameterException();
         }

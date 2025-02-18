@@ -18,38 +18,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  mail:
-    protocol: smtp
-    host: smtp.163.com
-    username: riccix@163.com
-    password: CKZKthMEC3ENKJxz
-    port: 25
-    default-encoding: UTF-8
-    properties:
-      mail:
-        debug: true
 time-zone: GMT+8
 dynamic-aop:
-  point-cut:
-    controller: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
-redis:
-  host: 192.168.165.34
-  port: 6379
-  password: asl123456
-  db:
-    captcha:
-      database: 1
-      timeout: 60000
-      ttl: 300000
-      pool:
-        min-idle: 2
-        max-idle: 5
-        max-total: 20
-    email:
-      database: 2
-      timeout: 60000
-      ttl: 300000
-      pool:
-        min-idle: 2
-        max-idle: 5
-        max-total: 20
+  aspect-list:
+    - expression: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
+      aspect: ricciliao.bsm.aspect.ControllerAspect
+      bean-name: controllerAspect
+cache-consumer:
+  consumer: bsm

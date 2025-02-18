@@ -20,7 +20,6 @@ import ricciliao.common.component.response.ResponseSimpleData;
 import ricciliao.common.component.response.ResponseUtils;
 import ricciliao.common.component.response.ResponseVo;
 
-
 @Tag(name = "BsmUserController")
 @RestController
 @RequestMapping("/user")
@@ -28,7 +27,7 @@ public class BsmUserController {
 
     private BsmUserInfoService bsmUserInfoService;
 
-    @Autowired
+    @Autowired(required = false)
     public void setBsmUserInfoService(BsmUserInfoService bsmUserInfoService) {
         this.bsmUserInfoService = bsmUserInfoService;
     }
@@ -42,7 +41,7 @@ public class BsmUserController {
             return ResponseUtils.builder(bindingResult).code(ResponseCodeEnum.PARAMETER_ERROR).build();
         }
 
-        return ResponseUtils.successResponse(new ResponseSimpleData.BooleanResult(bsmUserInfoService.signUpSendPost(requestDto)));
+        return ResponseUtils.successResponse(new ResponseSimpleData.Bool(bsmUserInfoService.signUpSendPost(requestDto)));
     }
 
     @Operation
@@ -50,6 +49,7 @@ public class BsmUserController {
     public ResponseVo<ResponseData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
                                            BindingResult bindingResult) throws CmnException {
         if (bindingResult.hasErrors()) {
+
 
             return ResponseUtils.builder(bindingResult).build();
         }

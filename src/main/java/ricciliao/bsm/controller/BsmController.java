@@ -39,7 +39,7 @@ public class BsmController {
     @PostMapping("/captcha")
     public ResponseVo<ResponseData> captcha(@RequestBody VerifyCaptchaDto requestDto) {
 
-        return ResponseUtils.successResponse(new ResponseSimpleData.BooleanResult(bsmService.verifyCaptcha(requestDto)));
+        return ResponseUtils.successResponse(new ResponseSimpleData.Bool(bsmService.verifyCaptcha(requestDto)));
     }
 
 }
