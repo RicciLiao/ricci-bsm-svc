@@ -20,7 +20,7 @@ import ricciliao.bsm.restservice.dto.EmailCacheDto;
 import ricciliao.common.component.aspect.DynamicAspectAutoConfiguration;
 import ricciliao.common.component.cache.CacheConstants;
 import ricciliao.common.component.cache.pojo.ConsumerIdentifierDto;
-import ricciliao.common.component.cache.service.CacheRestService;
+import ricciliao.common.component.cache.consumer.ConsumerCacheRestService;
 
 import java.util.TimeZone;
 
@@ -68,9 +68,9 @@ public class BsmBeanConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public CacheRestService<CaptchaCacheDto> captchaCacheRestService(@Autowired RestTemplate bsmRestTemplate,
-                                                                     @Autowired BsmProps bsmProps) {
-        return new CacheRestService<>(
+    public ConsumerCacheRestService<CaptchaCacheDto> captchaCacheRestService(@Autowired RestTemplate bsmRestTemplate,
+                                                                             @Autowired BsmProps bsmProps) {
+        return new ConsumerCacheRestService<>(
                 bsmProps.getConsumerCacheProps().getOperation(),
                 new ConsumerIdentifierDto(
                         bsmProps.getConsumerCacheProps().getConsumer(),
@@ -81,9 +81,9 @@ public class BsmBeanConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public CacheRestService<EmailCacheDto> emailCacheRestService(@Autowired RestTemplate bsmRestTemplate,
-                                                                 @Autowired BsmProps bsmProps) {
-        return new CacheRestService<>(
+    public ConsumerCacheRestService<EmailCacheDto> emailCacheRestService(@Autowired RestTemplate bsmRestTemplate,
+                                                                         @Autowired BsmProps bsmProps) {
+        return new ConsumerCacheRestService<>(
                 bsmProps.getConsumerCacheProps().getOperation(),
                 new ConsumerIdentifierDto(
                         bsmProps.getConsumerCacheProps().getConsumer(),

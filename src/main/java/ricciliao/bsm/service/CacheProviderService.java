@@ -2,12 +2,12 @@ package ricciliao.bsm.service;
 
 import ricciliao.bsm.restservice.dto.CaptchaCacheDto;
 import ricciliao.bsm.restservice.dto.EmailCacheDto;
-import ricciliao.common.component.cache.service.CacheRestService;
+import ricciliao.common.component.cache.consumer.ConsumerCacheRestService;
 
 public interface CacheProviderService {
 
-    CacheRestService<CaptchaCacheDto> captcha();
+    ConsumerCacheRestService<CaptchaCacheDto> captcha();
 
-    CacheRestService<EmailCacheDto> email();
+    ConsumerCacheRestService<EmailCacheDto> email();
 
 }
