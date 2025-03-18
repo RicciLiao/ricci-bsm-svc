@@ -13,10 +13,10 @@ import ricciliao.bsm.restservice.dto.EmailCacheDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.bsm.service.CacheProviderService;
-import ricciliao.common.component.cache.pojo.ConsumerOperationDto;
-import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.exception.CmnParameterException;
-import ricciliao.common.component.exception.CmnRecordException;
+import ricciliao.x.component.cache.pojo.ConsumerOperationDto;
+import ricciliao.x.component.exception.CmnException;
+import ricciliao.x.component.exception.CmnParameterException;
+import ricciliao.x.component.exception.CmnRecordException;
 
 import java.time.LocalDateTime;
 

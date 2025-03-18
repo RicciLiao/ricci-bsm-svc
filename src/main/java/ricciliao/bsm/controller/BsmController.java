@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.request.VerifyCaptchaDto;
 import ricciliao.bsm.service.BsmService;
-import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.response.ResponseData;
-import ricciliao.common.component.response.ResponseSimpleData;
-import ricciliao.common.component.response.ResponseUtils;
-import ricciliao.common.component.response.ResponseVo;
+import ricciliao.x.component.exception.CmnException;
+import ricciliao.x.component.response.ResponseData;
+import ricciliao.x.component.response.ResponseSimpleData;
+import ricciliao.x.component.response.ResponseUtils;
+import ricciliao.x.component.response.ResponseVo;
 
 @Tag(name = "BsmController")
 @RestController

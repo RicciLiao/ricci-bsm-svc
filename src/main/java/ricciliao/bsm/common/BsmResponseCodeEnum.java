@@ -1,6 +1,7 @@
 package ricciliao.bsm.common;
 
-import ricciliao.common.component.response.ResponseCode;
+
+import ricciliao.x.component.response.ResponseCode;
 
 public enum BsmResponseCodeEnum implements ResponseCode {
 

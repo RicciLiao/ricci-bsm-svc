@@ -1,6 +1,7 @@
 package ricciliao.bsm.restservice.dto;
 
-import ricciliao.common.component.cache.pojo.CacheDto;
+
+import ricciliao.x.component.cache.pojo.CacheDto;
 
 import java.io.Serial;
 import java.io.Serializable;

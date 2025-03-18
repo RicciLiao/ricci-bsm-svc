@@ -2,7 +2,7 @@ package ricciliao.bsm.service;
 
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
-import ricciliao.common.component.exception.CmnException;
+import ricciliao.x.component.exception.CmnException;
 
 public interface BsmUserInfoService {
 

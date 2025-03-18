@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.service.BsmUserInfoService;
-import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.response.ResponseCodeEnum;
-import ricciliao.common.component.response.ResponseData;
-import ricciliao.common.component.response.ResponseSimpleData;
-import ricciliao.common.component.response.ResponseUtils;
-import ricciliao.common.component.response.ResponseVo;
+import ricciliao.x.component.exception.CmnException;
+import ricciliao.x.component.response.ResponseCodeEnum;
+import ricciliao.x.component.response.ResponseData;
+import ricciliao.x.component.response.ResponseSimpleData;
+import ricciliao.x.component.response.ResponseUtils;
+import ricciliao.x.component.response.ResponseVo;
 
 @Tag(name = "BsmUserController")
 @RestController

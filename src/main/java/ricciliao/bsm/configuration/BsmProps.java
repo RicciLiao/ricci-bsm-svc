@@ -1,25 +1,21 @@
 package ricciliao.bsm.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
-import ricciliao.common.component.cache.consumer.ConsumerCacheProperties;
-import ricciliao.common.component.props.DefaultProperties;
+import org.springframework.context.annotation.Configuration;
+import ricciliao.x.component.props.ApplicationProperties;
+import ricciliao.x.starter.XProperties;
 
-@EnableConfigurationProperties({
-        ConsumerCacheProperties.class,
-})
-@Component("bsmProps")
-public class BsmProps extends DefaultProperties {
+@Configuration("bsmProps")
+public class BsmProps extends ApplicationProperties {
 
-    public BsmProps(@Autowired ConsumerCacheProperties consumerCacheProperties) {
+    public BsmProps(@Autowired XProperties xProperties) {
         super();
-        this.consumerCacheProps = consumerCacheProperties;
+        this.xProperties = xProperties;
     }
 
-    private final ConsumerCacheProperties consumerCacheProps;
+    private final XProperties xProperties;
 
-    public ConsumerCacheProperties getConsumerCacheProps() {
-        return consumerCacheProps;
+    public XProperties getxProperties() {
+        return xProperties;
     }
 }

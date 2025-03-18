@@ -1,6 +1,7 @@
 package ricciliao.bsm.pojo.dto.response;
 
-import ricciliao.common.component.response.ResponseData;
+
+import ricciliao.x.component.response.ResponseData;
 
 import java.io.Serial;
 

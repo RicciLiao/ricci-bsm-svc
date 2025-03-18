@@ -7,10 +7,10 @@ import ricciliao.bsm.pojo.dto.response.GetCaptchaDto;
 import ricciliao.bsm.restservice.dto.CaptchaCacheDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.CacheProviderService;
-import ricciliao.common.component.cache.pojo.ConsumerOperationDto;
-import ricciliao.common.component.exception.CmnException;
-import ricciliao.common.component.random.CaptchaGenerator;
-import ricciliao.common.component.random.RandomGenerator;
+import ricciliao.x.component.cache.pojo.ConsumerOperationDto;
+import ricciliao.x.component.exception.CmnException;
+import ricciliao.x.component.random.CaptchaGenerator;
+import ricciliao.x.component.random.RandomGenerator;
 
 import java.time.LocalDateTime;
 
@@ -29,8 +29,8 @@ public class BsmServiceImpl implements BsmService {
         CaptchaGenerator.CaptchaResult result = RandomGenerator.nextCaptcha();
         CaptchaCacheDto dto = new CaptchaCacheDto();
         dto.setCaptcha(result.code());
-        cacheProviderService.captcha().create(new ConsumerOperationDto<>(dto.getCacheId(), dto));
-        ConsumerOperationDto<CaptchaCacheDto> operation = cacheProviderService.captcha().get(dto.getCacheId());
+        String cacheId = cacheProviderService.captcha().create(new ConsumerOperationDto<>(dto.getCacheId(), dto)).result();
+        ConsumerOperationDto<CaptchaCacheDto> operation = cacheProviderService.captcha().get(cacheId);
 
         return new GetCaptchaDto(operation.getId(), result.captchaBase64(), operation.getTtlOfMillis());
     }

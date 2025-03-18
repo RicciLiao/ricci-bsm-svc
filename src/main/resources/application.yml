@@ -18,11 +18,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-time-zone: GMT+8
-dynamic-aop:
-  aspect-list:
-    - expression: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
-      aspect: ricciliao.bsm.aspect.ControllerAspect
-      bean-name: controllerAspect
-cache-consumer:
-  consumer: bsm
+ricciliao:
+  x:
+    common:
+      time-zone: GMT+8
+    dynamic-aspect:
+      aspect-list:
+        - expression: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
+          aspect: ricciliao.bsm.aspect.ControllerAspect
+          bean-name: controllerAspect
+    cache-consumer:
+      consumer: bsm
+      operation-list:
+        - store: captcha
+          store-class-name: ricciliao.bsm.restservice.dto.CaptchaCacheDto
+        - store: email
+          store-class-name: ricciliao.bsm.restservice.dto.EmailCacheDto

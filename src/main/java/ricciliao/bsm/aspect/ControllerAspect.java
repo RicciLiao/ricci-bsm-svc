@@ -3,9 +3,9 @@ package ricciliao.bsm.aspect;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ricciliao.common.component.exception.CmnParameterException;
-import ricciliao.common.component.response.ResponseUtils;
-import ricciliao.dynamic.aop.DynamicAspect;
+import ricciliao.x.aop.DynamicAspect;
+import ricciliao.x.component.exception.CmnParameterException;
+import ricciliao.x.component.response.ResponseUtils;
 
 public class ControllerAspect extends DynamicAspect {
 

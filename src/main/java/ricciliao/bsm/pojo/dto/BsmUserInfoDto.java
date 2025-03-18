@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
-import ricciliao.common.component.serialisation.LocalDateTime2TimestampSerializer;
-import ricciliao.common.component.serialisation.Timestamp2LocalDateTimeDeserializer;
+import ricciliao.x.component.serialisation.LocalDateTime2TimestampSerializer;
+import ricciliao.x.component.serialisation.Timestamp2LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

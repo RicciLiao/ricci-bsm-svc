@@ -3,7 +3,7 @@ package ricciliao.bsm.filter;
 
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
-import ricciliao.common.component.servlet.HttpServletWrapperFilter;
+import ricciliao.x.component.servlet.HttpServletWrapperFilter;
 
 import java.time.Duration;
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ricciliao.bsm.restservice.dto.CaptchaCacheDto;
 import ricciliao.bsm.restservice.dto.EmailCacheDto;
 import ricciliao.bsm.service.CacheProviderService;
-import ricciliao.common.component.cache.consumer.ConsumerCacheRestService;
+import ricciliao.x.component.cache.consumer.ConsumerCacheRestService;
 
 @Service("cacheProviderService")
 public class CacheProviderServiceImpl implements CacheProviderService {
@@ -14,13 +14,13 @@ public class CacheProviderServiceImpl implements CacheProviderService {
     private ConsumerCacheRestService<CaptchaCacheDto> captchaCacheRestService;
     private ConsumerCacheRestService<EmailCacheDto> emailCacheRestService;
 
-    @Qualifier("captchaCacheRestService")
+    @Qualifier("captchaConsumerCacheRestService")
     @Autowired
     public void setCaptchaCacheRestService(ConsumerCacheRestService<CaptchaCacheDto> captchaCacheRestService) {
         this.captchaCacheRestService = captchaCacheRestService;
     }
 
-    @Qualifier("emailCacheRestService")
+    @Qualifier("emailConsumerCacheRestService")
     @Autowired
     public void setEmailCacheRestService(ConsumerCacheRestService<EmailCacheDto> emailCacheRestService) {
         this.emailCacheRestService = emailCacheRestService;
