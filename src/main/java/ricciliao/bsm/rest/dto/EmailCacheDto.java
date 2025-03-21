@@ -1,4 +1,4 @@
-package ricciliao.bsm.restservice.dto;
+package ricciliao.bsm.rest.dto;
 
 
 import ricciliao.x.component.cache.pojo.CacheDto;

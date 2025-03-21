@@ -31,6 +31,18 @@ ricciliao:
       consumer: bsm
       operation-list:
         - store: captcha
-          store-class-name: ricciliao.bsm.restservice.dto.CaptchaCacheDto
+          store-class-name: ricciliao.bsm.rest.dto.CaptchaCacheDto
+          create:
+            path: http://192.168.165.33:8083/operation
+            method:
+              name: post
+          update:
+            path: http://192.168.165.33:8083/operation
+            method:
+              name: put
+          retrieve:
+            path: http://192.168.165.33:8083/operation/{id}
+            method:
+              name: get
         - store: email
-          store-class-name: ricciliao.bsm.restservice.dto.EmailCacheDto
+          store-class-name: ricciliao.bsm.rest.dto.EmailCacheDto

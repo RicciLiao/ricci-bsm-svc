@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ricciliao.bsm.pojo.dto.request.VerifyCaptchaDto;
 import ricciliao.bsm.pojo.dto.response.GetCaptchaDto;
-import ricciliao.bsm.restservice.dto.CaptchaCacheDto;
+import ricciliao.bsm.rest.dto.CaptchaCacheDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.CacheProviderService;
 import ricciliao.x.component.cache.pojo.ConsumerOperationDto;
@@ -13,6 +13,7 @@ import ricciliao.x.component.random.CaptchaGenerator;
 import ricciliao.x.component.random.RandomGenerator;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 public class BsmServiceImpl implements BsmService {
@@ -29,7 +30,7 @@ public class BsmServiceImpl implements BsmService {
         CaptchaGenerator.CaptchaResult result = RandomGenerator.nextCaptcha();
         CaptchaCacheDto dto = new CaptchaCacheDto();
         dto.setCaptcha(result.code());
-        String cacheId = cacheProviderService.captcha().create(new ConsumerOperationDto<>(dto.getCacheId(), dto)).result();
+        String cacheId = cacheProviderService.captcha().create(new ConsumerOperationDto<>(dto)).result();
         ConsumerOperationDto<CaptchaCacheDto> operation = cacheProviderService.captcha().get(cacheId);
 
         return new GetCaptchaDto(operation.getId(), result.captchaBase64(), operation.getTtlOfMillis());
@@ -38,13 +39,15 @@ public class BsmServiceImpl implements BsmService {
     @Override
     public boolean verifyCaptcha(VerifyCaptchaDto requestDto) {
         ConsumerOperationDto<CaptchaCacheDto> operation = cacheProviderService.captcha().get(requestDto.getK());
-        CaptchaCacheDto data = operation.getData();
-        if (!data.getVerified() && requestDto.getC().equalsIgnoreCase(data.getCaptcha())) {
-            data.setUpdatedDtm(LocalDateTime.now());
-            data.setVerified(true);
-            operation.setData(data);
+        if (Objects.nonNull(operation)) {
+            CaptchaCacheDto data = operation.getData();
+            if (!data.getVerified() && requestDto.getC().equalsIgnoreCase(data.getCaptcha())) {
+                data.setUpdatedDtm(LocalDateTime.now());
+                data.setVerified(true);
+                operation.setData(data);
 
-            return cacheProviderService.captcha().update(new ConsumerOperationDto<>(data.getCacheId(), data)).result();
+                return cacheProviderService.captcha().update(new ConsumerOperationDto<>(data)).result();
+            }
         }
 
         return false;

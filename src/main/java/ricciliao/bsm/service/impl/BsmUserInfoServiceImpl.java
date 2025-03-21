@@ -9,7 +9,7 @@ import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.repository.BsmUserRepository;
-import ricciliao.bsm.restservice.dto.EmailCacheDto;
+import ricciliao.bsm.rest.dto.EmailCacheDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.bsm.service.CacheProviderService;
@@ -85,7 +85,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
             emailRedis.setSent(false);
             emailRedis.setCreatedDtm(LocalDateTime.now());
             emailRedis.setUpdatedDtm(emailRedis.getCreatedDtm());
-            cacheProviderService.email().create(new ConsumerOperationDto<>(requestDto.getK(), emailRedis));
+            cacheProviderService.email().create(new ConsumerOperationDto<>(emailRedis));
         } else {
 
             throw new CmnParameterException();
