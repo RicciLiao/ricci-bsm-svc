@@ -1,8 +1,8 @@
 package ricciliao.bsm.service;
 
-import ricciliao.bsm.rest.dto.CaptchaCacheDto;
-import ricciliao.bsm.rest.dto.EmailCacheDto;
-import ricciliao.x.component.cache.consumer.ConsumerCacheRestService;
+import ricciliao.x.cache.ConsumerCacheRestService;
+import ricciliao.x.cache.pojo.bsm.CaptchaCacheDto;
+import ricciliao.x.cache.pojo.bsm.EmailCacheDto;
 
 public interface CacheProviderService {
 

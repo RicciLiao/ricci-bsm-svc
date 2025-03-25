@@ -3,10 +3,10 @@ package ricciliao.bsm.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ricciliao.bsm.rest.dto.CaptchaCacheDto;
-import ricciliao.bsm.rest.dto.EmailCacheDto;
 import ricciliao.bsm.service.CacheProviderService;
-import ricciliao.x.component.cache.consumer.ConsumerCacheRestService;
+import ricciliao.x.cache.ConsumerCacheRestService;
+import ricciliao.x.cache.pojo.bsm.CaptchaCacheDto;
+import ricciliao.x.cache.pojo.bsm.EmailCacheDto;
 
 @Service("cacheProviderService")
 public class CacheProviderServiceImpl implements CacheProviderService {

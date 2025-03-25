@@ -9,11 +9,11 @@ import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.repository.BsmUserRepository;
-import ricciliao.bsm.rest.dto.EmailCacheDto;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.bsm.service.CacheProviderService;
-import ricciliao.x.component.cache.pojo.ConsumerOperationDto;
+import ricciliao.x.cache.pojo.ConsumerOpDto;
+import ricciliao.x.cache.pojo.bsm.EmailCacheDto;
 import ricciliao.x.component.exception.CmnException;
 import ricciliao.x.component.exception.CmnParameterException;
 import ricciliao.x.component.exception.CmnRecordException;
@@ -78,14 +78,14 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
         }
         if (bsmService.verifyCaptcha(requestDto)) {
             EmailCacheDto emailRedis = new EmailCacheDto();
-            emailRedis.setSubject("My Subject");
-            emailRedis.setTitle("My Title");
+            //emailRedis.setSubject("My Subject");
+            //emailRedis.setTitle("My Title");
             emailRedis.setTo(requestDto.getEmailAddress());
             emailRedis.setTypeCd(codeListComponent.getVerificationForSignUp());
             emailRedis.setSent(false);
             emailRedis.setCreatedDtm(LocalDateTime.now());
             emailRedis.setUpdatedDtm(emailRedis.getCreatedDtm());
-            cacheProviderService.email().create(new ConsumerOperationDto<>(emailRedis));
+            cacheProviderService.email().create(new ConsumerOpDto.Single<>(emailRedis));
         } else {
 
             throw new CmnParameterException();
