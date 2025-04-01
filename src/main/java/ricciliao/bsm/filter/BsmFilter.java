@@ -14,7 +14,7 @@ public class BsmFilter extends HttpServletWrapperFilter {
                             ContentCachingResponseWrapper responseWrapper) {
         if (!getExcludePathPatterns().matches(requestWrapper.getRequestURI())) {
             try {
-                Thread.sleep(Duration.ofSeconds(2L));
+                Thread.sleep(Duration.ofSeconds(1L));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

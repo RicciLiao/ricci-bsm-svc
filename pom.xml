@@ -49,8 +49,9 @@
             <artifactId>components-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>ricciliao</groupId>
-            <artifactId>cache-consumer-components-bsm</artifactId>
+            <groupId>ricciliao.x</groupId>
+            <artifactId>cache-consumer-bsm</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
