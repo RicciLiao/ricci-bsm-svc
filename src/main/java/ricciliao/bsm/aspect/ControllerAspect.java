@@ -1,15 +1,15 @@
 package ricciliao.bsm.aspect;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ricciliao.x.aop.DynamicAspect;
 import ricciliao.x.component.exception.CmnParameterException;
 import ricciliao.x.component.response.ResponseUtils;
+import ricciliao.x.log.AuditLoggerFactory;
+import ricciliao.x.log.logger.AuditLogger;
 
 public class ControllerAspect extends DynamicAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(ControllerAspect.class);
+    private static final AuditLogger logger = AuditLoggerFactory.getLogger(ControllerAspect.class);
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {

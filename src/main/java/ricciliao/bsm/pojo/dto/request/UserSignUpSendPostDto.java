@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class UserSignUpSendPostDto extends VerifyCaptchaDto implements Serializable {
+public class UserSignUpSendPostDto extends VerifyChallengeDto implements Serializable {
     @Serial
     private static final long serialVersionUID = -7398802352610627681L;
 

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.filter.BsmFilter;
 import ricciliao.bsm.repository.BsmCodeDetailRepository;
+import ricciliao.x.log.MdcSupportFilter;
 
 @Configuration
 public class BsmBeanConfig implements WebMvcConfigurer {
@@ -20,8 +21,19 @@ public class BsmBeanConfig implements WebMvcConfigurer {
         FilterRegistrationBean<BsmFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new BsmFilter());
         registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
         registrationBean.setName("httpServletWrapperFilter");
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<MdcSupportFilter> mdcSupportFilter() {
+        FilterRegistrationBean<MdcSupportFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new MdcSupportFilter());
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registrationBean.setName("mdcSupportFilter");
 
         return registrationBean;
     }
