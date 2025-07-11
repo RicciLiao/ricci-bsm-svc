@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
-import ricciliao.x.component.serialisation.LocalDateTime2TimestampSerializer;
-import ricciliao.x.component.serialisation.Timestamp2LocalDateTimeDeserializer;
+import ricciliao.x.component.serialisation.LocalDateTimeDeserializer;
+import ricciliao.x.component.serialisation.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -38,8 +38,8 @@ public class BsmUserInfoDto {
     private Long updatedBy;
     @JsonIgnore
     private LocalDateTime updatedDtm;
-    @JsonSerialize(using = LocalDateTime2TimestampSerializer.class)
-    @JsonDeserialize(using = Timestamp2LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime version;
 
     public Long getId() {

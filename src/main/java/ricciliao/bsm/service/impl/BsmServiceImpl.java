@@ -8,6 +8,7 @@ import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
 import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
 import ricciliao.bsm.service.BsmService;
+import ricciliao.x.cache.pojo.ConsumerCacheStore;
 import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.component.challenge.Challenge;
 import ricciliao.x.component.challenge.ChallengeFactory;
@@ -29,11 +30,12 @@ public class BsmServiceImpl implements BsmService {
     @Override
     public Pair<GetChallengeDto, String> getChallenge(ChallengeFactory.ChallengeBuilder builder) throws CmnException {
         Challenge challenge = builder.generate();
-        String cacheId = cacheProvider.challenge().create(new ConsumerOp.Single<>(new ChallengeVerificationDto(challenge))).result();
+        ConsumerOp.Single<ChallengeVerificationDto> dtoSingle = new ConsumerOp.Single<>(new ChallengeVerificationDto(challenge));
+        String cacheId = cacheProvider.challenge().create(dtoSingle).result();
         ConsumerOp.Single<ChallengeVerificationDto> operation = cacheProvider.challenge().get(cacheId);
 
         return Pair.of(
-                new GetChallengeDto(operation.getId(), challenge.getImage(), operation.getTtlOfMillis()),
+                new GetChallengeDto(operation.getData().getCacheKey(), challenge.getImage(), operation.getTtlOfSeconds()),
                 challenge.getCode()
         );
     }
@@ -42,10 +44,11 @@ public class BsmServiceImpl implements BsmService {
     public boolean verifyChallenge(VerifyChallengeDto requestDto) {
         ConsumerOp.Single<ChallengeVerificationDto> operation = cacheProvider.challenge().get(requestDto.getK());
         if (Objects.nonNull(operation)) {
-            ChallengeVerificationDto data = operation.getData();
-            if (!data.isVerified() && requestDto.getC().equalsIgnoreCase(data.getChallenge().getCode())) {
+            ConsumerCacheStore<ChallengeVerificationDto> data = operation.getData();
+            ChallengeVerificationDto cache = data.getData();
+            if (!cache.isVerified() && requestDto.getC().equalsIgnoreCase(cache.getCode())) {
                 data.setUpdatedDtm(LocalDateTime.now());
-                data.setVerified(true);
+                cache.setVerified(true);
                 operation.setData(data);
 
                 return cacheProvider.challenge().update(new ConsumerOp.Single<>(data)).result();

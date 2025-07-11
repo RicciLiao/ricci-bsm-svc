@@ -1,21 +1,25 @@
 package ricciliao.bsm.cache.pojo;
 
-import ricciliao.x.cache.pojo.common.ChallengeCacheDto;
+import ricciliao.x.cache.ConsumerCacheData;
 import ricciliao.x.component.challenge.Challenge;
 
 import java.io.Serial;
 import java.util.Objects;
 
-public class ChallengeVerificationDto extends ChallengeCacheDto {
+public class ChallengeVerificationDto extends Challenge implements ConsumerCacheData {
     @Serial
     private static final long serialVersionUID = -182040538870727655L;
     private boolean verified;
 
     public ChallengeVerificationDto() {
+        this.verified = false;
     }
 
     public ChallengeVerificationDto(Challenge challenge) {
-        this.setChallenge(challenge);
+        super();
+        this.setCode(challenge.getCode());
+        this.setImage(challenge.getImage());
+        this.setType(challenge.getType());
     }
 
     public boolean isVerified() {

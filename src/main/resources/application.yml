@@ -43,7 +43,7 @@ ricciliao:
       consumer: bsm
       operation-list:
         - store: challenge
-          store-class-name: ricciliao.x.cache.pojo.common.ChallengeCacheDto
+          store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
     kafka:
       b:
         producer-list:
