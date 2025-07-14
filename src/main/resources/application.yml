@@ -45,7 +45,7 @@ ricciliao:
         - store: challenge
           store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
     kafka:
-      b:
+      producer:
         producer-list:
           - topic: signUpEmail
             message-class: ricciliao.bsm.kafka.dto.SendPostKafkaDto
