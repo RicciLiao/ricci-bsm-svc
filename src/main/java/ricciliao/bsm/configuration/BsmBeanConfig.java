@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -13,9 +14,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.filter.BsmFilter;
 import ricciliao.bsm.repository.BsmCodeDetailRepository;
+import ricciliao.x.component.response.ResponseHttpMessageConverter;
 import ricciliao.x.log.MdcSupportFilter;
 
 @Configuration
+@ComponentScan(basePackages = "ricciliao.x.starter.common")
 public class BsmBeanConfig implements WebMvcConfigurer {
 
     private ObjectMapper objectMapper;
@@ -58,7 +61,10 @@ public class BsmBeanConfig implements WebMvcConfigurer {
     public RestTemplate messageRestTemplate() {
 
         return new RestTemplateBuilder()
-                .messageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
+                .messageConverters(
+                        new ResponseHttpMessageConverter(objectMapper),
+                        new MappingJackson2HttpMessageConverter(objectMapper)
+                )
                 .build();
     }
 

@@ -17,9 +17,9 @@ public class BsmFilter extends ContentCachingFilter {
 
     @Override
     public void doFilter(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper, FilterChain chain) throws ServletException, IOException {
-        logger.duration().start().info("message filter received.");
+        logger.duration().start().info("BSM filter received.");
         chain.doFilter(requestWrapper, responseWrapper);
-        logger.duration().stop().info("message filter completed.");
+        logger.duration().stop().info("BSM filter completed.");
     }
 
 }

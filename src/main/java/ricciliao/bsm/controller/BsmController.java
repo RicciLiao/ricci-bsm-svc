@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
 import ricciliao.bsm.service.BsmService;
-import ricciliao.x.component.challenge.ChallengeFactory;
-import ricciliao.x.component.challenge.ChallengeType;
-import ricciliao.x.component.exception.CmnException;
-import ricciliao.x.component.response.ResponseData;
-import ricciliao.x.component.response.ResponseSimpleData;
+import ricciliao.x.component.challenge.ChallengeBgStrategy;
+import ricciliao.x.component.challenge.ChallengeTypeStrategy;
+import ricciliao.x.component.exception.AbstractException;
+import ricciliao.x.component.response.Response;
 import ricciliao.x.component.response.ResponseUtils;
-import ricciliao.x.component.response.ResponseVo;
+import ricciliao.x.component.response.data.ResponseData;
+import ricciliao.x.component.response.data.SimpleData;
 
 @Tag(name = "BsmController")
 @RestController
@@ -31,23 +31,18 @@ public class BsmController {
 
     @Operation
     @GetMapping("/captcha")
-    public ResponseVo<ResponseData> captcha() throws CmnException {
+    public Response<ResponseData> captcha() throws AbstractException {
 
-
-        return ResponseUtils.successResponse(
-                bsmService.getChallenge(
-                                new ChallengeFactory.ChallengeBuilder(ChallengeType.CAPTCHA)
-                                        .withImage(true)
-                        )
-                        .getLeft()
+        return ResponseUtils.success(
+                bsmService.getChallenge(ChallengeTypeStrategy.CAPTCHA_CODE.apply(ChallengeBgStrategy.TRANSPARENT)).getLeft()
         );
     }
 
     @Operation
     @PostMapping("/captcha")
-    public ResponseVo<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) {
+    public Response<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) {
 
-        return ResponseUtils.successResponse(new ResponseSimpleData.Bool(bsmService.verifyChallenge(requestDto)));
+        return ResponseUtils.success(SimpleData.of(bsmService.verifyChallenge(requestDto)));
     }
 
 }

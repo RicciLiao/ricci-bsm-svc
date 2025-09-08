@@ -2,12 +2,8 @@ package ricciliao.bsm.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
-import ricciliao.x.component.serialisation.LocalDateTimeDeserializer;
-import ricciliao.x.component.serialisation.LocalDateTimeSerializer;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -38,8 +34,6 @@ public class BsmUserInfoDto {
     private Long updatedBy;
     @JsonIgnore
     private LocalDateTime updatedDtm;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime version;
 
     public Long getId() {

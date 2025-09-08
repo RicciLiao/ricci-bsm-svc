@@ -11,8 +11,6 @@ import ricciliao.bsm.service.BsmService;
 import ricciliao.x.cache.pojo.ConsumerCacheStore;
 import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.component.challenge.Challenge;
-import ricciliao.x.component.challenge.ChallengeFactory;
-import ricciliao.x.component.exception.CmnException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -28,8 +26,7 @@ public class BsmServiceImpl implements BsmService {
     }
 
     @Override
-    public Pair<GetChallengeDto, String> getChallenge(ChallengeFactory.ChallengeBuilder builder) throws CmnException {
-        Challenge challenge = builder.generate();
+    public Pair<GetChallengeDto, String> getChallenge(Challenge challenge) {
         ConsumerOp.Single<ChallengeVerificationDto> dtoSingle = new ConsumerOp.Single<>(new ChallengeVerificationDto(challenge));
         String cacheId = cacheProvider.challenge().create(dtoSingle).result();
         ConsumerOp.Single<ChallengeVerificationDto> operation = cacheProvider.challenge().get(cacheId);

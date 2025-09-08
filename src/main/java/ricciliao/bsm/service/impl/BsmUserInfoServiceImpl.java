@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.cache.CacheProvider;
 import ricciliao.bsm.common.BsmPojoUtils;
-import ricciliao.bsm.common.BsmResponseCodeEnum;
+import ricciliao.bsm.common.BsmSecondaryCodeEnum;
 import ricciliao.bsm.kafka.dto.SendPostKafkaDto;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
@@ -15,11 +15,10 @@ import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
 import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
-import ricciliao.x.component.challenge.ChallengeFactory;
-import ricciliao.x.component.challenge.ChallengeType;
-import ricciliao.x.component.exception.CmnException;
-import ricciliao.x.component.exception.CmnParameterException;
-import ricciliao.x.component.exception.CmnRecordException;
+import ricciliao.x.component.challenge.ChallengeTypeStrategy;
+import ricciliao.x.component.exception.AbstractException;
+import ricciliao.x.component.exception.DataException;
+import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.kafka.KafkaProducer;
 import ricciliao.x.component.utils.CoreUtils;
 
@@ -57,15 +56,15 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Long signUp(BsmUserInfoDto requestDto) throws CmnException {
+    public Long signUp(BsmUserInfoDto requestDto) throws AbstractException {
         requestDto.setVersion(null);
         requestDto.setId(null);
         requestDto.setLastLoginDtm(null);
         requestDto.setCreatedDtm(LocalDateTime.now());
         requestDto.setUpdatedDtm(LocalDateTime.now());
-        if (bsmUserRepository.existsByLoginNameOrUserEmail(requestDto.getLoginName(), requestDto.getLoginName())) {
+        if (bsmUserRepository.existsByLoginNameOrUserEmail(requestDto.getLoginName(), requestDto.getUserEmail())) {
 
-            throw new CmnRecordException();
+            throw new DataException(BsmSecondaryCodeEnum.EXISTED_EMAIL);
         }
 
         requestDto.setStatusId(0L);
@@ -76,15 +75,15 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     }
 
     @Override
-    public Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws CmnException {
+    public Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws AbstractException {
         if (bsmUserRepository.existsByUserEmail(requestDto.getEmailAddress())) {
             cacheProviderService.challenge().delete(requestDto.getK());
 
-            throw new CmnParameterException(BsmResponseCodeEnum.POST_SIGN_UP_SEND_POST_EXISTED_EMAIL);
+            throw new DataException(BsmSecondaryCodeEnum.EXISTED_EMAIL);
         }
         if (bsmService.verifyChallenge(requestDto)) {
             Long now = CoreUtils.toLongNotNull(LocalDateTime.now());
-            Pair<GetChallengeDto, String> pair = bsmService.getChallenge(new ChallengeFactory.ChallengeBuilder(ChallengeType.VERIFICATION_CODE));
+            Pair<GetChallengeDto, String> pair = bsmService.getChallenge(ChallengeTypeStrategy.VERIFICATION_CODE.get());
             signUpEmailKafka.send(new SendPostKafkaDto(
                     pair.getRight(),
                     requestDto.getEmailAddress(),
@@ -92,7 +91,7 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
             ));
         } else {
 
-            throw new CmnParameterException();
+            throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
         }
 
         return Boolean.TRUE;

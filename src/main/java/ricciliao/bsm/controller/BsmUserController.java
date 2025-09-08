@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.service.BsmUserInfoService;
-import ricciliao.x.component.exception.CmnException;
-import ricciliao.x.component.response.ResponseCodeEnum;
-import ricciliao.x.component.response.ResponseData;
-import ricciliao.x.component.response.ResponseSimpleData;
+import ricciliao.x.component.exception.AbstractException;
+import ricciliao.x.component.exception.ParameterException;
+import ricciliao.x.component.response.Response;
 import ricciliao.x.component.response.ResponseUtils;
-import ricciliao.x.component.response.ResponseVo;
+import ricciliao.x.component.response.code.impl.SecondaryCodeEnum;
+import ricciliao.x.component.response.data.ResponseData;
+import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.utils.CoreUtils;
 
 @Tag(name = "BsmUserController")
 @RestController
@@ -34,28 +36,27 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp/sendPost")
-    public ResponseVo<ResponseData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
-                                             BindingResult bindingResult) throws CmnException {
+    public Response<ResponseData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
+                                           BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
-            return ResponseUtils.builder(bindingResult).code(ResponseCodeEnum.PARAMETER_ERROR).build();
+            throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
         }
 
-        return ResponseUtils.successResponse(new ResponseSimpleData.Bool(bsmUserInfoService.signUpSendPost(requestDto)));
+        return ResponseUtils.success(SimpleData.of(bsmUserInfoService.signUpSendPost(requestDto)));
     }
 
     @Operation
     @PostMapping("/signUp")
-    public ResponseVo<ResponseData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
-                                           BindingResult bindingResult) throws CmnException {
+    public Response<ResponseData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
+                                         BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
-
-            return ResponseUtils.builder(bindingResult).build();
+            throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
         }
         bsmUserInfoService.signUp(requestDto);
 
-        return ResponseUtils.successResponse();
+        return ResponseUtils.success();
 
     }
 

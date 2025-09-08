@@ -19,7 +19,7 @@ public class ChallengeVerificationDto extends Challenge implements ConsumerCache
         super();
         this.setCode(challenge.getCode());
         this.setImage(challenge.getImage());
-        this.setType(challenge.getType());
+        this.setStrategy(challenge.getStrategy());
     }
 
     public boolean isVerified() {
@@ -41,5 +41,10 @@ public class ChallengeVerificationDto extends Challenge implements ConsumerCache
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), isVerified());
+    }
+
+    @Override
+    public String generateCacheKey() {
+        return "";
     }
 }

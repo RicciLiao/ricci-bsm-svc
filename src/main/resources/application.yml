@@ -1,7 +1,4 @@
 spring:
-  application:
-    version: @project.version@
-    name: bsm
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DATABASE_URL}/bsm
@@ -27,18 +24,30 @@ spring:
       retries: 3
       batch-size: 16384
       buffer-memory: 33554432
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-components: always
 ricciliao:
   x:
     common:
       time-zone: GMT+8
+      springdoc:
+        title: BSM
+        description: Brain Storming Manager Service
+        summary: 🎖 Inspiration
+        enable: true
     log:
       executor:
         enable: true
     dynamic-aspect:
       aspect-list:
-        - expression: execution(public ricciliao.common.component.response.ResponseVo ricciliao.bsm.controller.*.*(..))
-          aspect: ricciliao.bsm.aspect.ControllerAspect
-          bean-name: controllerAspect
     cache-consumer:
       consumer: bsm
       operation-list:
