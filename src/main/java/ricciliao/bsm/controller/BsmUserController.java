@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
@@ -48,13 +49,14 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp")
-    public Response<ResponseData> signUp(@Valid @RequestBody BsmUserInfoDto requestDto,
+    public Response<ResponseData> signUp(@RequestParam(name = "k") String k,
+                                         @Valid @RequestBody BsmUserInfoDto requestDto,
                                          BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
         }
-        bsmUserInfoService.signUp(requestDto);
+        bsmUserInfoService.signUp(k, requestDto);
 
         return ResponseUtils.success();
 

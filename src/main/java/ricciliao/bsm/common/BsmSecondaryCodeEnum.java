@@ -7,6 +7,7 @@ public enum BsmSecondaryCodeEnum implements SecondaryCode {
 
     EXISTED_EMAIL(1, "This Email has been registered, you can sign in directly or use another Email to register."),
     MISMATCHED_CAPTCHA(2, "Captcha does not match, please try again."),
+    TIMEOUT(3, "Timed out, please try again."),
     ;
 
     private final int id;

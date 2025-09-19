@@ -31,16 +31,16 @@ public class BsmController {
 
     @Operation
     @GetMapping("/captcha")
-    public Response<ResponseData> captcha() throws AbstractException {
+    public Response<ResponseData> captcha() {
 
         return ResponseUtils.success(
-                bsmService.getChallenge(ChallengeTypeStrategy.CAPTCHA_CODE.apply(ChallengeBgStrategy.TRANSPARENT)).getLeft()
+                bsmService.getChallenge(ChallengeTypeStrategy.CAPTCHA_CODE.apply(ChallengeBgStrategy.TRANSPARENT), "").getLeft()
         );
     }
 
     @Operation
     @PostMapping("/captcha")
-    public Response<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) {
+    public Response<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) throws AbstractException {
 
         return ResponseUtils.success(SimpleData.of(bsmService.verifyChallenge(requestDto)));
     }

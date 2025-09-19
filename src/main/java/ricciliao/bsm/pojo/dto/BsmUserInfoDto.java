@@ -15,7 +15,6 @@ public class BsmUserInfoDto {
     @NotBlank
     @Length(min = 5, max = 15)
     private String loginName;
-    @NotBlank
     @Length(min = 1, max = 15)
     private String userName;
     @JsonIgnore

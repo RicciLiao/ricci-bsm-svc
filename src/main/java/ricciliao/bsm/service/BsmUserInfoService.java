@@ -6,8 +6,8 @@ import ricciliao.x.component.exception.AbstractException;
 
 public interface BsmUserInfoService {
 
-    Long signUp(BsmUserInfoDto requestDto) throws AbstractException;
+    Long signUp(String k, BsmUserInfoDto requestDto) throws AbstractException;
 
-    Boolean signUpSendPost(UserSignUpSendPostDto requestDto) throws AbstractException;
+    String signUpSendPost(UserSignUpSendPostDto requestDto) throws AbstractException;
 
 }

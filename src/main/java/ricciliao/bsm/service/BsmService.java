@@ -8,8 +8,8 @@ import ricciliao.x.component.exception.AbstractException;
 
 public interface BsmService {
 
-    Pair<GetChallengeDto, String> getChallenge(Challenge challenge) throws AbstractException;
+    Pair<GetChallengeDto, String> getChallenge(Challenge challenge, String emailAddress);
 
-    boolean verifyChallenge(VerifyChallengeDto requestDto);
+    boolean verifyChallenge(VerifyChallengeDto requestDto) throws AbstractException;
 
 }

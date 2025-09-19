@@ -10,6 +10,7 @@ public class ChallengeVerificationDto extends Challenge implements ConsumerCache
     @Serial
     private static final long serialVersionUID = -182040538870727655L;
     private boolean verified;
+    private String emailAddress;
 
     public ChallengeVerificationDto() {
         this.verified = false;
@@ -30,17 +31,24 @@ public class ChallengeVerificationDto extends Challenge implements ConsumerCache
         this.verified = verified;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (!(o instanceof ChallengeVerificationDto that)) return false;
         if (!super.equals(o)) return false;
-        return isVerified() == that.isVerified();
+        return isVerified() == that.isVerified() && Objects.equals(getEmailAddress(), that.getEmailAddress());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isVerified());
+        return Objects.hash(super.hashCode(), isVerified(), getEmailAddress());
     }
 
     @Override
