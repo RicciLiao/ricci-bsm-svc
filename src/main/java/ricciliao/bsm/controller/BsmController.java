@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ricciliao.bsm.cache.ChallengeOpBuilder;
+import ricciliao.bsm.cache.component.ChallengeProvider;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
-import ricciliao.bsm.service.BsmService;
 import ricciliao.x.component.challenge.ChallengeBgStrategy;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
 import ricciliao.x.component.exception.AbstractException;
@@ -22,11 +23,11 @@ import ricciliao.x.component.response.data.SimpleData;
 @RestController
 public class BsmController {
 
-    private BsmService bsmService;
+    private ChallengeProvider challengeProvider;
 
     @Autowired
-    public void setBsmService(BsmService bsmService) {
-        this.bsmService = bsmService;
+    public void setChallengeProvider(ChallengeProvider challengeProvider) {
+        this.challengeProvider = challengeProvider;
     }
 
     @Operation
@@ -34,7 +35,9 @@ public class BsmController {
     public Response<ResponseData> captcha() {
 
         return ResponseUtils.success(
-                bsmService.getChallenge(ChallengeTypeStrategy.CAPTCHA_CODE.apply(ChallengeBgStrategy.TRANSPARENT), "").getLeft()
+                challengeProvider.getChallenge(
+                        ChallengeOpBuilder.get(ChallengeTypeStrategy.CAPTCHA_CODE.apply(ChallengeBgStrategy.TRANSPARENT))
+                ).getLeft()
         );
     }
 
@@ -42,7 +45,9 @@ public class BsmController {
     @PostMapping("/captcha")
     public Response<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) throws AbstractException {
 
-        return ResponseUtils.success(SimpleData.of(bsmService.verifyChallenge(requestDto)));
+        return ResponseUtils.success(
+                SimpleData.of(challengeProvider.verifyChallenge(ChallengeOpBuilder.verify(requestDto)))
+        );
     }
 
 }

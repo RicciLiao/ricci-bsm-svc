@@ -9,7 +9,7 @@ import java.util.Objects;
 public class ChallengeVerificationDto extends Challenge implements ConsumerCacheData {
     @Serial
     private static final long serialVersionUID = -182040538870727655L;
-    private boolean verified;
+    private boolean verified = false;
     private String emailAddress;
 
     public ChallengeVerificationDto() {

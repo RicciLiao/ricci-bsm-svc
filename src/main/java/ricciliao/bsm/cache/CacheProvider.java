@@ -2,11 +2,11 @@ package ricciliao.bsm.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.x.starter.cache.ConsumerCacheRestService;
 
-@Service("cacheProvider")
+@Component("cacheProvider")
 public class CacheProvider {
 
     private ConsumerCacheRestService<ChallengeVerificationDto> challengeConsumerCacheRestService;
