@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.cache.CacheProvider;
+import ricciliao.bsm.cache.ChallengeOpBuilder;
+import ricciliao.bsm.cache.component.ChallengeProvider;
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.common.BsmPojoUtils;
 import ricciliao.bsm.common.BsmSecondaryCodeEnum;
@@ -14,7 +16,6 @@ import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
 import ricciliao.bsm.repository.BsmUserRepository;
-import ricciliao.bsm.service.BsmService;
 import ricciliao.bsm.service.BsmUserInfoService;
 import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
@@ -31,9 +32,14 @@ import java.util.Objects;
 public class BsmUserInfoServiceImpl implements BsmUserInfoService {
 
     private BsmUserRepository bsmUserRepository;
-    private BsmService bsmService;
     private CacheProvider cacheProvider;
     private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
+    private ChallengeProvider challengeProvider;
+
+    @Autowired
+    public void setChallengeProvider(ChallengeProvider challengeProvider) {
+        this.challengeProvider = challengeProvider;
+    }
 
     @Qualifier("signUpEmailKafka")
     @Autowired
@@ -44,11 +50,6 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
     @Autowired
     public void setCacheProvider(CacheProvider cacheProvider) {
         this.cacheProvider = cacheProvider;
-    }
-
-    @Autowired
-    public void setBsmService(BsmService bsmService) {
-        this.bsmService = bsmService;
     }
 
     @Autowired
@@ -90,13 +91,15 @@ public class BsmUserInfoServiceImpl implements BsmUserInfoService {
 
             throw new DataException(BsmSecondaryCodeEnum.EXISTED_EMAIL);
         }
-        if (!bsmService.verifyChallenge(requestDto)) {
-
-            throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
-        }
+        challengeProvider.verifyChallenge(
+                ChallengeOpBuilder
+                        .verify(requestDto)
+                        .op(verification ->
+                                requestDto.getEmailAddress().equalsIgnoreCase(verification.getEmailAddress()))
+        );
         Long now = CoreUtils.toLongNotNull(LocalDateTime.now());
         Pair<GetChallengeDto, String> pair =
-                bsmService.getChallenge(ChallengeTypeStrategy.VERIFICATION_CODE.get(), requestDto.getEmailAddress());
+                challengeProvider.getChallenge(ChallengeOpBuilder.get(ChallengeTypeStrategy.VERIFICATION_CODE.get()));
 
         signUpEmailKafka.send(new SendPostKafkaDto(
                 pair.getRight(),
