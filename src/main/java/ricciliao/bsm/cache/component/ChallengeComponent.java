@@ -1,6 +1,5 @@
 package ricciliao.bsm.cache.component;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ricciliao.bsm.cache.CacheProvider;
@@ -15,33 +14,34 @@ import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.response.data.SimpleData;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
-@Component("challengeProvider")
-public class ChallengeProvider {
+@Component("challengeComponent")
+public class ChallengeComponent {
 
-    private CacheProvider cacheProvider;
+    private final CacheProvider cacheProvider;
 
-    @Autowired
-    public void setCacheProvider(CacheProvider cacheProvider) {
+    public ChallengeComponent(@Autowired CacheProvider cacheProvider) {
         this.cacheProvider = cacheProvider;
     }
 
-    public Pair<GetChallengeDto, String> getChallenge(ChallengeOpBuilder.GetChallenge challenge) {
-        ChallengeVerificationDto verification = challenge.get();
-        ConsumerOp.Single<ChallengeVerificationDto> operation = new ConsumerOp.Single<>(challenge.get());
+    public GetChallengeDto getChallenge(ChallengeOpBuilder.GetChallenge challenge) {
+        ConsumerOp.Single<ChallengeVerificationDto> operation = challenge.get();
         SimpleData.Str result = Objects.requireNonNull(cacheProvider.challenge().create(operation));
         operation = Objects.requireNonNull(cacheProvider.challenge().get(result.result()));
 
-        return Pair.of(
-                new GetChallengeDto(operation.getData().getCacheKey(), verification.getImage(), operation.getTtlOfSeconds()),
-                verification.getCode()
-        );
+        return
+                new GetChallengeDto(
+                        operation.getData().getCacheKey(),
+                        operation.getData().getData().getImage(),
+                        operation.getTtlOfSeconds(),
+                        operation.getData().getData().getCode()
+                );
     }
 
     public boolean verifyChallenge(ChallengeOpBuilder.VerifyChallenge verifyChallenge) throws AbstractException {
-        VerifyChallengeDto dto = verifyChallenge.getVerify();
+        VerifyChallengeDto dto = verifyChallenge.getChallenge();
         ConsumerOp.Single<ChallengeVerificationDto> operation = cacheProvider.challenge().get(dto.getK());
         if (Objects.isNull(operation)) {
 
@@ -54,11 +54,12 @@ public class ChallengeProvider {
             throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
 
         }
-        if (verifyChallenge.get(cache)) {
+
+        if (verifyChallenge.apply(cache)) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
         }
-        data.setUpdatedDtm(LocalDateTime.now());
+        data.setUpdatedDtm(Instant.now());
         cache.setVerified(true);
         operation.setData(data);
         SimpleData.Bool bool = cacheProvider.challenge().update(new ConsumerOp.Single<>(data));

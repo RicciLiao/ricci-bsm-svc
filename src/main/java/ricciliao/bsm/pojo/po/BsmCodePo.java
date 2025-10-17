@@ -1,37 +1,48 @@
 package ricciliao.bsm.pojo.po;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.Instant;
 
 @Entity
-@Table(name = "bak_bsm_code")
-public class BsmCodePo implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -7720481903675357203L;
-
-    private Long id;
-    private String code;
-    private String description;
-    private Integer isActive;
-    private Long createdBy;
-    private LocalDateTime createdDtm;
-    private Long updatedBy;
-    private LocalDateTime updatedDtm;
-    private LocalDateTime version;
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "bsm_code", schema = "bsm")
+public class BsmCodePo {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "code", nullable = false, length = 20)
+    private String code;
+
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @Column(name = "is_active", nullable = false)
+    private Integer isActive;
+
+    @Column(name = "created_by", nullable = false)
+    private Long createdBy;
+
+    @Column(name = "created_dtm", nullable = false)
+    private Instant createdDtm;
+
+    @Column(name = "updated_by", nullable = false)
+    private Long updatedBy;
+
+    @Column(name = "updated_dtm", nullable = false)
+    private Instant updatedDtm;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
     public Long getId() {
         return id;
     }
@@ -40,8 +51,6 @@ public class BsmCodePo implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "code")
     public String getCode() {
         return code;
     }
@@ -50,8 +59,6 @@ public class BsmCodePo implements Serializable {
         this.code = code;
     }
 
-    @Basic
-    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -60,8 +67,6 @@ public class BsmCodePo implements Serializable {
         this.description = description;
     }
 
-    @Basic
-    @Column(name = "is_active")
     public Integer getIsActive() {
         return isActive;
     }
@@ -70,8 +75,6 @@ public class BsmCodePo implements Serializable {
         this.isActive = isActive;
     }
 
-    @Basic
-    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -80,18 +83,14 @@ public class BsmCodePo implements Serializable {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "created_dtm")
-    public LocalDateTime getCreatedDtm() {
+    public Instant getCreatedDtm() {
         return createdDtm;
     }
 
-    public void setCreatedDtm(LocalDateTime createdDtm) {
+    public void setCreatedDtm(Instant createdDtm) {
         this.createdDtm = createdDtm;
     }
 
-    @Basic
-    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -100,36 +99,20 @@ public class BsmCodePo implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    @Basic
-    @Column(name = "updated_dtm")
-    public LocalDateTime getUpdatedDtm() {
+    public Instant getUpdatedDtm() {
         return updatedDtm;
     }
 
-    public void setUpdatedDtm(LocalDateTime updatedDtm) {
+    public void setUpdatedDtm(Instant updatedDtm) {
         this.updatedDtm = updatedDtm;
     }
 
-    @Basic
-    @Column(name = "version")
-    public LocalDateTime getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(LocalDateTime version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BsmCodePo bsmCodePo = (BsmCodePo) o;
-        return Objects.equals(id, bsmCodePo.id) && Objects.equals(code, bsmCodePo.code) && Objects.equals(description, bsmCodePo.description) && Objects.equals(isActive, bsmCodePo.isActive) && Objects.equals(createdBy, bsmCodePo.createdBy) && Objects.equals(createdDtm, bsmCodePo.createdDtm) && Objects.equals(updatedBy, bsmCodePo.updatedBy) && Objects.equals(updatedDtm, bsmCodePo.updatedDtm) && Objects.equals(version, bsmCodePo.version);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, code, description, isActive, createdBy, createdDtm, updatedBy, updatedDtm, version);
-    }
 }

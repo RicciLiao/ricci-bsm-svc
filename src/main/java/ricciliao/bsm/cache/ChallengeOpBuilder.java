@@ -2,6 +2,7 @@ package ricciliao.bsm.cache;
 
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
+import ricciliao.x.cache.pojo.ConsumerOp;
 import ricciliao.x.component.challenge.Challenge;
 
 import java.util.Objects;
@@ -25,22 +26,30 @@ public class ChallengeOpBuilder {
     }
 
     public static class GetChallenge {
-        private final ChallengeVerificationDto verification;
-        private Consumer<ChallengeVerificationDto> op;
+        private final ConsumerOp.Single<ChallengeVerificationDto> verification;
+        private Consumer<ConsumerOp.Single<ChallengeVerificationDto>> process;
 
         public GetChallenge(Challenge challenge) {
-            this.verification = new ChallengeVerificationDto(challenge);
+            this.verification = new ConsumerOp.Single<>(new ChallengeVerificationDto(challenge));
         }
 
-        public GetChallenge op(Consumer<ChallengeVerificationDto> consumer) {
-            this.op = consumer;
+        public Consumer<ConsumerOp.Single<ChallengeVerificationDto>> getProcess() {
+            return process;
+        }
+
+        public ConsumerOp.Single<ChallengeVerificationDto> getVerification() {
+            return verification;
+        }
+
+        public GetChallenge process(Consumer<ConsumerOp.Single<ChallengeVerificationDto>> process) {
+            this.process = process;
 
             return this;
         }
 
-        public ChallengeVerificationDto get() {
-            if (Objects.nonNull(op)) {
-                op.accept(this.verification);
+        public ConsumerOp.Single<ChallengeVerificationDto> get() {
+            if (Objects.nonNull(process)) {
+                process.accept(this.verification);
             }
 
             return this.verification;
@@ -49,47 +58,51 @@ public class ChallengeOpBuilder {
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof GetChallenge that)) return false;
-            return Objects.equals(verification, that.verification) && Objects.equals(op, that.op);
+            return Objects.equals(verification, that.verification) && Objects.equals(process, that.process);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(verification, op);
+            return Objects.hash(verification, process);
         }
     }
 
     public static class VerifyChallenge {
-        private final VerifyChallengeDto verify;
-        private Function<ChallengeVerificationDto, Boolean> op;
+        private final VerifyChallengeDto challenge;
+        private Function<ChallengeVerificationDto, Boolean> process;
 
-        public VerifyChallenge(VerifyChallengeDto verify) {
-            this.verify = verify;
+        public VerifyChallenge(VerifyChallengeDto challengeDto) {
+            this.challenge = challengeDto;
         }
 
-        public VerifyChallenge op(Function<ChallengeVerificationDto, Boolean> function) {
-            this.op = function;
+        public VerifyChallengeDto getChallenge() {
+            return challenge;
+        }
+
+        public Function<ChallengeVerificationDto, Boolean> getProcess() {
+            return process;
+        }
+
+        public VerifyChallenge process(Function<ChallengeVerificationDto, Boolean> process) {
+            this.process = process;
 
             return this;
         }
 
-        public VerifyChallengeDto getVerify() {
-            return verify;
-        }
+        public Boolean apply(ChallengeVerificationDto cache) {
 
-        public boolean get(ChallengeVerificationDto verification) {
-
-            return Objects.nonNull(op) && !op.apply(verification);
+            return Objects.nonNull(process) && !process.apply(cache);
         }
 
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof VerifyChallenge that)) return false;
-            return Objects.equals(getVerify(), that.getVerify()) && Objects.equals(op, that.op);
+            return Objects.equals(getChallenge(), that.getChallenge()) && Objects.equals(process, that.process);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getVerify(), op);
+            return Objects.hash(getChallenge(), process);
         }
     }
 

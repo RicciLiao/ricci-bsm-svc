@@ -2,10 +2,12 @@ package ricciliao.bsm.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.NullSerializer;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,23 +19,39 @@ public class BsmUserInfoDto {
     private String loginName;
     @Length(min = 1, max = 15)
     private String userName;
-    @JsonIgnore
+    @JsonSerialize(using = NullSerializer.class)
     private String userPassword;
     @NotBlank
     private String userEmail;
     @JsonIgnore
-    private LocalDateTime lastLoginDtm;
+    private Instant lastLoginDtm;
     @JsonIgnore
     private Long statusId;
     @JsonIgnore
     private Long createdBy;
     @JsonIgnore
-    private LocalDateTime createdDtm;
+    private Instant createdDtm;
     @JsonIgnore
     private Long updatedBy;
     @JsonIgnore
-    private LocalDateTime updatedDtm;
-    private LocalDateTime version;
+    private Instant updatedDtm;
+    private Long version;
+
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDtm() {
+        return createdDtm;
+    }
+
+    public void setCreatedDtm(Instant createdDtm) {
+        this.createdDtm = createdDtm;
+    }
 
     public Long getId() {
         return id;
@@ -43,12 +61,52 @@ public class BsmUserInfoDto {
         this.id = id;
     }
 
+    public Instant getLastLoginDtm() {
+        return lastLoginDtm;
+    }
+
+    public void setLastLoginDtm(Instant lastLoginDtm) {
+        this.lastLoginDtm = lastLoginDtm;
+    }
+
     public String getLoginName() {
         return loginName;
     }
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
+
+    public Long getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(Long updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Instant getUpdatedDtm() {
+        return updatedDtm;
+    }
+
+    public void setUpdatedDtm(Instant updatedDtm) {
+        this.updatedDtm = updatedDtm;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getUserName() {
@@ -67,67 +125,11 @@ public class BsmUserInfoDto {
         this.userPassword = userPassword;
     }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public LocalDateTime getLastLoginDtm() {
-        return lastLoginDtm;
-    }
-
-    public void setLastLoginDtm(LocalDateTime lastLoginDtm) {
-        this.lastLoginDtm = lastLoginDtm;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getCreatedDtm() {
-        return createdDtm;
-    }
-
-    public void setCreatedDtm(LocalDateTime createdDtm) {
-        this.createdDtm = createdDtm;
-    }
-
-    public Long getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(Long updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public LocalDateTime getUpdatedDtm() {
-        return updatedDtm;
-    }
-
-    public void setUpdatedDtm(LocalDateTime updatedDtm) {
-        this.updatedDtm = updatedDtm;
-    }
-
-    public LocalDateTime getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(LocalDateTime version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 

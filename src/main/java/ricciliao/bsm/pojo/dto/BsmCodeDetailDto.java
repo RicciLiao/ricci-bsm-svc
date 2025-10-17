@@ -1,10 +1,12 @@
 package ricciliao.bsm.pojo.dto;
 
+import ricciliao.x.component.response.data.ResponseData;
+
 import java.io.Serial;
-import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
-public class BsmCodeDetailDto implements Serializable {
+public class BsmCodeDetailDto implements ResponseData {
     @Serial
     private static final long serialVersionUID = -5189725060913822244L;
 
@@ -23,17 +25,17 @@ public class BsmCodeDetailDto implements Serializable {
     private String description;
     private Boolean active;
     private Long createdBy;
-    private Long createdDtm;
+    private Instant createdDtm;
     private Long updatedBy;
-    private Long updatedDtm;
+    private Instant updatedDtm;
     private Long version;
 
-    public Long getId() {
-        return id;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Long getBsmCodeId() {
@@ -52,22 +54,6 @@ public class BsmCodeDetailDto implements Serializable {
         this.code = code;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -76,12 +62,28 @@ public class BsmCodeDetailDto implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Long getCreatedDtm() {
+    public Instant getCreatedDtm() {
         return createdDtm;
     }
 
-    public void setCreatedDtm(Long createdDtm) {
+    public void setCreatedDtm(Instant createdDtm) {
         this.createdDtm = createdDtm;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUpdatedBy() {
@@ -92,11 +94,11 @@ public class BsmCodeDetailDto implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public Long getUpdatedDtm() {
+    public Instant getUpdatedDtm() {
         return updatedDtm;
     }
 
-    public void setUpdatedDtm(Long updatedDtm) {
+    public void setUpdatedDtm(Instant updatedDtm) {
         this.updatedDtm = updatedDtm;
     }
 

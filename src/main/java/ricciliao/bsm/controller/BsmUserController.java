@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
-import ricciliao.bsm.service.BsmUserInfoService;
+import ricciliao.bsm.service.BsmUserService;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.response.Response;
@@ -28,10 +28,10 @@ import ricciliao.x.component.utils.CoreUtils;
 @RequestMapping("/user")
 public class BsmUserController {
 
-    private BsmUserInfoService bsmUserInfoService;
+    private BsmUserService bsmUserInfoService;
 
     @Autowired(required = false)
-    public void setBsmUserInfoService(BsmUserInfoService bsmUserInfoService) {
+    public void setBsmUserInfoService(BsmUserService bsmUserInfoService) {
         this.bsmUserInfoService = bsmUserInfoService;
     }
 
@@ -48,6 +48,19 @@ public class BsmUserController {
     }
 
     @Operation
+    @PostMapping("/signUp/pre")
+    public Response<ResponseData> preSignUp(@Validated @RequestBody UserSignUpSendPostDto requestDto,
+                                            BindingResult bindingResult) throws AbstractException {
+        if (bindingResult.hasErrors()) {
+
+            throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
+        }
+
+        return ResponseUtils.success(SimpleData.of(bsmUserInfoService.preSignUp(requestDto)));
+    }
+
+
+    @Operation
     @PostMapping("/signUp")
     public Response<ResponseData> signUp(@RequestParam(name = "k") String k,
                                          @Valid @RequestBody BsmUserInfoDto requestDto,
@@ -59,7 +72,6 @@ public class BsmUserController {
         bsmUserInfoService.signUp(k, requestDto);
 
         return ResponseUtils.success();
-
     }
 
 }

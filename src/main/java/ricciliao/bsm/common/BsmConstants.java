@@ -2,11 +2,13 @@ package ricciliao.bsm.common;
 
 public class BsmConstants {
 
-    public static final String SYSTEM_NAME = "brain storming market";
-    public static final String TOPIC_FOR_NOTIFICATION_EMAIL_KAFKA = "email";
     private BsmConstants() {
         throw new IllegalStateException("Utility class");
     }
 
+    public static final Long ACTIVE_STATUS = 10000L;
+    public static final Long INITIALIZED_STATUS = 10003L;
+
+    public static final String APP_VERSION_USER = "@%s@";
 
 }

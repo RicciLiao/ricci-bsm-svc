@@ -3,17 +3,18 @@ package ricciliao.bsm.kafka.dto;
 import ricciliao.x.component.kafka.KafkaMessageDto;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.Objects;
 
 public class SendPostKafkaDto implements KafkaMessageDto {
     @Serial
     private static final long serialVersionUID = -916146796564299665L;
     private String code;
-    private Long expireAt;
+    private Instant expireAt;
     private String to;
     public SendPostKafkaDto() {
     }
-    public SendPostKafkaDto(String code, String to, Long expireAt) {
+    public SendPostKafkaDto(String code, String to, Instant expireAt) {
         this.code = code;
         this.to = to;
         this.expireAt = expireAt;
@@ -27,11 +28,11 @@ public class SendPostKafkaDto implements KafkaMessageDto {
         this.code = code;
     }
 
-    public Long getExpireAt() {
+    public Instant getExpireAt() {
         return expireAt;
     }
 
-    public void setExpireAt(Long expireAt) {
+    public void setExpireAt(Instant expireAt) {
         this.expireAt = expireAt;
     }
 

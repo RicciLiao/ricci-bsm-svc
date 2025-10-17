@@ -11,9 +11,7 @@ import org.springframework.core.Ordered;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ricciliao.bsm.component.BsmCodeListComponent;
 import ricciliao.bsm.filter.BsmFilter;
-import ricciliao.bsm.repository.BsmCodeDetailRepository;
 import ricciliao.x.component.response.ResponseHttpMessageConverter;
 import ricciliao.x.log.MdcSupportFilter;
 
@@ -49,12 +47,6 @@ public class BsmBeanConfig implements WebMvcConfigurer {
         registrationBean.setName("mdcSupportFilter");
 
         return registrationBean;
-    }
-
-    @Bean
-    public BsmCodeListComponent codeListComponent(@Autowired BsmCodeDetailRepository bsmCodeDetailRepository) {
-
-        return new BsmCodeListComponent(bsmCodeDetailRepository);
     }
 
     @Bean

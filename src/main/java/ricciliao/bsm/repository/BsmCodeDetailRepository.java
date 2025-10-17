@@ -5,11 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.data.repository.query.Param;
-import ricciliao.bsm.pojo.bo.BsmCodeDetailBo;
-import ricciliao.bsm.pojo.dto.BsmCodeDetailDto;
 import ricciliao.bsm.pojo.po.BsmCodeDetailPo;
 
 import java.util.List;
@@ -102,16 +98,4 @@ public interface BsmCodeDetailRepository extends JpaRepository<BsmCodeDetailPo, 
     @Override
     <S extends BsmCodeDetailPo, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction);
 
-    @Query("select new ricciliao.bsm.pojo.dto.BsmCodeDetailDto(cd.id, cd.bsmCodeId, cd.code) from BsmCodeDetailPo cd " +
-            "inner join BsmCodePo c on c.id = cd.bsmCodeId " +
-            "where c.code = :bsmCode and cd.code = :bsmDetailCode")
-    Optional<BsmCodeDetailDto> getByUniqueKey(@Param("bsmCode") String bsmCode,
-                                              @Param("bsmDetailCode") String bsmDetailCode);
-
-    @Query("select new ricciliao.bsm.pojo.bo.BsmCodeDetailBo(cp.code, cdp.code, cdp.description) " +
-            "from BsmCodeDetailPo cdp " +
-            "inner join BsmCodePo cp on cdp.bsmCodeId = cp.id " +
-            "where cp.isActive = 1 " +
-            "and cdp.isActive = 1")
-    List<BsmCodeDetailBo> findAllForCache();
 }

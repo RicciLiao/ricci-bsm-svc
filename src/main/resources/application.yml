@@ -45,6 +45,7 @@ ricciliao:
         description: Brain Storming Manager Service
         summary: 🎖 Inspiration
         enable: true
+      crypto-password: ${CRYPTO_PWD}
     log:
       executor:
         enable: true
@@ -55,6 +56,8 @@ ricciliao:
       operation-list:
         - store: challenge
           store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
+        - store: signUpLock
+          store-class-name: ricciliao.bsm.cache.pojo.SignUpLockDto
     kafka:
       producer:
         producer-list:

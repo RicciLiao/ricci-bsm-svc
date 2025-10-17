@@ -1,4 +1,4 @@
-package ricciliao.bsm.common;
+package ricciliao.bsm.utils;
 
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
 import ricciliao.bsm.pojo.po.BsmUserPo;

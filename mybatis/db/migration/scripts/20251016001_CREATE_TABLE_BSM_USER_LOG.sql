@@ -1,6 +1,6 @@
-create table bsm_user
+create table bsm_user_log
 (
-    id             bigint auto_increment primary key,
+    id             bigint       not null,
     login_name     varchar(15)  not null,
     user_name      varchar(255),
     user_password  varchar(64)  not null,
@@ -12,9 +12,10 @@ create table bsm_user
     updated_by     bigint       not null,
     updated_dtm    datetime(6)  not null,
     version        bigint       not null,
-    constraint bsm_user_uk_1 unique (login_name),
-    constraint bsm_user_uk_2 unique (user_email)
-) auto_increment = 1000;
+    action_id      bigint       not null,
+    action_dtm     datetime(6)  not null,
+    primary key (id, version)
+);
 
 -- //@UNDO
-drop table bsm_user;
+drop table bsm_user_log;

@@ -1,22 +1,17 @@
 package ricciliao.bsm.pojo.po;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
 
 import java.time.Instant;
 
 @Entity
-@Table(name = "bsm_user", schema = "bsm")
-public class BsmUserPo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+@Table(name = "bsm_user_log", schema = "bsm")
+public class BsmUserLogPo {
+    @EmbeddedId
+    private BsmUserLogPoId id;
 
     @Column(name = "login_name", nullable = false, length = 15)
     private String loginName;
@@ -48,15 +43,17 @@ public class BsmUserPo {
     @Column(name = "updated_dtm", nullable = false)
     private Instant updatedDtm;
 
-    @Version
-    @Column(name = "version", nullable = false)
-    private Long version;
+    @Column(name = "action_id", nullable = false)
+    private Long actionId;
 
-    public Long getId() {
+    @Column(name = "action_dtm", nullable = false)
+    private Instant actionDtm;
+
+    public BsmUserLogPoId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(BsmUserLogPoId id) {
         this.id = id;
     }
 
@@ -140,12 +137,20 @@ public class BsmUserPo {
         this.updatedDtm = updatedDtm;
     }
 
-    public Long getVersion() {
-        return version;
+    public Long getActionId() {
+        return actionId;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
+    public void setActionId(Long actionId) {
+        this.actionId = actionId;
+    }
+
+    public Instant getActionDtm() {
+        return actionDtm;
+    }
+
+    public void setActionDtm(Instant actionDtm) {
+        this.actionDtm = actionDtm;
     }
 
 }
