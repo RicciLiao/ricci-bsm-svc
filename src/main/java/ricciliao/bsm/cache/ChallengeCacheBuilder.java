@@ -2,16 +2,16 @@ package ricciliao.bsm.cache;
 
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
-import ricciliao.x.cache.pojo.ConsumerOp;
+import ricciliao.x.cache.pojo.ConsumerCache;
 import ricciliao.x.component.challenge.Challenge;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ChallengeOpBuilder {
+public class ChallengeCacheBuilder {
 
-    private ChallengeOpBuilder() {
+    private ChallengeCacheBuilder() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -26,28 +26,28 @@ public class ChallengeOpBuilder {
     }
 
     public static class GetChallenge {
-        private final ConsumerOp.Single<ChallengeVerificationDto> verification;
-        private Consumer<ConsumerOp.Single<ChallengeVerificationDto>> process;
+        private final ConsumerCache<ChallengeVerificationDto> verification;
+        private Consumer<ConsumerCache<ChallengeVerificationDto>> process;
 
         public GetChallenge(Challenge challenge) {
-            this.verification = new ConsumerOp.Single<>(new ChallengeVerificationDto(challenge));
+            this.verification = new ConsumerCache<>(new ChallengeVerificationDto(challenge));
         }
 
-        public Consumer<ConsumerOp.Single<ChallengeVerificationDto>> getProcess() {
+        public Consumer<ConsumerCache<ChallengeVerificationDto>> getProcess() {
             return process;
         }
 
-        public ConsumerOp.Single<ChallengeVerificationDto> getVerification() {
+        public ConsumerCache<ChallengeVerificationDto> getVerification() {
             return verification;
         }
 
-        public GetChallenge process(Consumer<ConsumerOp.Single<ChallengeVerificationDto>> process) {
+        public GetChallenge process(Consumer<ConsumerCache<ChallengeVerificationDto>> process) {
             this.process = process;
 
             return this;
         }
 
-        public ConsumerOp.Single<ChallengeVerificationDto> get() {
+        public ConsumerCache<ChallengeVerificationDto> get() {
             if (Objects.nonNull(process)) {
                 process.accept(this.verification);
             }

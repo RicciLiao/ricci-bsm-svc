@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.cache.CacheProvider;
-import ricciliao.bsm.cache.ChallengeOpBuilder;
+import ricciliao.bsm.cache.ChallengeCacheBuilder;
 import ricciliao.bsm.cache.component.ChallengeComponent;
 import ricciliao.bsm.cache.pojo.SignUpLockDto;
 import ricciliao.bsm.common.BsmConstants;
@@ -19,7 +19,8 @@ import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmUserService;
 import ricciliao.bsm.utils.BsmPojoUtils;
 import ricciliao.bsm.utils.JvmCacheUtils;
-import ricciliao.x.cache.pojo.ConsumerOp;
+import ricciliao.x.cache.pojo.ConsumerCache;
+import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
 import ricciliao.x.component.crypto.CryptoStrategy;
 import ricciliao.x.component.exception.AbstractException;
@@ -83,12 +84,12 @@ public class BsmUserServiceImpl implements BsmUserService {
 
             throw new DataException(BsmSecondaryCodeEnum.EXISTED_EMAIL);
         }
-        challengeComponent.verifyChallenge(ChallengeOpBuilder.verify(requestDto));
+        challengeComponent.verifyChallenge(ChallengeCacheBuilder.verify(requestDto));
         GetChallengeDto challenge =
                 challengeComponent.getChallenge(
-                        ChallengeOpBuilder
+                        ChallengeCacheBuilder
                                 .get(ChallengeTypeStrategy.VERIFICATION_CODE.get())
-                                .process(single -> single.getData().getData().setEmailAddress(requestDto.getEmailAddress()))
+                                .process(cache -> cache.getStore().setEmailAddress(requestDto.getEmailAddress()))
                 );
 
         signUpEmailKafka.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.now().plusSeconds(challenge.t())));
@@ -99,7 +100,7 @@ public class BsmUserServiceImpl implements BsmUserService {
     @Override
     public String preSignUp(UserSignUpSendPostDto requestDto) throws AbstractException {
         challengeComponent.verifyChallenge(
-                ChallengeOpBuilder
+                ChallengeCacheBuilder
                         .verify(requestDto)
                         .process(v -> v.getEmailAddress().equalsIgnoreCase(requestDto.getEmailAddress()))
         );
@@ -111,7 +112,7 @@ public class BsmUserServiceImpl implements BsmUserService {
         SignUpLockDto lock = new SignUpLockDto();
         lock.setEmailAddress(requestDto.getEmailAddress());
         lock.setChallengeKey(requestDto.getK());
-        SimpleData.Str lockKey = cacheProvider.signUpLock().create(new ConsumerOp.Single<>(lock));
+        SimpleData.Str lockKey = cacheProvider.signUpLock().create(ConsumerOperation.of(lock));
         if (Objects.isNull(lockKey)) {
 
             throw new RestException(SecondaryCodeEnum.BLANK);
@@ -151,9 +152,9 @@ public class BsmUserServiceImpl implements BsmUserService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long signUp(String k, BsmUserInfoDto requestDto) throws AbstractException {
-        ConsumerOp.Single<SignUpLockDto> operation = cacheProvider.signUpLock().get(k);
-        if (Objects.isNull(operation)
-                || !requestDto.getUserEmail().equalsIgnoreCase(operation.getData().getData().getEmailAddress())) {
+        ConsumerCache<SignUpLockDto> cache = cacheProvider.signUpLock().get(k);
+        if (Objects.isNull(cache)
+                || !requestDto.getUserEmail().equalsIgnoreCase(cache.getStore().getEmailAddress())) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.TIMEOUT);
         }
