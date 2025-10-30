@@ -12,8 +12,10 @@ public class SendPostKafkaDto implements KafkaMessageDto {
     private String code;
     private Instant expireAt;
     private String to;
+
     public SendPostKafkaDto() {
     }
+
     public SendPostKafkaDto(String code, String to, Instant expireAt) {
         this.code = code;
         this.to = to;

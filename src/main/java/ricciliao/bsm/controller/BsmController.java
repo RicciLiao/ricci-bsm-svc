@@ -14,10 +14,10 @@ import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
 import ricciliao.x.component.challenge.ChallengeBgStrategy;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
 import ricciliao.x.component.exception.AbstractException;
-import ricciliao.x.component.response.Response;
-import ricciliao.x.component.response.ResponseUtils;
-import ricciliao.x.component.response.data.ResponseData;
-import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.payload.PayloadData;
+import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.response.Response;
+import ricciliao.x.component.payload.response.ResponseUtils;
 
 @Tag(name = "BsmController")
 @RestController
@@ -32,7 +32,7 @@ public class BsmController {
 
     @Operation
     @GetMapping("/")
-    public Response<ResponseData> initialize() {
+    public Response<PayloadData> initialize() {
 
         return ResponseUtils.success(
                 challengeComponent.getChallenge(
@@ -43,7 +43,7 @@ public class BsmController {
 
     @Operation
     @GetMapping("/captcha")
-    public Response<ResponseData> captcha() {
+    public Response<PayloadData> captcha() {
 
         return ResponseUtils.success(
                 challengeComponent.getChallenge(
@@ -54,7 +54,7 @@ public class BsmController {
 
     @Operation
     @PostMapping("/captcha")
-    public Response<ResponseData> captcha(@RequestBody VerifyChallengeDto requestDto) throws AbstractException {
+    public Response<PayloadData> captcha(@RequestBody VerifyChallengeDto requestDto) throws AbstractException {
 
         return ResponseUtils.success(
                 SimpleData.of(challengeComponent.verifyChallenge(ChallengeCacheBuilder.verify(requestDto)))

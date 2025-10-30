@@ -12,7 +12,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ricciliao.bsm.filter.BsmFilter;
-import ricciliao.x.component.response.ResponseHttpMessageConverter;
+import ricciliao.x.component.payload.response.ResponseHttpMessageConverter;
 import ricciliao.x.log.MdcSupportFilter;
 
 @Configuration

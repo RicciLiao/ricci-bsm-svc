@@ -14,6 +14,11 @@ public class SignUpLockDto implements ConsumerStore {
     private String emailAddress;
     private String challengeKey;
 
+    public static String toCacheKey(String emailAddress) {
+
+        return DigestUtils.md5DigestAsHex(emailAddress.getBytes(StandardCharsets.UTF_8));
+    }
+
     public String getChallengeKey() {
         return challengeKey;
     }
@@ -45,10 +50,5 @@ public class SignUpLockDto implements ConsumerStore {
     public String generateCacheKey() {
 
         return SignUpLockDto.toCacheKey(emailAddress);
-    }
-
-    public static String toCacheKey(String emailAddress) {
-
-        return DigestUtils.md5DigestAsHex(emailAddress.getBytes(StandardCharsets.UTF_8));
     }
 }

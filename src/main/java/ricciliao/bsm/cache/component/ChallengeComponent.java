@@ -12,7 +12,7 @@ import ricciliao.x.cache.pojo.ConsumerCache;
 import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
-import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.payload.SimpleData;
 
 import java.time.Instant;
 import java.util.Objects;

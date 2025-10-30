@@ -28,8 +28,8 @@ import ricciliao.x.component.exception.DataException;
 import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.exception.RestException;
 import ricciliao.x.component.kafka.KafkaProducer;
-import ricciliao.x.component.response.code.impl.SecondaryCodeEnum;
-import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
 import ricciliao.x.starter.XProperties;
 
 import java.nio.charset.StandardCharsets;

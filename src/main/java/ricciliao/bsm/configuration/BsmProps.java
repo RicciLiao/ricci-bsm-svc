@@ -8,12 +8,12 @@ import ricciliao.x.starter.XProperties;
 @Configuration("bsmProps")
 public class BsmProps extends ApplicationProperties {
 
+    private final XProperties xProperties;
+
     public BsmProps(@Autowired XProperties xProperties) {
         super();
         this.xProperties = xProperties;
     }
-
-    private final XProperties xProperties;
 
     public XProperties getxProperties() {
         return xProperties;

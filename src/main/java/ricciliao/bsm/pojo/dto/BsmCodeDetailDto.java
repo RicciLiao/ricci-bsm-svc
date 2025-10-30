@@ -1,24 +1,15 @@
 package ricciliao.bsm.pojo.dto;
 
-import ricciliao.x.component.response.data.ResponseData;
+
+import ricciliao.x.component.payload.PayloadData;
 
 import java.io.Serial;
 import java.time.Instant;
 import java.util.Objects;
 
-public class BsmCodeDetailDto implements ResponseData {
+public class BsmCodeDetailDto implements PayloadData {
     @Serial
     private static final long serialVersionUID = -5189725060913822244L;
-
-    public BsmCodeDetailDto() {
-    }
-
-    public BsmCodeDetailDto(Long id, Long bsmCodeId, String code) {
-        this.id = id;
-        this.bsmCodeId = bsmCodeId;
-        this.code = code;
-    }
-
     private Long id;
     private Long bsmCodeId;
     private String code;
@@ -29,6 +20,13 @@ public class BsmCodeDetailDto implements ResponseData {
     private Long updatedBy;
     private Instant updatedDtm;
     private Long version;
+    public BsmCodeDetailDto() {
+    }
+    public BsmCodeDetailDto(Long id, Long bsmCodeId, String code) {
+        this.id = id;
+        this.bsmCodeId = bsmCodeId;
+        this.code = code;
+    }
 
     public Boolean getActive() {
         return active;

@@ -1,7 +1,7 @@
 package ricciliao.bsm.common;
 
 
-import ricciliao.x.component.response.code.SecondaryCode;
+import ricciliao.x.component.payload.response.code.SecondaryCode;
 
 public enum BsmSecondaryCodeEnum implements SecondaryCode {
 

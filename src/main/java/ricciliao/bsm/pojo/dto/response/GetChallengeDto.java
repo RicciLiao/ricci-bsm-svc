@@ -2,7 +2,7 @@ package ricciliao.bsm.pojo.dto.response;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import ricciliao.x.component.response.data.ResponseData;
+import ricciliao.x.component.payload.PayloadData;
 
 import java.io.Serial;
 import java.util.Objects;
@@ -13,7 +13,7 @@ import java.util.Objects;
  * @param t Cache reset time
  * @param c Challenge code
  */
-public record GetChallengeDto(String k, String i, Long t, @JsonIgnore String c) implements ResponseData {
+public record GetChallengeDto(String k, String i, Long t, @JsonIgnore String c) implements PayloadData {
     @Serial
     private static final long serialVersionUID = 8830237055676586883L;
 

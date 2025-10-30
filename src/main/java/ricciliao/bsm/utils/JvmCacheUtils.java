@@ -2,11 +2,11 @@ package ricciliao.bsm.utils;
 
 public class JvmCacheUtils {
 
+    private static Long systemUserId = 0L;
+
     private JvmCacheUtils() {
         throw new IllegalStateException("Utility class");
     }
-
-    private static Long systemUserId = 0L;
 
     public static Long getSystemUserId() {
         return systemUserId;

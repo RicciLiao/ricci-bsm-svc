@@ -16,11 +16,11 @@ import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.service.BsmUserService;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
-import ricciliao.x.component.response.Response;
-import ricciliao.x.component.response.ResponseUtils;
-import ricciliao.x.component.response.code.impl.SecondaryCodeEnum;
-import ricciliao.x.component.response.data.ResponseData;
-import ricciliao.x.component.response.data.SimpleData;
+import ricciliao.x.component.payload.PayloadData;
+import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.response.Response;
+import ricciliao.x.component.payload.response.ResponseUtils;
+import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
 import ricciliao.x.component.utils.CoreUtils;
 
 @Tag(name = "BsmUserController")
@@ -37,8 +37,8 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp/sendPost")
-    public Response<ResponseData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
-                                           BindingResult bindingResult) throws AbstractException {
+    public Response<PayloadData> sendPost(@Validated @RequestBody UserSignUpSendPostDto requestDto,
+                                          BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
@@ -49,8 +49,8 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp/pre")
-    public Response<ResponseData> preSignUp(@Validated @RequestBody UserSignUpSendPostDto requestDto,
-                                            BindingResult bindingResult) throws AbstractException {
+    public Response<PayloadData> preSignUp(@Validated @RequestBody UserSignUpSendPostDto requestDto,
+                                           BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
@@ -62,9 +62,9 @@ public class BsmUserController {
 
     @Operation
     @PostMapping("/signUp")
-    public Response<ResponseData> signUp(@RequestParam(name = "k") String k,
-                                         @Valid @RequestBody BsmUserInfoDto requestDto,
-                                         BindingResult bindingResult) throws AbstractException {
+    public Response<PayloadData> signUp(@RequestParam(name = "k") String k,
+                                        @Valid @RequestBody BsmUserInfoDto requestDto,
+                                        BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
