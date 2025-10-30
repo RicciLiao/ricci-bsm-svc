@@ -89,7 +89,7 @@ public class ChallengeCacheBuilder {
             return this;
         }
 
-        public Boolean apply(ChallengeVerificationDto cache) {
+        public boolean apply(ChallengeVerificationDto cache) {
 
             return Objects.nonNull(process) && !process.apply(cache);
         }

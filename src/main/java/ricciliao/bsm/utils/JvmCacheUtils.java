@@ -6,6 +6,13 @@ public class JvmCacheUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Long SYSTEM_USER_ID = 0L;
+    private static Long systemUserId = 0L;
 
+    public static Long getSystemUserId() {
+        return systemUserId;
+    }
+
+    public static void setSystemUserId(Long systemUserId) {
+        JvmCacheUtils.systemUserId = systemUserId;
+    }
 }

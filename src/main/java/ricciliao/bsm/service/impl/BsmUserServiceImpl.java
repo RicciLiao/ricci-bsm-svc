@@ -112,7 +112,7 @@ public class BsmUserServiceImpl implements BsmUserService {
         SignUpLockDto lock = new SignUpLockDto();
         lock.setEmailAddress(requestDto.getEmailAddress());
         lock.setChallengeKey(requestDto.getK());
-        SimpleData.Str lockKey = cacheProvider.signUpLock().create(ConsumerOperation.of(lock));
+        SimpleData.Str lockKey = cacheProvider.signUpLock().create(ConsumerOperation.ofStore(lock));
         if (Objects.isNull(lockKey)) {
 
             throw new RestException(SecondaryCodeEnum.BLANK);
@@ -143,7 +143,7 @@ public class BsmUserServiceImpl implements BsmUserService {
             po.setUpdatedDtm(now);
             id = bsmUserRepository.saveAndFlush(po).getId();
         }
-        JvmCacheUtils.SYSTEM_USER_ID = id;
+        JvmCacheUtils.setSystemUserId(id);
 
         return id;
     }
@@ -163,9 +163,9 @@ public class BsmUserServiceImpl implements BsmUserService {
         requestDto.setVersion(null);
         requestDto.setId(null);
         requestDto.setLastLoginDtm(now);
-        requestDto.setCreatedBy(JvmCacheUtils.SYSTEM_USER_ID);
+        requestDto.setCreatedBy(JvmCacheUtils.getSystemUserId());
         requestDto.setCreatedDtm(now);
-        requestDto.setUpdatedBy(JvmCacheUtils.SYSTEM_USER_ID);
+        requestDto.setUpdatedBy(JvmCacheUtils.getSystemUserId());
         requestDto.setUpdatedDtm(now);
         requestDto.setStatusId(BsmConstants.INITIALIZED_STATUS);
         requestDto.setUserPassword(Base64.getEncoder().encodeToString(password));

@@ -18,11 +18,6 @@ public record GetChallengeDto(String k, String i, Long t, @JsonIgnore String c) 
     private static final long serialVersionUID = 8830237055676586883L;
 
     @Override
-    public String c() {
-        return c;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (!(o instanceof GetChallengeDto(String k1, String i1, Long t1, String c1))) return false;
         return Objects.equals(k(), k1) && Objects.equals(i(), i1) && Objects.equals(t(), t1) && Objects.equals(c(), c1);
