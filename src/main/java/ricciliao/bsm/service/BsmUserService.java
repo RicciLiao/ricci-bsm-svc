@@ -1,6 +1,7 @@
 package ricciliao.bsm.service;
 
 import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
+import ricciliao.bsm.pojo.dto.request.UserSignInDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.x.component.exception.AbstractException;
 
@@ -13,5 +14,7 @@ public interface BsmUserService {
     String preSignUp(UserSignUpSendPostDto requestDto) throws AbstractException;
 
     Long initialize();
+
+    Long signIn(UserSignInDto requestDto) throws AbstractException;
 
 }

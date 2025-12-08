@@ -1,5 +1,6 @@
 package ricciliao.bsm.pojo.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
@@ -10,6 +11,7 @@ public class UserSignUpSendPostDto extends VerifyChallengeDto implements Seriali
     @Serial
     private static final long serialVersionUID = -7398802352610627681L;
 
+    @Email
     @NotBlank
     private String emailAddress;
 

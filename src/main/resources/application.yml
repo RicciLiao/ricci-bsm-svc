@@ -58,6 +58,8 @@ ricciliao:
           store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
         - store: signUpLock
           store-class-name: ricciliao.bsm.cache.pojo.SignUpLockDto
+        - store: signInLog
+          store-class-name: ricciliao.bsm.cache.pojo.SignInLogDto
     kafka:
       producer:
         producer-list:

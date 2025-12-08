@@ -101,4 +101,7 @@ public interface BsmUserRepository extends JpaRepository<BsmUserPo, Long> {
     boolean existsByLoginNameOrUserEmail(String loginName, String userEmail);
 
     Optional<BsmUserPo> findByLoginName(String loginName);
+
+    Optional<BsmUserPo> findByUserEmail(String userEmail);
+
 }
