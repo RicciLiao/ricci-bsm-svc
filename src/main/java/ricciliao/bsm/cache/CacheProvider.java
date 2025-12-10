@@ -27,7 +27,7 @@ public class CacheProvider {
         this.challengeConsumerCacheRestService = challengeConsumerCacheRestService;
     }
 
-    @Qualifier("signInLogDtoConsumerCacheRestService")
+    @Qualifier("signInLogConsumerCacheRestService")
     @Autowired
     public void setSignInLogDtoConsumerCacheRestService(ConsumerCacheRestService<SignInLogDto> signInLogDtoConsumerCacheRestService) {
         this.signInLogDtoConsumerCacheRestService = signInLogDtoConsumerCacheRestService;
