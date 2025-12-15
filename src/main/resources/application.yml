@@ -51,8 +51,7 @@ ricciliao:
         enable: true
     dynamic-aspect:
       aspect-list:
-    cache-consumer:
-      consumer: bsm
+    cache-consumer-client:
       operation-list:
         - store: challenge
           store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
@@ -60,6 +59,7 @@ ricciliao:
           store-class-name: ricciliao.bsm.cache.pojo.SignUpLockDto
         - store: signInLog
           store-class-name: ricciliao.bsm.cache.pojo.SignInLogDto
+      provider-url: http://192.168.165.34:8083/operation
     kafka:
       producer:
         producer-list:
