@@ -38,7 +38,6 @@ ricciliao:
   x:
     common:
       consumer: bsm
-      version: ${project.version}
       time-zone: GMT+8
       springdoc:
         title: BSM

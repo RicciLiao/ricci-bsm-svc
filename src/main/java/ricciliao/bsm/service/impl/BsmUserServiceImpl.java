@@ -1,6 +1,5 @@
 package ricciliao.bsm.service.impl;
 
-import jakarta.validation.Validator;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,12 +50,6 @@ public class BsmUserServiceImpl implements BsmUserService {
     private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
     private ChallengeComponent challengeComponent;
     private XProperties xProperties;
-    private Validator validator;
-
-    @Autowired
-    public void setValidator(Validator validator) {
-        this.validator = validator;
-    }
 
     @Autowired
     public void setxProperties(XProperties xProperties) {
@@ -103,7 +96,7 @@ public class BsmUserServiceImpl implements BsmUserService {
                                 .process(cache -> cache.getStore().setEmailAddress(requestDto.getEmailAddress()))
                 );
 
-        signUpEmailKafka.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.now().plusSeconds(challenge.t())));
+        signUpEmailKafka.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.ofEpochMilli(challenge.t())));
 
         return challenge.k();
     }
@@ -135,7 +128,7 @@ public class BsmUserServiceImpl implements BsmUserService {
     @Override
     public Long initialize() {
         Long id;
-        String version = xProperties.commonProps().getVersion();
+        String version = xProperties.buildProps().getVersion();
         String loginName = String.format(BsmConstants.APP_VERSION_USER, version);
         Optional<BsmUserPo> poOptional = bsmUserRepository.findByLoginName(loginName);
         if (poOptional.isPresent()) {
