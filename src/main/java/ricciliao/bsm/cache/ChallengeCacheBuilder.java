@@ -2,8 +2,8 @@ package ricciliao.bsm.cache;
 
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
-import ricciliao.x.cache.pojo.ConsumerCache;
 import ricciliao.x.component.challenge.Challenge;
+import ricciliao.x.mcp.ConsumerCache;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -30,7 +30,7 @@ public class ChallengeCacheBuilder {
         private Consumer<ConsumerCache<ChallengeVerificationDto>> process;
 
         public GetChallenge(Challenge challenge) {
-            this.verification = new ConsumerCache<>(new ChallengeVerificationDto(challenge));
+            this.verification = ConsumerCache.of(new ChallengeVerificationDto(challenge));
         }
 
         public Consumer<ConsumerCache<ChallengeVerificationDto>> getProcess() {

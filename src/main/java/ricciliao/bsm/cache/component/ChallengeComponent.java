@@ -8,11 +8,10 @@ import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.common.BsmSecondaryCodeEnum;
 import ricciliao.bsm.pojo.dto.request.VerifyChallengeDto;
 import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
-import ricciliao.x.cache.pojo.ConsumerCache;
-import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
-import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.SimplePayloadData;
+import ricciliao.x.mcp.ConsumerCache;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -28,15 +27,15 @@ public class ChallengeComponent {
 
     public GetChallengeDto getChallenge(ChallengeCacheBuilder.GetChallenge challenge) {
         ConsumerCache<ChallengeVerificationDto> operation = challenge.get();
-        SimpleData.Str result = Objects.requireNonNull(cacheProvider.challenge().create(ConsumerOperation.of(operation)));
-        ConsumerCache<ChallengeVerificationDto> cache = Objects.requireNonNull(cacheProvider.challenge().get(result.result()));
+        SimplePayloadData.Str result = Objects.requireNonNull(cacheProvider.challenge().create(operation));
+        ConsumerCache<ChallengeVerificationDto> cache = Objects.requireNonNull(cacheProvider.challenge().get(result.data()));
 
         return
                 new GetChallengeDto(
-                        cache.getCacheKey(),
-                        cache.getStore().getImage(),
+                        cache.getUid(),
+                        cache.getData().getImage(),
                         cache.getTtlEffectedDtm().toEpochMilli(),
-                        cache.getStore().getCode()
+                        cache.getData().getCode()
                 );
     }
 
@@ -47,7 +46,7 @@ public class ChallengeComponent {
 
             throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
         }
-        ChallengeVerificationDto store = cache.getStore();
+        ChallengeVerificationDto store = cache.getData();
         if (store.isVerified() || !dto.getC().equalsIgnoreCase(store.getCode())) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.MISMATCHED_CAPTCHA);
@@ -60,9 +59,9 @@ public class ChallengeComponent {
         }
         store.setVerified(true);
         cache.setUpdatedDtm(Instant.now());
-        SimpleData.Bool bool = cacheProvider.challenge().update(new ConsumerOperation.Single<>(cache));
+        SimplePayloadData.Bool bool = cacheProvider.challenge().update(cache);
 
-        return Objects.nonNull(bool) && bool.result();
+        return Objects.nonNull(bool) && bool.data();
     }
 
 }

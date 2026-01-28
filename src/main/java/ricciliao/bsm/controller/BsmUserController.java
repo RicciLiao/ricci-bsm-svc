@@ -20,7 +20,7 @@ import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.exception.SecurityException;
 import ricciliao.x.component.payload.PayloadData;
-import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.SimplePayloadData;
 import ricciliao.x.component.payload.response.Response;
 import ricciliao.x.component.payload.response.ResponseUtils;
 import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
@@ -47,7 +47,7 @@ public class BsmUserController {
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
         }
 
-        return ResponseUtils.success(SimpleData.of(bsmUserInfoService.signUpSendPost(requestDto)));
+        return ResponseUtils.success(SimplePayloadData.of(bsmUserInfoService.signUpSendPost(requestDto)));
     }
 
     @Operation
@@ -59,7 +59,7 @@ public class BsmUserController {
             throw new ParameterException(SecondaryCodeEnum.BLANK, CoreUtils.toFieldViolation(bindingResult));
         }
 
-        return ResponseUtils.success(SimpleData.of(bsmUserInfoService.preSignUp(requestDto)));
+        return ResponseUtils.success(SimplePayloadData.of(bsmUserInfoService.preSignUp(requestDto)));
     }
 
     @Operation

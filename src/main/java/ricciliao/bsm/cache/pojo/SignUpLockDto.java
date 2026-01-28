@@ -1,13 +1,13 @@
 package ricciliao.bsm.cache.pojo;
 
 import org.springframework.util.DigestUtils;
-import ricciliao.x.cache.ConsumerStore;
+import ricciliao.x.mcp.ConsumerCacheData;
 
 import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class SignUpLockDto implements ConsumerStore {
+public class SignUpLockDto implements ConsumerCacheData {
     @Serial
     private static final long serialVersionUID = 8718746710826396880L;
 
@@ -47,7 +47,7 @@ public class SignUpLockDto implements ConsumerStore {
     }
 
     @Override
-    public String generateCacheKey() {
+    public String generateUid() {
 
         return SignUpLockDto.toCacheKey(emailAddress);
     }

@@ -38,7 +38,6 @@ ricciliao:
   x:
     common:
       consumer: bsm
-      time-zone: GMT+8
       springdoc:
         title: BSM
         description: Brain Storming Manager Service
@@ -50,15 +49,15 @@ ricciliao:
         enable: true
     dynamic-aspect:
       aspect-list:
-    cache-consumer-client:
+    mcp:
+      url: http://127.0.0.1:8083/operation
       operation-list:
         - store: challenge
-          store-class-name: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
+          dataClassName: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
         - store: signUpLock
-          store-class-name: ricciliao.bsm.cache.pojo.SignUpLockDto
+          dataClassName: ricciliao.bsm.cache.pojo.SignUpLockDto
         - store: signInLog
-          store-class-name: ricciliao.bsm.cache.pojo.SignInLogDto
-      provider-url: http://192.168.165.34:8083/operation
+          dataClassName: ricciliao.bsm.cache.pojo.SignInLogDto
     kafka:
       producer:
         producer-list:

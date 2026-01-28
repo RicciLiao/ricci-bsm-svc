@@ -12,9 +12,9 @@ create table bsm_user_log
     updated_by     bigint       not null,
     updated_dtm    datetime(6)  not null,
     version        bigint       not null,
-    action_id      bigint       not null,
+    action_cd      varchar(1)   not null,
     action_dtm     datetime(6)  not null,
-    primary key (id, version)
+    primary key (id, action_dtm)
 );
 
 -- //@UNDO

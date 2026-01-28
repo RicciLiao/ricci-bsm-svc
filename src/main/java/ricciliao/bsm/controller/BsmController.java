@@ -15,7 +15,7 @@ import ricciliao.x.component.challenge.ChallengeBgStrategy;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.payload.PayloadData;
-import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.SimplePayloadData;
 import ricciliao.x.component.payload.response.Response;
 import ricciliao.x.component.payload.response.ResponseUtils;
 
@@ -57,7 +57,7 @@ public class BsmController {
     public Response<PayloadData> captcha(@RequestBody VerifyChallengeDto requestDto) throws AbstractException {
 
         return ResponseUtils.success(
-                SimpleData.of(challengeComponent.verifyChallenge(ChallengeCacheBuilder.verify(requestDto)))
+                SimplePayloadData.of(challengeComponent.verifyChallenge(ChallengeCacheBuilder.verify(requestDto)))
         );
     }
 

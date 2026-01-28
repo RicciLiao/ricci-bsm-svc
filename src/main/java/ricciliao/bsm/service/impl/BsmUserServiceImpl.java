@@ -22,8 +22,6 @@ import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmUserService;
 import ricciliao.bsm.utils.BsmPojoUtils;
 import ricciliao.bsm.utils.JvmCacheUtils;
-import ricciliao.x.cache.pojo.ConsumerCache;
-import ricciliao.x.cache.pojo.ConsumerOperation;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
 import ricciliao.x.component.crypto.CryptoResult;
 import ricciliao.x.component.crypto.CryptoStrategy;
@@ -32,8 +30,9 @@ import ricciliao.x.component.exception.DataException;
 import ricciliao.x.component.exception.ParameterException;
 import ricciliao.x.component.exception.RestException;
 import ricciliao.x.component.kafka.KafkaProducer;
-import ricciliao.x.component.payload.SimpleData;
+import ricciliao.x.component.payload.SimplePayloadData;
 import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
+import ricciliao.x.mcp.ConsumerCache;
 import ricciliao.x.starter.XProperties;
 
 import java.nio.charset.StandardCharsets;
@@ -93,7 +92,7 @@ public class BsmUserServiceImpl implements BsmUserService {
                 challengeComponent.getChallenge(
                         ChallengeCacheBuilder
                                 .get(ChallengeTypeStrategy.VERIFICATION_CODE.get())
-                                .process(cache -> cache.getStore().setEmailAddress(requestDto.getEmailAddress()))
+                                .process(cache -> cache.getData().setEmailAddress(requestDto.getEmailAddress()))
                 );
 
         signUpEmailKafka.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.ofEpochMilli(challenge.t())));
@@ -116,13 +115,13 @@ public class BsmUserServiceImpl implements BsmUserService {
         SignUpLockDto lock = new SignUpLockDto();
         lock.setEmailAddress(requestDto.getEmailAddress());
         lock.setChallengeKey(requestDto.getK());
-        SimpleData.Str lockKey = cacheProvider.signUpLock().create(ConsumerOperation.ofStore(lock));
+        SimplePayloadData.Str lockKey = cacheProvider.signUpLock().create(ConsumerCache.of(lock));
         if (Objects.isNull(lockKey)) {
 
             throw new RestException(SecondaryCodeEnum.BLANK);
         }
 
-        return lockKey.result();
+        return lockKey.data();
     }
 
     @Override
@@ -171,7 +170,7 @@ public class BsmUserServiceImpl implements BsmUserService {
                 result = po.getId();
             }
         }
-        cacheProvider.signInLog().create(ConsumerOperation.ofStore(logDto));
+        cacheProvider.signInLog().create(ConsumerCache.of(logDto));
 
         return result;
     }
@@ -181,7 +180,7 @@ public class BsmUserServiceImpl implements BsmUserService {
     public Long signUp(String k, BsmUserInfoDto requestDto) throws AbstractException {
         ConsumerCache<SignUpLockDto> cache = cacheProvider.signUpLock().get(k);
         if (Objects.isNull(cache)
-                || !requestDto.getUserEmail().equalsIgnoreCase(cache.getStore().getEmailAddress())) {
+                || !requestDto.getUserEmail().equalsIgnoreCase(cache.getData().getEmailAddress())) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.TIMEOUT);
         }

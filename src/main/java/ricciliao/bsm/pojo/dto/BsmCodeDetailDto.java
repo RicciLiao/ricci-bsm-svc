@@ -20,8 +20,10 @@ public class BsmCodeDetailDto implements PayloadData {
     private Long updatedBy;
     private Instant updatedDtm;
     private Long version;
+
     public BsmCodeDetailDto() {
     }
+
     public BsmCodeDetailDto(Long id, Long bsmCodeId, String code) {
         this.id = id;
         this.bsmCodeId = bsmCodeId;

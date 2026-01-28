@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.cache.pojo.SignInLogDto;
 import ricciliao.bsm.cache.pojo.SignUpLockDto;
-import ricciliao.x.starter.cache.ConsumerCacheRestService;
+import ricciliao.x.starter.mcp.ConsumerCacheRestService;
 
 @Component("cacheProvider")
 public class CacheProvider {

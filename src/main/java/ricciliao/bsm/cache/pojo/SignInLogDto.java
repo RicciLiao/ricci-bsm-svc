@@ -1,11 +1,11 @@
 package ricciliao.bsm.cache.pojo;
 
-import ricciliao.x.cache.ConsumerStore;
+import ricciliao.x.mcp.ConsumerCacheData;
 
 import java.io.Serial;
 import java.time.Instant;
 
-public class SignInLogDto implements ConsumerStore {
+public class SignInLogDto implements ConsumerCacheData {
     @Serial
     private static final long serialVersionUID = -1906065287172641192L;
 
@@ -47,7 +47,7 @@ public class SignInLogDto implements ConsumerStore {
     }
 
     @Override
-    public String generateCacheKey() {
+    public String generateUid() {
         return "";
     }
 }
