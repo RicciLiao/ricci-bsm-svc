@@ -6,5 +6,4 @@ import ricciliao.bsm.service.BsmService;
 @Service
 public class BsmServiceImpl implements BsmService {
 
-
 }

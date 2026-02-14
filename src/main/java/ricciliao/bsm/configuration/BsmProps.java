@@ -6,12 +6,11 @@ import ricciliao.x.component.props.ApplicationProperties;
 import ricciliao.x.starter.XProperties;
 
 @Configuration("bsmProps")
-public class BsmProps extends ApplicationProperties {
+public class BsmProps implements ApplicationProperties {
 
     private final XProperties xProperties;
 
     public BsmProps(@Autowired XProperties xProperties) {
-        super();
         this.xProperties = xProperties;
     }
 

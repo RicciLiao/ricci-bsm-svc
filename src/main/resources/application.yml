@@ -49,18 +49,26 @@ ricciliao:
         enable: true
     dynamic-aspect:
       aspect-list:
+        - aspect: ricciliao.bsm.McpAspect
+          expression: execution(public ricciliao.x.component.payload.response.Response ricciliao.bsm.controller.*.*(..))
+          bean-name: mcpAspect
     mcp:
       url: http://127.0.0.1:8083/operation
       operation-list:
         - store: challenge
-          dataClassName: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
+          data-type: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
         - store: signUpLock
-          dataClassName: ricciliao.bsm.cache.pojo.SignUpLockDto
+          data-type: ricciliao.bsm.cache.pojo.SignUpLockDto
         - store: signInLog
-          dataClassName: ricciliao.bsm.cache.pojo.SignInLogDto
+          data-type: ricciliao.bsm.cache.pojo.SignInLogDto
     kafka:
       producer:
         producer-list:
           - topic: signUpEmail
             message-class: ricciliao.bsm.kafka.dto.SendPostKafkaDto
             bean-name: signUpEmailKafka
+      consumer:
+        consumer-list:
+          - topic: signUpEmail
+            group: bsm
+            handler: ricciliao.bsm.BsmSignUpEmailKafkaHandler
