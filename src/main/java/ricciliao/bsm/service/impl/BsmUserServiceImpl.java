@@ -13,18 +13,17 @@ import ricciliao.bsm.cache.pojo.SignUpLockDto;
 import ricciliao.bsm.common.BsmConstants;
 import ricciliao.bsm.common.BsmSecondaryCodeEnum;
 import ricciliao.bsm.kafka.dto.SendPostKafkaDto;
-import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
+import ricciliao.bsm.pojo.dto.BsmUserDto;
 import ricciliao.bsm.pojo.dto.request.UserSignInDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
 import ricciliao.bsm.pojo.po.BsmUserPo;
+import ricciliao.bsm.repository.BsmUserLogRepository;
 import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmUserService;
 import ricciliao.bsm.utils.BsmPojoUtils;
 import ricciliao.bsm.utils.JvmCacheUtils;
 import ricciliao.x.component.challenge.ChallengeTypeStrategy;
-import ricciliao.x.component.crypto.CryptoResult;
-import ricciliao.x.component.crypto.CryptoStrategy;
 import ricciliao.x.component.exception.AbstractException;
 import ricciliao.x.component.exception.DataException;
 import ricciliao.x.component.exception.ParameterException;
@@ -32,12 +31,13 @@ import ricciliao.x.component.exception.RestException;
 import ricciliao.x.component.kafka.KafkaProducer;
 import ricciliao.x.component.payload.SimplePayloadData;
 import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
+import ricciliao.x.component.persistence.LogAction;
+import ricciliao.x.component.security.encode.EncodeStrategy;
 import ricciliao.x.mcp.ConsumerCache;
 import ricciliao.x.starter.XProperties;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,6 +49,12 @@ public class BsmUserServiceImpl implements BsmUserService {
     private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
     private ChallengeComponent challengeComponent;
     private XProperties xProperties;
+    private BsmUserLogRepository bsmUserLogRepository;
+
+    @Autowired
+    public void setBsmUserLogRepository(BsmUserLogRepository bsmUserLogRepository) {
+        this.bsmUserLogRepository = bsmUserLogRepository;
+    }
 
     @Autowired
     public void setxProperties(XProperties xProperties) {
@@ -136,7 +142,7 @@ public class BsmUserServiceImpl implements BsmUserService {
             Instant now = Instant.now();
             BsmUserPo po = new BsmUserPo();
             po.setLoginName(loginName);
-            po.setUserPassword(Base64.getEncoder().encodeToString(CryptoStrategy.HASH.encrypt(version.getBytes()).getData()));
+            po.setUserPassword(EncodeStrategy.ARGON2.encode(version.getBytes(StandardCharsets.UTF_8)));
             po.setUserEmail(loginName);
             po.setLastLoginDtm(now);
             po.setStatusId(BsmConstants.DATA_STATUS_ACTIVE);
@@ -144,17 +150,21 @@ public class BsmUserServiceImpl implements BsmUserService {
             po.setCreatedDtm(now);
             po.setUpdatedBy(0L);
             po.setUpdatedDtm(now);
-            id = bsmUserRepository.saveAndFlush(po).getId();
+            po = bsmUserRepository.saveAndFlush(po);
+            bsmUserLogRepository.save(BsmPojoUtils.convert2Po(po, LogAction.update(now)));
+            id = po.getId();
         }
         JvmCacheUtils.setSystemUserId(id);
 
         return id;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long signIn(UserSignInDto requestDto) {
         Long result = 0L;
         Optional<BsmUserPo> poOptional;
+        Instant now = Instant.now();
         SignInLogDto logDto = new SignInLogDto();
         if (EmailValidator.getInstance().isValid(requestDto.getSignInName())) {
             poOptional = bsmUserRepository.findByUserEmail(requestDto.getSignInName());
@@ -165,9 +175,13 @@ public class BsmUserServiceImpl implements BsmUserService {
         }
         if (poOptional.isPresent()) {
             BsmUserPo po = poOptional.get();
-            CryptoResult encryptResult = CryptoStrategy.HASH.encrypt(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8));
-            if (po.getUserPassword().equalsIgnoreCase(Base64.getEncoder().encodeToString(encryptResult.getData()))) {
+            String encodedPassword = EncodeStrategy.ARGON2.encode(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8));
+            if (EncodeStrategy.ARGON2.matches(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8), encodedPassword)) {
                 result = po.getId();
+                po.setLastLoginDtm(now);
+                po.setUpdatedDtm(now);
+                po = bsmUserRepository.saveAndFlush(po);
+                bsmUserLogRepository.save(BsmPojoUtils.convert2Po(po, LogAction.update(now)));
             }
         }
         cacheProvider.signInLog().create(ConsumerCache.of(logDto));
@@ -177,15 +191,14 @@ public class BsmUserServiceImpl implements BsmUserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Long signUp(String k, BsmUserInfoDto requestDto) throws AbstractException {
+    public Long signUp(String k, BsmUserDto requestDto) throws AbstractException {
         ConsumerCache<SignUpLockDto> cache = cacheProvider.signUpLock().get(k);
         if (Objects.isNull(cache)
-                || !requestDto.getUserEmail().equalsIgnoreCase(cache.getData().getEmailAddress())) {
+            || !requestDto.getUserEmail().equalsIgnoreCase(cache.getData().getEmailAddress())) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.TIMEOUT);
         }
         Instant now = Instant.now();
-        byte[] password = CryptoStrategy.HASH.encrypt(requestDto.getUserPassword().getBytes(StandardCharsets.UTF_8)).getData();
         requestDto.setVersion(null);
         requestDto.setId(null);
         requestDto.setLastLoginDtm(now);
@@ -194,8 +207,9 @@ public class BsmUserServiceImpl implements BsmUserService {
         requestDto.setUpdatedBy(JvmCacheUtils.getSystemUserId());
         requestDto.setUpdatedDtm(now);
         requestDto.setStatusId(BsmConstants.DATA_STATUS_INITIALIZED);
-        requestDto.setUserPassword(Base64.getEncoder().encodeToString(password));
-        bsmUserRepository.save(BsmPojoUtils.convert2Po(requestDto));
+        requestDto.setUserPassword(EncodeStrategy.ARGON2.encode(requestDto.getUserPassword().getBytes(StandardCharsets.UTF_8)));
+        BsmUserPo po = bsmUserRepository.save(BsmPojoUtils.convert2Po(requestDto));
+        bsmUserLogRepository.save(BsmPojoUtils.convert2Po(po, LogAction.insert(now)));
 
         cacheProvider.signUpLock().delete(k);
 

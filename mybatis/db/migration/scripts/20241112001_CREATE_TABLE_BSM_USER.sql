@@ -3,7 +3,7 @@ create table bsm_user
     id             bigint auto_increment primary key,
     login_name     varchar(15)  not null,
     user_name      varchar(255),
-    user_password  varchar(64)  not null,
+    user_password  varchar(97)  not null,
     user_email     varchar(255) not null,
     last_login_dtm datetime(6)  not null,
     status_id      bigint       not null,

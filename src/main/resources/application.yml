@@ -43,17 +43,13 @@ ricciliao:
         description: Brain Storming Manager Service
         summary: 🎖 Inspiration
         enable: true
-      crypto-password: ${CRYPTO_PWD}
+    security:
+      active: true
     log:
       executor:
         enable: true
-    dynamic-aspect:
-      aspect-list:
-        - aspect: ricciliao.bsm.McpAspect
-          expression: execution(public ricciliao.x.component.payload.response.Response ricciliao.bsm.controller.*.*(..))
-          bean-name: mcpAspect
     mcp:
-      url: http://127.0.0.1:8083/operation
+      url: http://192.168.165.34:8083/operation
       operation-list:
         - store: challenge
           data-type: ricciliao.bsm.cache.pojo.ChallengeVerificationDto
@@ -67,8 +63,3 @@ ricciliao:
           - topic: signUpEmail
             message-class: ricciliao.bsm.kafka.dto.SendPostKafkaDto
             bean-name: signUpEmailKafka
-      consumer:
-        consumer-list:
-          - topic: signUpEmail
-            group: bsm
-            handler: ricciliao.bsm.BsmSignUpEmailKafkaHandler

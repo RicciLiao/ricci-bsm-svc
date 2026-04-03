@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ricciliao.bsm.common.BsmSecondaryCodeEnum;
-import ricciliao.bsm.pojo.dto.BsmUserInfoDto;
+import ricciliao.bsm.pojo.dto.BsmUserDto;
 import ricciliao.bsm.pojo.dto.request.UserSignInDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.service.BsmUserService;
@@ -33,7 +33,7 @@ public class BsmUserController {
 
     private BsmUserService bsmUserInfoService;
 
-    @Autowired(required = false)
+    @Autowired
     public void setBsmUserInfoService(BsmUserService bsmUserInfoService) {
         this.bsmUserInfoService = bsmUserInfoService;
     }
@@ -65,7 +65,7 @@ public class BsmUserController {
     @Operation
     @PostMapping("/signUp")
     public Response<PayloadData> signUp(@RequestParam(name = "k") String k,
-                                        @Valid @RequestBody BsmUserInfoDto requestDto,
+                                        @Valid @RequestBody BsmUserDto requestDto,
                                         BindingResult bindingResult) throws AbstractException {
         if (bindingResult.hasErrors()) {
 

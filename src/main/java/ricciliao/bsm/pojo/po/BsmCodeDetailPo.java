@@ -8,42 +8,48 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
-@Table(name = "bsm_code_detail", schema = "bsm")
-public class BsmCodeDetailPo {
+@Table(name = "bsm_code_detail")
+public class BsmCodeDetailPo implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8117109961058992452L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "bsm_code_id", nullable = false)
-    private Long bsmCode;
+    @Column(name = "bsm_code_id")
+    private Long bsmCodeId;
 
-    @Column(name = "code", nullable = false, length = 20)
+    @Column(name = "code")
     private String code;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(name = "is_active")
     private Integer isActive;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by")
     private Long createdBy;
 
-    @Column(name = "created_dtm", nullable = false)
+    @Column(name = "created_dtm")
     private Instant createdDtm;
 
-    @Column(name = "updated_by", nullable = false)
+    @Column(name = "updated_by")
     private Long updatedBy;
 
-    @Column(name = "updated_dtm", nullable = false)
+    @Column(name = "updated_dtm")
     private Instant updatedDtm;
 
     @Version
-    @Column(name = "version", nullable = false)
+    @Column(name = "version")
     private Long version;
 
     public Long getId() {
@@ -54,12 +60,12 @@ public class BsmCodeDetailPo {
         this.id = id;
     }
 
-    public Long getBsmCode() {
-        return bsmCode;
+    public Long getBsmCodeId() {
+        return bsmCodeId;
     }
 
-    public void setBsmCode(Long bsmCode) {
-        this.bsmCode = bsmCode;
+    public void setBsmCodeId(Long bsmCodeId) {
+        this.bsmCodeId = bsmCodeId;
     }
 
     public String getCode() {
@@ -126,4 +132,14 @@ public class BsmCodeDetailPo {
         this.version = version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BsmCodeDetailPo that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getBsmCodeId(), that.getBsmCodeId()) && Objects.equals(getCode(), that.getCode()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getIsActive(), that.getIsActive()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getCreatedDtm(), that.getCreatedDtm()) && Objects.equals(getUpdatedBy(), that.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), that.getUpdatedDtm()) && Objects.equals(getVersion(), that.getVersion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getBsmCodeId(), getCode(), getDescription(), getIsActive(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
+    }
 }

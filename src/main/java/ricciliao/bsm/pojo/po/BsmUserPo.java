@@ -8,48 +8,54 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
-@Table(name = "bsm_user", schema = "bsm")
-public class BsmUserPo {
+@Table(name = "bsm_user")
+public class BsmUserPo implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -1686666696193049959L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "login_name", nullable = false, length = 15)
+    @Column(name = "login_name")
     private String loginName;
 
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "user_password", nullable = false, length = 64)
+    @Column(name = "user_password")
     private String userPassword;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email")
     private String userEmail;
 
-    @Column(name = "last_login_dtm", nullable = false)
+    @Column(name = "last_login_dtm")
     private Instant lastLoginDtm;
 
-    @Column(name = "status_id", nullable = false)
+    @Column(name = "status_id")
     private Long statusId;
 
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by")
     private Long createdBy;
 
-    @Column(name = "created_dtm", nullable = false)
+    @Column(name = "created_dtm")
     private Instant createdDtm;
 
-    @Column(name = "updated_by", nullable = false)
+    @Column(name = "updated_by")
     private Long updatedBy;
 
-    @Column(name = "updated_dtm", nullable = false)
+    @Column(name = "updated_dtm")
     private Instant updatedDtm;
 
     @Version
-    @Column(name = "version", nullable = false)
+    @Column(name = "version")
     private Long version;
 
     public Long getId() {
@@ -148,4 +154,14 @@ public class BsmUserPo {
         this.version = version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BsmUserPo bsmUserPo)) return false;
+        return Objects.equals(getId(), bsmUserPo.getId()) && Objects.equals(getLoginName(), bsmUserPo.getLoginName()) && Objects.equals(getUserName(), bsmUserPo.getUserName()) && Objects.equals(getUserPassword(), bsmUserPo.getUserPassword()) && Objects.equals(getUserEmail(), bsmUserPo.getUserEmail()) && Objects.equals(getLastLoginDtm(), bsmUserPo.getLastLoginDtm()) && Objects.equals(getStatusId(), bsmUserPo.getStatusId()) && Objects.equals(getCreatedBy(), bsmUserPo.getCreatedBy()) && Objects.equals(getCreatedDtm(), bsmUserPo.getCreatedDtm()) && Objects.equals(getUpdatedBy(), bsmUserPo.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), bsmUserPo.getUpdatedDtm()) && Objects.equals(getVersion(), bsmUserPo.getVersion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getLoginName(), getUserName(), getUserPassword(), getUserEmail(), getLastLoginDtm(), getStatusId(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
+    }
 }
