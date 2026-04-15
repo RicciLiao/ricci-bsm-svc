@@ -3,6 +3,7 @@ package ricciliao.bsm.service.impl;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ricciliao.bsm.cache.CacheProvider;
@@ -34,7 +35,6 @@ import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
 import ricciliao.x.component.persistence.LogAction;
 import ricciliao.x.component.security.encode.EncodeStrategy;
 import ricciliao.x.mcp.ConsumerCache;
-import ricciliao.x.starter.XProperties;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -48,17 +48,17 @@ public class BsmUserServiceImpl implements BsmUserService {
     private CacheProvider cacheProvider;
     private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
     private ChallengeComponent challengeComponent;
-    private XProperties xProperties;
     private BsmUserLogRepository bsmUserLogRepository;
+    private BuildProperties builProps;
+
+    @Autowired
+    public void setBuilProps(BuildProperties builProps) {
+        this.builProps = builProps;
+    }
 
     @Autowired
     public void setBsmUserLogRepository(BsmUserLogRepository bsmUserLogRepository) {
         this.bsmUserLogRepository = bsmUserLogRepository;
-    }
-
-    @Autowired
-    public void setxProperties(XProperties xProperties) {
-        this.xProperties = xProperties;
     }
 
     @Autowired
@@ -133,7 +133,7 @@ public class BsmUserServiceImpl implements BsmUserService {
     @Override
     public Long initialize() {
         Long id;
-        String version = xProperties.buildProps().getVersion();
+        String version = builProps.getVersion();
         String loginName = String.format(BsmConstants.APP_VERSION_USER, version);
         Optional<BsmUserPo> poOptional = bsmUserRepository.findByLoginName(loginName);
         if (poOptional.isPresent()) {

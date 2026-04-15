@@ -6,46 +6,46 @@ import org.springframework.stereotype.Component;
 import ricciliao.bsm.cache.pojo.ChallengeVerificationDto;
 import ricciliao.bsm.cache.pojo.SignInLogDto;
 import ricciliao.bsm.cache.pojo.SignUpLockDto;
-import ricciliao.x.starter.mcp.ConsumerCacheRestService;
+import ricciliao.x.starter.mcp.McpConsumerRestService;
 
 @Component("cacheProvider")
 public class CacheProvider {
 
-    private ConsumerCacheRestService<ChallengeVerificationDto> challengeConsumerCacheRestService;
-    private ConsumerCacheRestService<SignUpLockDto> signUpLockConsumerCacheRestService;
-    private ConsumerCacheRestService<SignInLogDto> signInLogDtoConsumerCacheRestService;
+    private McpConsumerRestService<ChallengeVerificationDto> challengeConsumerRestService;
+    private McpConsumerRestService<SignUpLockDto> signUpLockConsumerRestService;
+    private McpConsumerRestService<SignInLogDto> signInLogConsumerRestService;
 
-    @Qualifier("signUpLockConsumerCacheRestService")
+    @Qualifier("signUpLockMcpConsumerRestService")
     @Autowired
-    public void setSignUpLockConsumerCacheRestService(ConsumerCacheRestService<SignUpLockDto> signUpLockConsumerCacheRestService) {
-        this.signUpLockConsumerCacheRestService = signUpLockConsumerCacheRestService;
+    public void setSignUpLockConsumerRestService(McpConsumerRestService<SignUpLockDto> signUpLockConsumerRestService) {
+        this.signUpLockConsumerRestService = signUpLockConsumerRestService;
     }
 
-    @Qualifier("challengeConsumerCacheRestService")
+    @Qualifier("challengeMcpConsumerRestService")
     @Autowired
-    public void setChallengeConsumerCacheRestService(ConsumerCacheRestService<ChallengeVerificationDto> challengeConsumerCacheRestService) {
-        this.challengeConsumerCacheRestService = challengeConsumerCacheRestService;
+    public void setChallengeConsumerRestService(McpConsumerRestService<ChallengeVerificationDto> challengeConsumerRestService) {
+        this.challengeConsumerRestService = challengeConsumerRestService;
     }
 
-    @Qualifier("signInLogConsumerCacheRestService")
+    @Qualifier("signInLogMcpConsumerRestService")
     @Autowired
-    public void setSignInLogDtoConsumerCacheRestService(ConsumerCacheRestService<SignInLogDto> signInLogDtoConsumerCacheRestService) {
-        this.signInLogDtoConsumerCacheRestService = signInLogDtoConsumerCacheRestService;
+    public void setSignInLogConsumerRestService(McpConsumerRestService<SignInLogDto> signInLogConsumerRestService) {
+        this.signInLogConsumerRestService = signInLogConsumerRestService;
     }
 
-    public ConsumerCacheRestService<ChallengeVerificationDto> challenge() {
+    public McpConsumerRestService<ChallengeVerificationDto> challenge() {
 
-        return challengeConsumerCacheRestService;
+        return challengeConsumerRestService;
     }
 
-    public ConsumerCacheRestService<SignUpLockDto> signUpLock() {
+    public McpConsumerRestService<SignUpLockDto> signUpLock() {
 
-        return signUpLockConsumerCacheRestService;
+        return signUpLockConsumerRestService;
     }
 
-    public ConsumerCacheRestService<SignInLogDto> signInLog() {
+    public McpConsumerRestService<SignInLogDto> signInLog() {
 
-        return signInLogDtoConsumerCacheRestService;
+        return signInLogConsumerRestService;
     }
 
 }
