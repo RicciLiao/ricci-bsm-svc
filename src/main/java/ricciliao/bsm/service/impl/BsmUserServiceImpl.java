@@ -4,8 +4,11 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.multipart.MultipartFile;
 import ricciliao.bsm.cache.CacheProvider;
 import ricciliao.bsm.cache.ChallengeCacheBuilder;
 import ricciliao.bsm.cache.component.ChallengeComponent;
@@ -18,7 +21,10 @@ import ricciliao.bsm.pojo.dto.BsmUserDto;
 import ricciliao.bsm.pojo.dto.request.UserSignInDto;
 import ricciliao.bsm.pojo.dto.request.UserSignUpSendPostDto;
 import ricciliao.bsm.pojo.dto.response.GetChallengeDto;
+import ricciliao.bsm.pojo.po.BsmUserAvatarPo;
 import ricciliao.bsm.pojo.po.BsmUserPo;
+import ricciliao.bsm.repository.BsmUserAvatarLogRepository;
+import ricciliao.bsm.repository.BsmUserAvatarRepository;
 import ricciliao.bsm.repository.BsmUserLogRepository;
 import ricciliao.bsm.repository.BsmUserRepository;
 import ricciliao.bsm.service.BsmUserService;
@@ -34,8 +40,11 @@ import ricciliao.x.component.payload.SimplePayloadData;
 import ricciliao.x.component.payload.response.code.impl.SecondaryCodeEnum;
 import ricciliao.x.component.persistence.LogAction;
 import ricciliao.x.component.security.encode.EncodeStrategy;
+import ricciliao.x.fsp.FspSavingDto;
 import ricciliao.x.mcp.ConsumerCache;
+import ricciliao.x.starter.fsp.FspConsumerRestService;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Objects;
@@ -49,11 +58,29 @@ public class BsmUserServiceImpl implements BsmUserService {
     private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
     private ChallengeComponent challengeComponent;
     private BsmUserLogRepository bsmUserLogRepository;
-    private BuildProperties builProps;
+    private BuildProperties buildProps;
+    private BsmUserAvatarLogRepository bsmUserAvatarLogRepository;
+    private BsmUserAvatarRepository bsmUserAvatarRepository;
+    private FspConsumerRestService fspConsumerRestService;
 
     @Autowired
-    public void setBuilProps(BuildProperties builProps) {
-        this.builProps = builProps;
+    public void setFspConsumerRestService(FspConsumerRestService fspConsumerRestService) {
+        this.fspConsumerRestService = fspConsumerRestService;
+    }
+
+    @Autowired
+    public void setBsmUserAvatarLogRepository(BsmUserAvatarLogRepository bsmUserAvatarLogRepository) {
+        this.bsmUserAvatarLogRepository = bsmUserAvatarLogRepository;
+    }
+
+    @Autowired
+    public void setBsmUserAvatarRepository(BsmUserAvatarRepository bsmUserAvatarRepository) {
+        this.bsmUserAvatarRepository = bsmUserAvatarRepository;
+    }
+
+    @Autowired
+    public void setBuildProps(BuildProperties buildProps) {
+        this.buildProps = buildProps;
     }
 
     @Autowired
@@ -133,7 +160,7 @@ public class BsmUserServiceImpl implements BsmUserService {
     @Override
     public Long initialize() {
         Long id;
-        String version = builProps.getVersion();
+        String version = buildProps.getVersion();
         String loginName = String.format(BsmConstants.APP_VERSION_USER, version);
         Optional<BsmUserPo> poOptional = bsmUserRepository.findByLoginName(loginName);
         if (poOptional.isPresent()) {
@@ -189,27 +216,54 @@ public class BsmUserServiceImpl implements BsmUserService {
         return result;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, noRollbackFor = RestException.class)
     @Override
-    public Long signUp(String k, BsmUserDto requestDto) throws AbstractException {
+    public Long signUp(String k, BsmUserDto user, MultipartFile avatar) throws AbstractException {
         ConsumerCache<SignUpLockDto> cache = cacheProvider.signUpLock().get(k);
         if (Objects.isNull(cache)
-            || !requestDto.getUserEmail().equalsIgnoreCase(cache.getData().getEmailAddress())) {
+            || !user.getUserEmail().equalsIgnoreCase(cache.getData().getEmailAddress())) {
 
             throw new ParameterException(BsmSecondaryCodeEnum.TIMEOUT);
         }
         Instant now = Instant.now();
-        requestDto.setVersion(null);
-        requestDto.setId(null);
-        requestDto.setLastLoginDtm(now);
-        requestDto.setCreatedBy(JvmCacheUtils.getSystemUserId());
-        requestDto.setCreatedDtm(now);
-        requestDto.setUpdatedBy(JvmCacheUtils.getSystemUserId());
-        requestDto.setUpdatedDtm(now);
-        requestDto.setStatusId(BsmConstants.DATA_STATUS_INITIALIZED);
-        requestDto.setUserPassword(EncodeStrategy.ARGON2.encode(requestDto.getUserPassword().getBytes(StandardCharsets.UTF_8)));
-        BsmUserPo po = bsmUserRepository.save(BsmPojoUtils.convert2Po(requestDto));
-        bsmUserLogRepository.save(BsmPojoUtils.convert2Po(po, LogAction.insert(now)));
+        user.setVersion(null);
+        user.setId(null);
+        user.setLastLoginDtm(now);
+        user.setCreatedBy(JvmCacheUtils.getSystemUserId());
+        user.setCreatedDtm(now);
+        user.setUpdatedBy(JvmCacheUtils.getSystemUserId());
+        user.setUpdatedDtm(now);
+        user.setStatusId(BsmConstants.DATA_STATUS_INITIALIZED);
+        user.setUserPassword(EncodeStrategy.ARGON2.encode(user.getUserPassword().getBytes(StandardCharsets.UTF_8)));
+        BsmUserPo userPo = bsmUserRepository.save(BsmPojoUtils.convert2Po(user));
+        bsmUserLogRepository.save(BsmPojoUtils.convert2Po(userPo, LogAction.insert(now)));
+        if (Objects.nonNull(avatar) && !avatar.isEmpty()) {
+            try {
+                ByteArrayResource resource = new ByteArrayResource(avatar.getBytes()) {
+                    @Override
+                    public String getFilename() {
+                        return avatar.getOriginalFilename();
+                    }
+                };
+                FspSavingDto fspSavingDto = fspConsumerRestService.create(resource);
+                if (Objects.isNull(fspSavingDto)) {
+
+                    throw new RestException(BsmSecondaryCodeEnum.UPLOAD_AVATAR_FAILED);
+                }
+                BsmUserAvatarPo avatarPo = new BsmUserAvatarPo();
+                avatarPo.setBsmUserId(userPo.getId());
+                avatarPo.setFspToken(fspSavingDto.getToken());
+                avatarPo.setCreatedBy(userPo.getCreatedBy());
+                avatarPo.setCreatedDtm(userPo.getCreatedDtm());
+                avatarPo.setUpdatedBy(userPo.getUpdatedBy());
+                avatarPo.setUpdatedDtm(userPo.getUpdatedDtm());
+                avatarPo = bsmUserAvatarRepository.saveAndFlush(avatarPo);
+                bsmUserAvatarLogRepository.save(BsmPojoUtils.convert2Po(avatarPo, LogAction.insert(now)));
+            } catch (RestClientException | IOException e) {
+
+                throw new RestException(BsmSecondaryCodeEnum.UPLOAD_AVATAR_FAILED);
+            }
+        }
 
         cacheProvider.signUpLock().delete(k);
 

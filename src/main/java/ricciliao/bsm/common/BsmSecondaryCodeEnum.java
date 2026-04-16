@@ -9,6 +9,7 @@ public enum BsmSecondaryCodeEnum implements SecondaryCode {
     MISMATCHED_CAPTCHA(2, "Captcha does not match, please try again."),
     TIMEOUT(3, "Time out, please try again."),
     SIGN_IN_FAILED(4, "Login failed, please check your input."),
+    UPLOAD_AVATAR_FAILED(5, "Upload avatar failed, you can try again later."),
     ;
 
     private final int id;

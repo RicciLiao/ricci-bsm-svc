@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.ser.std.NullSerializer;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BsmUserDto {
+public class BsmUserDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -213375409032564214L;
 
     private Long id;
     @NotBlank

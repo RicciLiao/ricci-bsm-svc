@@ -1,0 +1,17 @@
+create table bsm_user_avatar_log
+(
+    bsm_user_id bigint      not null,
+    fsp_token   varchar(83) not null,
+    created_by  bigint      not null,
+    created_dtm datetime(6) not null,
+    updated_by  bigint      not null,
+    updated_dtm datetime(6) not null,
+    version     bigint      not null,
+    action_cd   varchar(1)  not null comment 'I: Insert| U: Update| D: Delete',
+    action_dtm  datetime(6) not null,
+    action_by   bigint      not null,
+    primary key (bsm_user_id, action_dtm)
+);
+
+-- //@UNDO
+drop table bsm_user_avatar_log;

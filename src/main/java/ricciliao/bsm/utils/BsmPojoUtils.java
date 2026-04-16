@@ -1,6 +1,8 @@
 package ricciliao.bsm.utils;
 
 import ricciliao.bsm.pojo.dto.BsmUserDto;
+import ricciliao.bsm.pojo.po.BsmUserAvatarLogPo;
+import ricciliao.bsm.pojo.po.BsmUserAvatarPo;
 import ricciliao.bsm.pojo.po.BsmUserLogPo;
 import ricciliao.bsm.pojo.po.BsmUserPo;
 import ricciliao.x.component.persistence.LogAction;
@@ -37,6 +39,20 @@ public class BsmPojoUtils {
         logPo.setUserEmail(po.getUserEmail());
         logPo.setLastLoginDtm(po.getLastLoginDtm());
         logPo.setStatusId(po.getStatusId());
+        logPo.setCreatedBy(po.getCreatedBy());
+        logPo.setCreatedDtm(po.getCreatedDtm());
+        logPo.setUpdatedBy(po.getUpdatedBy());
+        logPo.setUpdatedDtm(po.getUpdatedDtm());
+        logPo.setVersion(po.getVersion());
+        logPo.setActionBy(po.getUpdatedBy());
+
+        return op.apply(logPo);
+    }
+
+    public static BsmUserAvatarLogPo convert2Po(BsmUserAvatarPo po, LogAction.Op<BsmUserAvatarLogPo> op) {
+        BsmUserAvatarLogPo logPo = new BsmUserAvatarLogPo();
+        logPo.setBsmUserId(po.getBsmUserId());
+        logPo.setFspToken(po.getFspToken());
         logPo.setCreatedBy(po.getCreatedBy());
         logPo.setCreatedDtm(po.getCreatedDtm());
         logPo.setUpdatedBy(po.getUpdatedBy());
