@@ -56,7 +56,7 @@ public class BsmUserServiceImpl implements BsmUserService {
 
     private BsmUserRepository bsmUserRepository;
     private CacheProvider cacheProvider;
-    private KafkaProducer<SendPostKafkaDto> signUpEmailKafka;
+    private KafkaProducer<SendPostKafkaDto> signUpEmailKafkaProducer;
     private ChallengeComponent challengeComponent;
     private BsmUserLogRepository bsmUserLogRepository;
     private BuildProperties buildProps;
@@ -94,10 +94,10 @@ public class BsmUserServiceImpl implements BsmUserService {
         this.challengeComponent = challengeComponent;
     }
 
-    @Qualifier("signUpEmailKafka")
+    @Qualifier("signUpEmailKafkaProducer")
     @Autowired
-    public void setSignUpEmailKafka(KafkaProducer<SendPostKafkaDto> signUpEmailKafka) {
-        this.signUpEmailKafka = signUpEmailKafka;
+    public void setSignUpEmailKafkaProducer(KafkaProducer<SendPostKafkaDto> signUpEmailKafkaProducer) {
+        this.signUpEmailKafkaProducer = signUpEmailKafkaProducer;
     }
 
     @Autowired
@@ -159,7 +159,7 @@ public class BsmUserServiceImpl implements BsmUserService {
                                 .process(cache -> cache.getData().setEmailAddress(requestDto.getEmailAddress()))
                 );
 
-        signUpEmailKafka.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.ofEpochMilli(challenge.t())));
+        signUpEmailKafkaProducer.send(new SendPostKafkaDto(challenge.c(), requestDto.getEmailAddress(), Instant.ofEpochMilli(challenge.t())));
 
         return challenge.k();
     }
@@ -205,6 +205,7 @@ public class BsmUserServiceImpl implements BsmUserService {
         userPo.setUpdatedBy(JvmCacheUtils.getSystemUserId());
         userPo.setStatusId(BsmConstants.DATA_STATUS_INITIALIZED);
         userPo.setUserPassword(EncodeStrategy.ARGON2.encode(user.getUserPassword().getBytes(StandardCharsets.UTF_8)));
+        userPo.setLastLoginDtm(now);
         userPo = bsmUserRepository.save(userPo);
         bsmUserLogRepository.save(BsmPojoUtils.convert2Po(userPo, LogAction.insert(now)));
         if (Objects.nonNull(avatar) && !avatar.isEmpty()) {

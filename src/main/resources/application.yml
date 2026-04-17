@@ -62,7 +62,6 @@ ricciliao:
         producer-list:
           - topic: signUpEmail
             message-class: ricciliao.bsm.kafka.dto.SendPostKafkaDto
-            bean-name: signUpEmailKafka
     fsp:
       enabled: true
       url: http://192.168.165.34:8087/file
