@@ -42,7 +42,7 @@ public class BsmUserLogId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         BsmUserLogId entity = (BsmUserLogId) o;
         return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.actionDtm, entity.actionDtm);
+               Objects.equals(this.actionDtm, entity.actionDtm);
     }
 
     @Override

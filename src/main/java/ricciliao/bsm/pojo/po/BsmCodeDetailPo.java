@@ -7,51 +7,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import ricciliao.x.component.persistence.ModifiableEntity;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "bsm_code_detail")
-public class BsmCodeDetailPo implements Serializable {
+public class BsmCodeDetailPo implements ModifiableEntity {
     @Serial
-    private static final long serialVersionUID = 8117109961058992452L;
+    private static final long serialVersionUID = -6503063643253739318L;
+
+    private Long id;
+    private Long bsmCodeId;
+    private String code;
+    private String description;
+    private Boolean active;
+    private Long createdBy;
+    private Instant createdDtm;
+    private Long updatedBy;
+    private Instant updatedDtm;
+    private Long version;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-
-    @Column(name = "bsm_code_id")
-    private Long bsmCodeId;
-
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "is_active")
-    private Integer isActive;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_dtm")
-    private Instant createdDtm;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    @Column(name = "updated_dtm")
-    private Instant updatedDtm;
-
-    @Version
-    @Column(name = "version")
-    private Long version;
-
     public Long getId() {
         return id;
     }
@@ -60,6 +41,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "bsm_code_id")
     public Long getBsmCodeId() {
         return bsmCodeId;
     }
@@ -68,6 +50,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.bsmCodeId = bsmCodeId;
     }
 
+    @Column(name = "code")
     public String getCode() {
         return code;
     }
@@ -76,6 +59,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.code = code;
     }
 
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -84,14 +68,16 @@ public class BsmCodeDetailPo implements Serializable {
         this.description = description;
     }
 
-    public Integer getIsActive() {
-        return isActive;
+    @Column(name = "active")
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setIsActive(Integer isActive) {
-        this.isActive = isActive;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
+    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -100,6 +86,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.createdBy = createdBy;
     }
 
+    @Column(name = "created_dtm")
     public Instant getCreatedDtm() {
         return createdDtm;
     }
@@ -108,6 +95,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.createdDtm = createdDtm;
     }
 
+    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -116,6 +104,7 @@ public class BsmCodeDetailPo implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name = "updated_dtm")
     public Instant getUpdatedDtm() {
         return updatedDtm;
     }
@@ -124,6 +113,8 @@ public class BsmCodeDetailPo implements Serializable {
         this.updatedDtm = updatedDtm;
     }
 
+    @Version
+    @Column(name = "version")
     public Long getVersion() {
         return version;
     }
@@ -135,11 +126,11 @@ public class BsmCodeDetailPo implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof BsmCodeDetailPo that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getBsmCodeId(), that.getBsmCodeId()) && Objects.equals(getCode(), that.getCode()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getIsActive(), that.getIsActive()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getCreatedDtm(), that.getCreatedDtm()) && Objects.equals(getUpdatedBy(), that.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), that.getUpdatedDtm()) && Objects.equals(getVersion(), that.getVersion());
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getBsmCodeId(), that.getBsmCodeId()) && Objects.equals(getCode(), that.getCode()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getActive(), that.getActive()) && Objects.equals(getCreatedBy(), that.getCreatedBy()) && Objects.equals(getCreatedDtm(), that.getCreatedDtm()) && Objects.equals(getUpdatedBy(), that.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), that.getUpdatedDtm()) && Objects.equals(getVersion(), that.getVersion());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getBsmCodeId(), getCode(), getDescription(), getIsActive(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
+        return Objects.hash(getId(), getBsmCodeId(), getCode(), getDescription(), getActive(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
     }
 }

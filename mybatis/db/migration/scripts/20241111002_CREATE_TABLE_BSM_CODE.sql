@@ -3,7 +3,7 @@ create table bsm_code
     id          bigint auto_increment primary key,
     code        varchar(20)  not null,
     description varchar(255) not null,
-    is_active   int          not null,
+    active      tinyint(1)   not null,
     created_by  bigint       not null,
     created_dtm datetime(6)  not null,
     updated_by  bigint       not null,

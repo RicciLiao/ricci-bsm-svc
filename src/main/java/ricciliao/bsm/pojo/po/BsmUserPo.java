@@ -7,57 +7,34 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import ricciliao.x.component.persistence.ModifiableEntity;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "bsm_user")
-public class BsmUserPo implements Serializable {
+public class BsmUserPo implements ModifiableEntity {
     @Serial
-    private static final long serialVersionUID = -1686666696193049959L;
+    private static final long serialVersionUID = 1232388334533272926L;
+    
+    private Long id;
+    private String loginName;
+    private String userName;
+    private String userPassword;
+    private String userEmail;
+    private Instant lastLoginDtm;
+    private Long statusId;
+    private Long createdBy;
+    private Instant createdDtm;
+    private Long updatedBy;
+    private Instant updatedDtm;
+    private Long version;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
-
-    @Column(name = "login_name")
-    private String loginName;
-
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "user_password")
-    private String userPassword;
-
-    @Column(name = "user_email")
-    private String userEmail;
-
-    @Column(name = "last_login_dtm")
-    private Instant lastLoginDtm;
-
-    @Column(name = "status_id")
-    private Long statusId;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_dtm")
-    private Instant createdDtm;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    @Column(name = "updated_dtm")
-    private Instant updatedDtm;
-
-    @Version
-    @Column(name = "version")
-    private Long version;
-
     public Long getId() {
         return id;
     }
@@ -66,6 +43,7 @@ public class BsmUserPo implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "login_name")
     public String getLoginName() {
         return loginName;
     }
@@ -74,6 +52,7 @@ public class BsmUserPo implements Serializable {
         this.loginName = loginName;
     }
 
+    @Column(name = "user_name")
     public String getUserName() {
         return userName;
     }
@@ -82,6 +61,7 @@ public class BsmUserPo implements Serializable {
         this.userName = userName;
     }
 
+    @Column(name = "user_password")
     public String getUserPassword() {
         return userPassword;
     }
@@ -90,6 +70,7 @@ public class BsmUserPo implements Serializable {
         this.userPassword = userPassword;
     }
 
+    @Column(name = "user_email")
     public String getUserEmail() {
         return userEmail;
     }
@@ -98,6 +79,7 @@ public class BsmUserPo implements Serializable {
         this.userEmail = userEmail;
     }
 
+    @Column(name = "last_login_dtm")
     public Instant getLastLoginDtm() {
         return lastLoginDtm;
     }
@@ -106,6 +88,7 @@ public class BsmUserPo implements Serializable {
         this.lastLoginDtm = lastLoginDtm;
     }
 
+    @Column(name = "status_id")
     public Long getStatusId() {
         return statusId;
     }
@@ -114,6 +97,7 @@ public class BsmUserPo implements Serializable {
         this.statusId = statusId;
     }
 
+    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -122,6 +106,7 @@ public class BsmUserPo implements Serializable {
         this.createdBy = createdBy;
     }
 
+    @Column(name = "created_dtm")
     public Instant getCreatedDtm() {
         return createdDtm;
     }
@@ -130,6 +115,7 @@ public class BsmUserPo implements Serializable {
         this.createdDtm = createdDtm;
     }
 
+    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -138,6 +124,7 @@ public class BsmUserPo implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name = "updated_dtm")
     public Instant getUpdatedDtm() {
         return updatedDtm;
     }
@@ -146,6 +133,8 @@ public class BsmUserPo implements Serializable {
         this.updatedDtm = updatedDtm;
     }
 
+    @Version
+    @Column(name = "version")
     public Long getVersion() {
         return version;
     }

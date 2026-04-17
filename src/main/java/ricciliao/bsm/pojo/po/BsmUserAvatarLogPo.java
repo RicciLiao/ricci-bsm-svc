@@ -5,50 +5,32 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import ricciliao.x.component.persistence.LogPo;
+import ricciliao.x.component.persistence.LogEntity;
 
 import java.io.Serial;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bsm_user_avatar_log")
 @IdClass(BsmUserAvatarLogId.class)
-public class BsmUserAvatarLogPo implements LogPo {
+public class BsmUserAvatarLogPo implements LogEntity {
     @Serial
-    private static final long serialVersionUID = -8203210924950878134L;
+    private static final long serialVersionUID = 3193373043912312547L;
+    
+    private Long bsmUserId;
+    private Instant actionDtm;
+    private String fspToken;
+    private Long createdBy;
+    private Instant createdDtm;
+    private Long updatedBy;
+    private Instant updatedDtm;
+    private Long version;
+    private Character actionCd;
+    private Long actionBy;
 
     @Id
     @Column(name = "bsm_user_id")
-    private Long bsmUserId;
-
-    @Id
-    @Column(name = "action_dtm")
-    private Instant actionDtm;
-
-    @Column(name = "fsp_token")
-    private String fspToken;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_dtm")
-    private Instant createdDtm;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    @Column(name = "updated_dtm")
-    private Instant updatedDtm;
-
-    @Column(name = "version")
-    private Long version;
-
-    @Column(name = "action_cd")
-    private Character actionCd;
-
-    @Column(name = "action_by")
-    private Long actionBy;
-
     public Long getBsmUserId() {
         return bsmUserId;
     }
@@ -57,6 +39,8 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.bsmUserId = bsmUserId;
     }
 
+    @Id
+    @Column(name = "action_dtm")
     public Instant getActionDtm() {
         return actionDtm;
     }
@@ -65,6 +49,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.actionDtm = actionDtm;
     }
 
+    @Column(name = "fsp_token")
     public String getFspToken() {
         return fspToken;
     }
@@ -73,6 +58,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.fspToken = fspToken;
     }
 
+    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -81,6 +67,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.createdBy = createdBy;
     }
 
+    @Column(name = "created_dtm")
     public Instant getCreatedDtm() {
         return createdDtm;
     }
@@ -89,6 +76,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.createdDtm = createdDtm;
     }
 
+    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -97,6 +85,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name = "updated_dtm")
     public Instant getUpdatedDtm() {
         return updatedDtm;
     }
@@ -105,6 +94,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.updatedDtm = updatedDtm;
     }
 
+    @Column(name = "version")
     public Long getVersion() {
         return version;
     }
@@ -113,6 +103,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.version = version;
     }
 
+    @Column(name = "action_cd")
     public Character getActionCd() {
         return actionCd;
     }
@@ -121,6 +112,7 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.actionCd = actionCd;
     }
 
+    @Column(name = "action_by")
     public Long getActionBy() {
         return actionBy;
     }
@@ -129,4 +121,14 @@ public class BsmUserAvatarLogPo implements LogPo {
         this.actionBy = actionBy;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BsmUserAvatarLogPo logPo)) return false;
+        return Objects.equals(getBsmUserId(), logPo.getBsmUserId()) && Objects.equals(getActionDtm(), logPo.getActionDtm()) && Objects.equals(getFspToken(), logPo.getFspToken()) && Objects.equals(getCreatedBy(), logPo.getCreatedBy()) && Objects.equals(getCreatedDtm(), logPo.getCreatedDtm()) && Objects.equals(getUpdatedBy(), logPo.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), logPo.getUpdatedDtm()) && Objects.equals(getVersion(), logPo.getVersion()) && Objects.equals(getActionCd(), logPo.getActionCd()) && Objects.equals(getActionBy(), logPo.getActionBy());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBsmUserId(), getActionDtm(), getFspToken(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion(), getActionCd(), getActionBy());
+    }
 }

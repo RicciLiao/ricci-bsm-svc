@@ -5,48 +5,37 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import ricciliao.x.component.persistence.ModifiableEntity;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bsm_user_avatar")
-public class BsmUserAvatarPo implements Serializable {
+public class BsmUserAvatarPo implements ModifiableEntity {
     @Serial
-    private static final long serialVersionUID = 4702535455854956283L;
+    private static final long serialVersionUID = 6790537579071394797L;
+    
+    private Long bsmUserId;
+    private String fspToken;
+    private Long createdBy;
+    private Instant createdDtm;
+    private Long updatedBy;
+    private Instant updatedDtm;
+    private Long version;
 
     @Id
     @Column(name = "bsm_user_id")
-    private Long bsmUserId;
-
-    @Column(name = "fsp_token")
-    private String fspToken;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_dtm")
-    private Instant createdDtm;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    @Column(name = "updated_dtm")
-    private Instant updatedDtm;
-
-    @Version
-    @Column(name = "version")
-    private Long version;
-
     public Long getBsmUserId() {
         return bsmUserId;
     }
 
-    public void setBsmUserId(Long bsmUserId) {
-        this.bsmUserId = bsmUserId;
+    public void setBsmUserId(Long id) {
+        this.bsmUserId = id;
     }
 
+    @Column(name = "fsp_token")
     public String getFspToken() {
         return fspToken;
     }
@@ -55,6 +44,7 @@ public class BsmUserAvatarPo implements Serializable {
         this.fspToken = fspToken;
     }
 
+    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -63,6 +53,7 @@ public class BsmUserAvatarPo implements Serializable {
         this.createdBy = createdBy;
     }
 
+    @Column(name = "created_dtm")
     public Instant getCreatedDtm() {
         return createdDtm;
     }
@@ -71,6 +62,7 @@ public class BsmUserAvatarPo implements Serializable {
         this.createdDtm = createdDtm;
     }
 
+    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -79,6 +71,7 @@ public class BsmUserAvatarPo implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name = "updated_dtm")
     public Instant getUpdatedDtm() {
         return updatedDtm;
     }
@@ -87,6 +80,8 @@ public class BsmUserAvatarPo implements Serializable {
         this.updatedDtm = updatedDtm;
     }
 
+    @Version
+    @Column(name = "version")
     public Long getVersion() {
         return version;
     }
@@ -95,4 +90,14 @@ public class BsmUserAvatarPo implements Serializable {
         this.version = version;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BsmUserAvatarPo avatarPo)) return false;
+        return Objects.equals(getBsmUserId(), avatarPo.getBsmUserId()) && Objects.equals(getFspToken(), avatarPo.getFspToken()) && Objects.equals(getCreatedBy(), avatarPo.getCreatedBy()) && Objects.equals(getCreatedDtm(), avatarPo.getCreatedDtm()) && Objects.equals(getUpdatedBy(), avatarPo.getUpdatedBy()) && Objects.equals(getUpdatedDtm(), avatarPo.getUpdatedDtm()) && Objects.equals(getVersion(), avatarPo.getVersion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBsmUserId(), getFspToken(), getCreatedBy(), getCreatedDtm(), getUpdatedBy(), getUpdatedDtm(), getVersion());
+    }
 }

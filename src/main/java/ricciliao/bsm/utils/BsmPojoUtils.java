@@ -6,13 +6,14 @@ import ricciliao.bsm.pojo.po.BsmUserAvatarPo;
 import ricciliao.bsm.pojo.po.BsmUserLogPo;
 import ricciliao.bsm.pojo.po.BsmUserPo;
 import ricciliao.x.component.persistence.LogAction;
+import ricciliao.x.component.persistence.ModifiableAction;
 
 public class BsmPojoUtils {
     private BsmPojoUtils() {
         throw new IllegalStateException("Utility class");
     }
 
-    public static BsmUserPo convert2Po(BsmUserDto dto) {
+    public static BsmUserPo convert2Po(BsmUserDto dto, ModifiableAction.Op<BsmUserPo> op) {
         BsmUserPo po = new BsmUserPo();
         po.setId(dto.getId());
         po.setLoginName(dto.getLoginName());
@@ -27,7 +28,7 @@ public class BsmPojoUtils {
         po.setUpdatedDtm(dto.getUpdatedDtm());
         po.setVersion(dto.getVersion());
 
-        return po;
+        return op.apply(po);
     }
 
     public static BsmUserLogPo convert2Po(BsmUserPo po, LogAction.Op<BsmUserLogPo> op) {

@@ -8,13 +8,13 @@ import ricciliao.x.component.exception.AbstractException;
 
 public interface BsmUserService {
 
-    Long signUp(String k, BsmUserDto user, MultipartFile avatar) throws AbstractException;
+    Long initialize();
 
     String signUpSendPost(UserSignUpSendPostDto requestDto) throws AbstractException;
 
     String preSignUp(UserSignUpSendPostDto requestDto) throws AbstractException;
 
-    Long initialize();
+    Long signUp(String k, BsmUserDto user, MultipartFile avatar) throws AbstractException;
 
     Long signIn(UserSignInDto requestDto) throws AbstractException;
 

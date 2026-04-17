@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import ricciliao.x.component.persistence.LogPo;
+import ricciliao.x.component.persistence.LogEntity;
 
 import java.io.Serial;
 import java.time.Instant;
@@ -14,57 +14,28 @@ import java.util.Objects;
 @Entity
 @Table(name = "bsm_user_log")
 @IdClass(BsmUserLogId.class)
-public class BsmUserLogPo implements LogPo {
+public class BsmUserLogPo implements LogEntity {
     @Serial
-    private static final long serialVersionUID = 2376987929554355514L;
+    private static final long serialVersionUID = -1630755457870603634L;
+    
+    private Long id;
+    private Instant actionDtm;
+    private String loginName;
+    private String userName;
+    private String userPassword;
+    private String userEmail;
+    private Instant lastLoginDtm;
+    private Long statusId;
+    private Long createdBy;
+    private Instant createdDtm;
+    private Long updatedBy;
+    private Instant updatedDtm;
+    private Long version;
+    private Character actionCd;
+    private Long actionBy;
 
     @Id
     @Column(name = "id")
-    private Long id;
-
-    @Id
-    @Column(name = "action_dtm")
-    private Instant actionDtm;
-
-    @Column(name = "login_name")
-    private String loginName;
-
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "user_password")
-    private String userPassword;
-
-    @Column(name = "user_email")
-    private String userEmail;
-
-    @Column(name = "last_login_dtm")
-    private Instant lastLoginDtm;
-
-    @Column(name = "status_id")
-    private Long statusId;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_dtm")
-    private Instant createdDtm;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    @Column(name = "updated_dtm")
-    private Instant updatedDtm;
-
-    @Column(name = "version")
-    private Long version;
-
-    @Column(name = "action_cd")
-    private Character actionCd;
-
-    @Column(name = "action_by")
-    private Long actionBy;
-
     public Long getId() {
         return id;
     }
@@ -73,16 +44,17 @@ public class BsmUserLogPo implements LogPo {
         this.id = id;
     }
 
-    @Override
+    @Id
+    @Column(name = "action_dtm")
     public Instant getActionDtm() {
         return actionDtm;
     }
 
-    @Override
     public void setActionDtm(Instant actionDtm) {
         this.actionDtm = actionDtm;
     }
 
+    @Column(name = "login_name")
     public String getLoginName() {
         return loginName;
     }
@@ -91,6 +63,7 @@ public class BsmUserLogPo implements LogPo {
         this.loginName = loginName;
     }
 
+    @Column(name = "user_name")
     public String getUserName() {
         return userName;
     }
@@ -99,6 +72,7 @@ public class BsmUserLogPo implements LogPo {
         this.userName = userName;
     }
 
+    @Column(name = "user_password")
     public String getUserPassword() {
         return userPassword;
     }
@@ -107,6 +81,7 @@ public class BsmUserLogPo implements LogPo {
         this.userPassword = userPassword;
     }
 
+    @Column(name = "user_email")
     public String getUserEmail() {
         return userEmail;
     }
@@ -115,6 +90,7 @@ public class BsmUserLogPo implements LogPo {
         this.userEmail = userEmail;
     }
 
+    @Column(name = "last_login_dtm")
     public Instant getLastLoginDtm() {
         return lastLoginDtm;
     }
@@ -123,6 +99,7 @@ public class BsmUserLogPo implements LogPo {
         this.lastLoginDtm = lastLoginDtm;
     }
 
+    @Column(name = "status_id")
     public Long getStatusId() {
         return statusId;
     }
@@ -131,6 +108,7 @@ public class BsmUserLogPo implements LogPo {
         this.statusId = statusId;
     }
 
+    @Column(name = "created_by")
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -139,6 +117,7 @@ public class BsmUserLogPo implements LogPo {
         this.createdBy = createdBy;
     }
 
+    @Column(name = "created_dtm")
     public Instant getCreatedDtm() {
         return createdDtm;
     }
@@ -147,6 +126,7 @@ public class BsmUserLogPo implements LogPo {
         this.createdDtm = createdDtm;
     }
 
+    @Column(name = "updated_by")
     public Long getUpdatedBy() {
         return updatedBy;
     }
@@ -155,6 +135,7 @@ public class BsmUserLogPo implements LogPo {
         this.updatedBy = updatedBy;
     }
 
+    @Column(name = "updated_dtm")
     public Instant getUpdatedDtm() {
         return updatedDtm;
     }
@@ -163,6 +144,7 @@ public class BsmUserLogPo implements LogPo {
         this.updatedDtm = updatedDtm;
     }
 
+    @Column(name = "version")
     public Long getVersion() {
         return version;
     }
@@ -171,16 +153,16 @@ public class BsmUserLogPo implements LogPo {
         this.version = version;
     }
 
-    @Override
+    @Column(name = "action_cd")
     public Character getActionCd() {
         return actionCd;
     }
 
-    @Override
     public void setActionCd(Character actionCd) {
         this.actionCd = actionCd;
     }
 
+    @Column(name = "action_by")
     public Long getActionBy() {
         return actionBy;
     }
