@@ -16,6 +16,6 @@ public interface BsmUserService {
 
     Long signUp(String k, BsmUserDto user, MultipartFile avatar) throws AbstractException;
 
-    Long signIn(UserSignInDto requestDto) throws AbstractException;
+    Long signIn(UserSignInDto requestDto);
 
 }

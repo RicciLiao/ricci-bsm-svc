@@ -243,7 +243,7 @@ public class BsmUserServiceImpl implements BsmUserService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Long signIn(UserSignInDto requestDto) throws AbstractException {
+    public Long signIn(UserSignInDto requestDto) {
         Long result = 0L;
         Optional<BsmUserPo> poOptional;
         Instant now = Instant.now();
@@ -257,8 +257,7 @@ public class BsmUserServiceImpl implements BsmUserService {
         }
         if (poOptional.isPresent()) {
             BsmUserPo po = poOptional.get();
-            String encodedPassword = EncodeStrategy.ARGON2.encode(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8));
-            if (EncodeStrategy.ARGON2.matches(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8), encodedPassword)) {
+            if (EncodeStrategy.ARGON2.matches(requestDto.getSignInPassword().getBytes(StandardCharsets.UTF_8), po.getUserPassword())) {
                 result = po.getId();
                 po.setLastLoginDtm(now);
                 po.setUpdatedDtm(now);
